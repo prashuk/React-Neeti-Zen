@@ -1,59 +1,90 @@
-import React from "react";
+import React, { Component } from "react";
 import { StyleSheet, Text, View, Button, TouchableOpacity } from "react-native";
+import { Dropdown } from "react-native-material-dropdown";
 
-export default function Home({navigation}) {
-  const expatriatesButtonPressed = ()=> {
-    navigation.navigate("ExpatriatesStack")
+const dropDown = [
+  {
+    value: "Job",
+    subitems: [
+      {
+        value: "Fraud"
+      },
+      {
+        value: "Unsafe work"
+      },
+      {
+        value: "Wages"
+      },
+      {
+        value: "Work accident"
+      }
+    ]
+  },
+  {
+    value: "Expatriation",
+    subitems: [
+      {
+        value: "Detention"
+      },
+      {
+        value: "Death abroad"
+      }
+    ]
+  },
+  {
+    value: "Missing National"
   }
-  return (
-    <View style={styles.screenLayout}>
-      <View>
+];
+
+export default class Expatriates extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      dropDown: ""
+    };
+    this.findOptionUsed = this.findOptionUsed.bind(this);
+  }
+
+  findOptionUsed() {
+    if (this.state.dropDown === "Job") {
+      return (
+        <Dropdown
+          id="anotherDropDown"
+          label="Options"
+          data={dropDown[0]["subitems"]}
+        />
+      );
+    }
+    if (this.state.dropDown === "Expatriation") {
+      return (
+        <Dropdown
+          id="anotherDropDown"
+          label="Options"
+          data={dropDown[1]["subitems"]}
+        />
+      );
+    }
+  }
+
+  render() {
+    return (
+      <View style={styles.screenLayout}>
         <View>
-          <Text style={styles.headingLayout}>Choose Category</Text>
-          <Text style={styles.subHeadingLayout}>
-            Choose category to proceed
-          </Text>
-        </View>
-        <View style={styles.categoryPanel}>
-          <View style={styles.leftButtons}>
-            <TouchableOpacity style={styles.buttonsSuggest}>
-              <Text style={styles.inputText}>Suggest</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.buttonsMedical}>
-              <Text style={styles.inputText}>Medical</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.rightButtons}>
-            <TouchableOpacity style={styles.buttonsExpatriates} onPress={expatriatesButtonPressed}>
-              <Text style={styles.inputText}>Expatriates</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.buttonsEvents}>
-              <Text style={styles.inputText}>Events</Text>
-            </TouchableOpacity>
+          <View>
+            <Dropdown
+              id="dropDown"
+              label="Options"
+              data={dropDown}
+              onChangeText={dropDown => {
+                this.setState({ dropDown });
+              }}
+            />
+            {this.findOptionUsed()}
           </View>
         </View>
       </View>
-      <View>
-        <View>
-          <Text style={styles.headingLayout}>More</Text>
-          <Text style={styles.subHeadingLayout}>
-            Get onboard and receive insights
-          </Text>
-        </View>
-        <View>
-          <TouchableOpacity style={styles.buttonsMplad}>
-            <Text style={styles.inputText}>MPLAD</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonsUpdates}>
-            <Text style={styles.inputText}>Latest Updates</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonsJanTv}>
-            <Text style={styles.inputText}>Jan TV</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </View>
-  );
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -114,7 +145,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 20
-  },  
+  },
 
   buttonsExpatriates: {
     width: "100%",
@@ -124,7 +155,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 20
-  },  
+  },
 
   buttonsSuggest: {
     width: "100%",
@@ -134,7 +165,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 20
-  },  
+  },
 
   buttonsEvents: {
     width: "100%",
@@ -144,7 +175,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 20
-  },  
+  },
 
   buttonsMplad: {
     width: "100%",
@@ -154,7 +185,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 20
-  },  
+  },
 
   buttonsUpdates: {
     width: "100%",
@@ -164,7 +195,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 20
-  },  
+  },
 
   buttonsJanTv: {
     width: "100%",

@@ -1,13 +1,13 @@
-import About from "../components/about";
+import Terms from "../components/terms";
 import { createStackNavigator } from "react-navigation-stack";
 import { createAppContainer } from "react-navigation";
 
-export const AboutStack = createStackNavigator(
+export const TermsStack = createStackNavigator(
   {
-    AboutStack: {
-      screen: About,
+    TermsStack: {
+      screen: Terms,
       navigationOptions: {
-        title: "About Us",
+        title: "Terms & Conditions",
         headerStyle: {
           backgroundColor: "#112d4e"
         },
@@ -24,4 +24,4 @@ export const AboutStack = createStackNavigator(
   }
 );
 
-export default createAppContainer(AboutStack);
+export default createAppContainer(TermsStack);

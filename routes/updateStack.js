@@ -4,7 +4,18 @@ import { createAppContainer } from "react-navigation";
 
 export const UpdateStack = createStackNavigator(
   {
-    UpdateStack: { screen: Update }
+    UpdateStack: {
+      screen: Update,
+      navigationOptions: {
+        title: "Update Profile",
+        headerStyle: {
+          backgroundColor: "#112d4e"
+        },
+        headerTitleStyle: {
+          color: "#dbe2ef"
+        }
+      }
+    }
   },
   {
     navigationOptions: {

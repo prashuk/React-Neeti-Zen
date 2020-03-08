@@ -1,18 +1,18 @@
-import About from "../components/about";
+import Privacy from "../components/privacy";
 import { createStackNavigator } from "react-navigation-stack";
 import { createAppContainer } from "react-navigation";
 
-export const AboutStack = createStackNavigator(
+export const PrivacyStack = createStackNavigator(
   {
-    AboutStack: {
-      screen: About,
+    PrivacyStack: {
+      screen: Privacy,
       navigationOptions: {
-        title: "About Us",
+        title: "Privacy Policy",
         headerStyle: {
-          backgroundColor: "#112d4e"
+            backgroundColor: "#112d4e",
         },
         headerTitleStyle: {
-          color: "#dbe2ef"
+            color: "#dbe2ef"
         }
       }
     }
@@ -24,4 +24,4 @@ export const AboutStack = createStackNavigator(
   }
 );
 
-export default createAppContainer(AboutStack);
+export default createAppContainer(PrivacyStack);

@@ -1,12 +1,28 @@
-import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import React from "react";
+import {
+  StyleSheet,
+  Text,
+  View
+} from "react-native";
 
-export default function About({navigation}) {
-
-
+export default function About({ navigation }) {
   return (
-    <View>
-      <Text>Add Content</Text>
+    <View style={styles.screenLayout}>
+      <View>
+        <View style={styles.categoryPanel}>
+          <Text style={styles.subHeadingLayout}>
+            Neetizen is a platform to facilitate citizen engagement by providing
+            them a streamlined method to report issues to their elected
+            representative & officials and seek their effective resolution.
+            Neetizen can also aid the elected representatives and officials in
+            citizen outreach and can help to get real time inputs from the
+            citizens on key policy or community issues. The inbuilt tools and
+            features will help the elected representatives and officials to
+            glean insights from the reported issues and help them to better
+            serve their constituents.
+          </Text>
+        </View>
+      </View>
     </View>
   );
 }
@@ -14,46 +30,30 @@ export default function About({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#f9f7f7",
+    alignItems: "center",
+    justifyContent: "center"
   },
-  logo:{
-    fontWeight:"bold",
-    fontSize:50,
-    color:"#b21f66",
-    marginBottom:40
+
+  screenLayout: {
+    paddingTop: 25,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingBottom: 30
   },
-  inputView:{
-    width:"80%",
-    backgroundColor:"#dcd6f7",
-    borderRadius:25,
-    height:50,
-    marginBottom:20,
-    justifyContent:"center",
-    padding:20
+
+  subHeadingLayout: {
+    color: "#3f72af",
+    fontSize: 20,
+    textAlign: 'justify'
   },
-  inputText:{
-    height:50,
-    color:"#424874"
+
+  categoryPanel: {
+    flexDirection: "row",
+    justifyContent: "space-between"
   },
-  forgot:{
-    color:"#424874",
-    fontSize:11
-  },
-  loginBtn:{
-    width:"80%",
-    backgroundColor:"#424874",
-    borderRadius:25,
-    height:50,
-    alignItems:"center",
-    justifyContent:"center",
-    marginTop:40,
-    marginBottom:10
-  },
-  loginText:{
-    color:"#f4eeff"
-  },
-  signupText:{
-    color:"#424874"
+
+  inputText: {
+    color: "#f9f7f7"
   }
 });
