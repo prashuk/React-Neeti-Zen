@@ -1,12 +1,48 @@
-import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import React from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity
+} from "react-native";
 
-export default function Privacy({navigation}) {
-
-
+export default function Privacy({ navigation }) {
   return (
-    <View>
-      <Text>Add Content</Text>
+    <View style={styles.screenLayout}>
+      <View>
+        <View style={styles.categoryPanel}>
+          <Text style={styles.subHeadingLayout}>
+            Neetizen (collectively “Neetizen”, "We", "Us", and "Ours") is
+            committed to protecting your privacy. This Privacy Notice (“Notice”)
+            describes how Neetizen processes Personal Data in its capacity as a
+            controller (i.e. Neetizen decides what Personal Data is collected
+            and what it is Used for) or processor (i.e. Neetizen only processes
+            the data as per the controller's instructions), as the case may be.
+            It also describes your choices regarding Use, access and correction
+            of your Personal Data.
+          </Text>
+        </View>
+        <View style={styles.categoryPanel}>
+          <Text style={styles.headingLayout}>
+            WHOM DOES THIS NOTICE APPLY TO?
+          </Text>
+        </View>
+        <View style={styles.categoryPanel}>
+          <Text style={styles.subHeadingLayout}>
+            This Notice Applies to (i) entities or individuals, excluding
+            End-Users and Users, who have subscribed to the Service(s) and have
+            agreed to the Terms (hereinafter referred to as the “Customer”) and
+            (ii) individuals (“Individuals”) from whom Neetizen collects data as
+            a controller as specified below.
+          </Text>
+        </View>
+        <Text style={styles.headingLayout}>ANY QUESTIONS?</Text>
+        <Text style={styles.subHeadingLayout}>
+          If you have questions or complaints regarding our privacy notice or
+          practices, please contact Us at support@Neetizen.com.
+        </Text>
+      </View>
     </View>
   );
 }
@@ -14,46 +50,37 @@ export default function Privacy({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#f9f7f7",
+    alignItems: "center",
+    justifyContent: "center"
   },
-  logo:{
-    fontWeight:"bold",
-    fontSize:50,
-    color:"#b21f66",
-    marginBottom:40
+
+  screenLayout: {
+    paddingTop: 25,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingBottom: 30
   },
-  inputView:{
-    width:"80%",
-    backgroundColor:"#dcd6f7",
-    borderRadius:25,
-    height:50,
-    marginBottom:20,
-    justifyContent:"center",
-    padding:20
+
+  subHeadingLayout: {
+    color: "#3f72af",
+    fontSize: 20,
+    textAlign: "justify"
   },
-  inputText:{
-    height:50,
-    color:"#424874"
+
+  categoryPanel: {
+    flexDirection: "row",
+    justifyContent: "space-between"
   },
-  forgot:{
-    color:"#424874",
-    fontSize:11
+
+  headingLayout: {
+    fontSize: 30,
+    fontWeight: "700",
+    paddingBottom: 2,
+    color: "#112d4e"
   },
-  loginBtn:{
-    width:"80%",
-    backgroundColor:"#424874",
-    borderRadius:25,
-    height:50,
-    alignItems:"center",
-    justifyContent:"center",
-    marginTop:40,
-    marginBottom:10
-  },
-  loginText:{
-    color:"#f4eeff"
-  },
-  signupText:{
-    color:"#424874"
+
+  inputText: {
+    color: "#f9f7f7"
   }
 });
