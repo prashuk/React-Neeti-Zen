@@ -1,37 +1,70 @@
 {
+  "name": "neeti-zen",
+  "version": "1.0.0",
+  "description": "NeetiZen",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web",
     "eject": "expo eject"
   },
   "dependencies": {
     "@react-native-community/masked-view": "0.1.5",
-    "expo": "~36.0.0",
+    "@react-navigation/bottom-tabs": "^5.2.1",
+    "@react-navigation/compat": "^5.0.0",
+    "@react-navigation/drawer": "5.0.0",
+    "@react-navigation/native": "^5.0.0",
+    "@react-navigation/stack": "5.0.0",
+    "expo": "^36.0.0",
+    "expo-asset": "~8.0.0",
+    "expo-camera": "~8.0.0",
     "expo-font": "~8.0.0",
-    "native-base": "^2.13.8",
-    "react": "~16.9.0",
-    "react-dom": "~16.9.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.0.tar.gz",
-    "react-native-exit-app": "^1.1.0",
+    "expo-image-picker": "~8.0.1",
+    "expo-permissions": "~8.0.0",
+    "firebase": "^7.11.0",
+    "galio-framework": "^0.6.3",
+    "prop-types": "^15.7.2",
+    "react": "16.9.0",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.1.tar.gz",
+    "react-native-dropdown": "0.0.6",
     "react-native-gesture-handler": "~1.5.0",
+    "react-native-image-picker": "^2.3.1",
     "react-native-material-dropdown": "^0.11.1",
+    "react-native-modal-dropdown": "^0.7.0",
     "react-native-reanimated": "~1.4.0",
     "react-native-safe-area-context": "0.6.0",
     "react-native-screens": "2.0.0-alpha.12",
-    "react-native-web": "~0.11.7",
-    "react-navigation": "^4.2.2",
-    "react-navigation-drawer": "^2.4.2",
-    "react-navigation-stack": "^2.2.2",
-    "expo-image-picker": "~8.0.1",
-    "expo-permissions": "~8.0.0",
-    "expo-constants": "~8.0.0"
+    "react-native-shadow": "^1.2.2",
+    "react-native-shadow-cards": "^1.0.2",
+    "react-native-svg": "^9.13.3",
+    "react-native-tab-view": "^2.13.0"
   },
   "devDependencies": {
-    "babel-preset-expo": "~8.0.0",
-    "@babel/core": "^7.0.0"
+    "babel-preset-expo": "^7.0.0"
   },
-  "private": true
+  "keywords": [
+    "argon react native",
+    "argon design system",
+    "argon app react native",
+    "argon iOS",
+    "react native iOS",
+    "creative tim",
+    "argon Android",
+    "react native ui kit",
+    "react native expo",
+    "freebie",
+    "react native argon design",
+    "react native galio",
+    "galio argon free",
+    "galio react native free app",
+    "argon expo react native",
+    "react native ui template"
+  ],
+  "author": "Creative Tim <hello@creative-tim.com> (https://www.creative-tim.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/creativetimofficial/argon-react-native/issues"
+  },
+  "homepage": "https://demos.creative-tim.com/argon-react-native"
 }
