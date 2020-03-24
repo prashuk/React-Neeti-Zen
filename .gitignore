@@ -104,3 +104,4 @@ dist
 .tern-port
 
 ApiKeys.js
+.DS_Store
