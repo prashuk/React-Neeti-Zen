@@ -139,8 +139,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff2ff"
   },
   button: {
-    width: width - theme.SIZES.BASE * 4,
-    height: theme.SIZES.BASE * 3,
+    width: width - 40,
+    height: 50,
     shadowRadius: 10,
     shadowOpacity: 0,
     marginBottom: 10

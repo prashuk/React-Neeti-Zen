@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Animated, Dimensions } from "react-native";
+import { Dimensions } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -11,11 +11,14 @@ import Home from "../screens/Home";
 import Suggest from "../screens/Suggest";
 import Expatriates from "../screens/Expatriates";
 import Medical from "../screens/Medical";
+import ServeOther from "../screens/ServeOther";
 import Event from "../screens/Event";
 import AvailableDates from "../screens/AvailableDates";
+import Parliament from "../screens/Parliament";
 import Mplad from "../screens/Mplad";
-import Update from "../screens/Update";
 import Jantv from "../screens/Jantv";
+import Loksabha from "../screens/Loksabha";
+import Public from "../screens/Public";
 
 import Aboutus from "../screens/Aboutus";
 import Profile from "../screens/Profile";
@@ -24,13 +27,11 @@ import Help from "../screens/Help";
 import Privacy from "../screens/Privacy";
 
 import CustomDrawerContent from "./Menu";
-import { Icon, Header } from "../components";
-import { argonTheme, tabs } from "../constants";
+import { Header } from "../components";
 
 const { width } = Dimensions.get("screen");
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
-const Tab = createBottomTabNavigator();
 
 function HomeStack(props) {
   return (
@@ -60,7 +61,7 @@ function HomeStack(props) {
             <Header
               title="Suggest"
               back
-              bgColor='#4f3961'
+              bgColor="#4f3961"
               titleColor="white"
               iconColor="white"
               navigation={navigation}
@@ -78,7 +79,7 @@ function HomeStack(props) {
             <Header
               title="Expatriates"
               back
-              bgColor='#4f3961'
+              bgColor="#4f3961"
               titleColor="white"
               iconColor="white"
               navigation={navigation}
@@ -96,7 +97,25 @@ function HomeStack(props) {
             <Header
               title="Medical Emergency"
               back
-              bgColor='#4f3961'
+              bgColor="#4f3961"
+              titleColor="white"
+              iconColor="white"
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+          headerTransparent: false
+        }}
+      />
+      <Stack.Screen
+        name="ServeOther"
+        component={ServeOther}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="Other"
+              back
+              bgColor="#4f3961"
               titleColor="white"
               iconColor="white"
               navigation={navigation}
@@ -114,7 +133,7 @@ function HomeStack(props) {
             <Header
               title="Event"
               back
-              bgColor='#4f3961'
+              bgColor="#4f3961"
               titleColor="white"
               iconColor="white"
               navigation={navigation}
@@ -132,7 +151,25 @@ function HomeStack(props) {
             <Header
               title="Available Dates"
               back
-              bgColor='#4f3961'
+              bgColor="#4f3961"
+              titleColor="white"
+              iconColor="white"
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+          headerTransparent: false
+        }}
+      />
+      <Stack.Screen
+        name="Parliament"
+        component={Parliament}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="Raise In Parliament"
+              back
+              bgColor="#4f3961"
               titleColor="white"
               iconColor="white"
               navigation={navigation}
@@ -150,25 +187,7 @@ function HomeStack(props) {
             <Header
               title="MPLAD"
               back
-              bgColor='#4f3961'
-              titleColor="white"
-              iconColor="white"
-              navigation={navigation}
-              scene={scene}
-            />
-          ),
-          headerTransparent: false
-        }}
-      />
-      <Stack.Screen
-        name="Update"
-        component={Update}
-        options={{
-          header: ({ navigation, scene }) => (
-            <Header
-              title="Update"
-              back
-              bgColor='#4f3961'
+              bgColor="#4f3961"
               titleColor="white"
               iconColor="white"
               navigation={navigation}
@@ -186,7 +205,43 @@ function HomeStack(props) {
             <Header
               title="Jan TV"
               back
-              bgColor='#4f3961'
+              bgColor="#4f3961"
+              titleColor="white"
+              iconColor="white"
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+          headerTransparent: false
+        }}
+      />
+      <Stack.Screen
+        name="Loksabha"
+        component={Loksabha}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="Lok Sabha Speeches"
+              back
+              bgColor="#4f3961"
+              titleColor="white"
+              iconColor="white"
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+          headerTransparent: false
+        }}
+      />
+      <Stack.Screen
+        name="Public"
+        component={Public}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="Public Speeches"
+              back
+              bgColor="#4f3961"
               titleColor="white"
               iconColor="white"
               navigation={navigation}
@@ -212,7 +267,7 @@ function AboutusStack(props) {
               title="About Us"
               navigation={navigation}
               scene={scene}
-              bgColor='#4f3961'
+              bgColor="#4f3961"
               titleColor="white"
               iconColor="white"
             />
@@ -236,7 +291,7 @@ function ProfileStack(props) {
               title="Profile"
               navigation={navigation}
               scene={scene}
-              bgColor='#4f3961'
+              bgColor="#4f3961"
               titleColor="white"
               iconColor="white"
             />
@@ -260,7 +315,7 @@ function TermsStack(props) {
               title="Terms & Conditions"
               navigation={navigation}
               scene={scene}
-              bgColor='#4f3961'
+              bgColor="#4f3961"
               titleColor="white"
               iconColor="white"
             />
@@ -284,7 +339,7 @@ function HelpStack(props) {
               title="Help & Support"
               navigation={navigation}
               scene={scene}
-              bgColor='#4f3961'
+              bgColor="#4f3961"
               titleColor="white"
               iconColor="white"
             />
@@ -308,7 +363,7 @@ function PrivacyStack(props) {
               title="Privacy Policy"
               navigation={navigation}
               scene={scene}
-              bgColor='#4f3961'
+              bgColor="#4f3961"
               titleColor="white"
               iconColor="white"
             />

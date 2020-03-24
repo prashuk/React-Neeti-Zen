@@ -4,7 +4,7 @@ import { Block, Button, Text, Input } from "galio-framework";
 
 const { width } = Dimensions.get("screen");
 
-class Suggest extends React.Component {
+class ServeOther extends React.Component {
   render() {
     return (
       <ScrollView
@@ -60,4 +60,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Suggest;
+export default ServeOther;

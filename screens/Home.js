@@ -4,209 +4,339 @@ import {
   Dimensions,
   ScrollView,
   StatusBar,
-  View,
-  TouchableOpacity
+  View
 } from "react-native";
 import { Block, Button, Icon, Text } from "galio-framework";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
-const { width, height } = Dimensions.get("screen");
+import Modal, { ModalContent } from "react-native-modals";
 import { Ionicons } from "@expo/vector-icons";
 import * as firebase from "firebase";
 
-function HomeScreen({ navigation }) {
-  return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={{ paddingBottom: 0 }}
-    >
-      <StatusBar hidden={false}></StatusBar>
-      <Block>
-        <Block flex>
-          <Block>
-            <Text
-              color="#4f3961"
-              size={25}
-              style={{ marginTop: 10, marginLeft: 15 }}
-            >
-              Choose Category
-            </Text>
-            <Text color="#4f3961" size={18} style={{ marginLeft: 15 }}>
-              Choose category to proceed
-            </Text>
-          </Block>
-          <Block row space="evenly">
-            <Block flex left>
-              <Button
-                color="rgba(176, 108, 168, 1)"
-                style={styles.optionsButton}
-                onPress={() => navigation.navigate("Suggest")}
+const { width, height } = Dimensions.get("screen");
+
+class HomeScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      visibleServe: false,
+      visibleJanTV: false
+    };
+  }
+
+  render() {
+    return (
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 0 }}
+      >
+        <StatusBar hidden={false}></StatusBar>
+        <Block>
+          <Block flex>
+            <Block>
+              <Text
+                color="#4f3961"
+                size={25}
+                style={{ marginTop: 10, marginLeft: 15 }}
               >
-                <Block row>
-                  <Icon
-                    name="ios-help"
-                    family="Ionicon"
-                    size={70}
-                    color={"white"}
-                    style={{ marginRight: 5 }}
-                  />
-                  <Text style={styles.socialTextButtons}>SUGGEST</Text>
-                </Block>
-              </Button>
+                Choose Category
+              </Text>
+              <Text color="#4f3961" size={18} style={{ marginLeft: 15 }}>
+                Choose category to proceed
+              </Text>
             </Block>
-            <Block flex right>
-              <Button
-                color="rgba(49, 176, 170, 1)"
-                style={styles.optionsButton}
-                onPress={() => navigation.navigate("Expatriates")}
+            <Block flex>
+              <Block center>
+                <Button
+                  color="rgba(176, 108, 168, 1)"
+                  style={styles.button}
+                  onPress={() => this.props.navigation.navigate("Suggest")}
+                >
+                  <Block row>
+                    <Icon
+                      name="ios-help"
+                      family="Ionicon"
+                      size={50}
+                      color={"white"}
+                      style={{ marginRight: 5 }}
+                    />
+                    <Text style={styles.socialTextButtons}>
+                      Bring To Attention
+                    </Text>
+                  </Block>
+                </Button>
+              </Block>
+              <Block center>
+                <Button
+                  color="rgba(49, 176, 170, 1)"
+                  style={styles.button}
+                  onPress={() => {
+                    this.setState({ visibleServe: true, visibleJanTV: false });
+                  }}
+                >
+                  <Block row>
+                    <Icon
+                      name="ios-send"
+                      family="Ionicon"
+                      size={30}
+                      color={"white"}
+                      style={{ marginRight: 5 }}
+                    />
+                    <Text style={styles.socialTextButtons}>
+                      How Can I Serve
+                    </Text>
+                  </Block>
+                </Button>
+              </Block>
+              <Modal
+                visible={this.state.visibleServe}
+                onTouchOutside={() => {
+                  this.setState({ visibleServe: false, visibleJanTV: false });
+                }}
               >
-                <Block row>
-                  <Icon
-                    name="md-airplane"
-                    family="Ionicon"
-                    size={40}
-                    color={"white"}
-                    style={{ marginRight: 5 }}
-                  />
-                  <Text style={styles.socialTextButtons}>EXPATRIATES</Text>
-                </Block>
-              </Button>
+                <ModalContent>
+                  <Button
+                    color="rgba(49, 176, 170, 1)"
+                    style={styles.buttonPopup}
+                    onPress={() => {
+                      this.setState({
+                        visibleServe: false,
+                        visibleJanTV: false
+                      });
+                      this.props.navigation.navigate("Medical");
+                    }}
+                  >
+                    <Block row>
+                      <Icon
+                        name="ios-medkit"
+                        family="Ionicon"
+                        size={30}
+                        color={"white"}
+                        style={{ marginRight: 5 }}
+                      />
+                      <Text style={styles.socialTextButtons}>Medical</Text>
+                    </Block>
+                  </Button>
+                  <Button
+                    color="rgba(49, 176, 170, 1)"
+                    style={styles.buttonPopup}
+                    onPress={() => {
+                      this.setState({
+                        visibleServe: false,
+                        visibleJanTV: false
+                      });
+                      this.props.navigation.navigate("Expatriates");
+                    }}
+                  >
+                    <Block row>
+                      <Icon
+                        name="md-airplane"
+                        family="Ionicon"
+                        size={30}
+                        color={"white"}
+                        style={{ marginRight: 5 }}
+                      />
+                      <Text style={styles.socialTextButtons}>Expatriates</Text>
+                    </Block>
+                  </Button>
+                  <Button
+                    color="rgba(49, 176, 170, 1)"
+                    style={styles.buttonPopup}
+                    onPress={() => {
+                      this.setState({
+                        visibleServe: false,
+                        visibleJanTV: false
+                      });
+                      this.props.navigation.navigate("ServeOther");
+                    }}
+                  >
+                    <Block row>
+                      <Icon
+                        name="md-clipboard"
+                        family="Ionicon"
+                        size={30}
+                        color={"white"}
+                        style={{ marginRight: 5 }}
+                      />
+                      <Text style={styles.socialTextButtons}>Others</Text>
+                    </Block>
+                  </Button>
+                </ModalContent>
+              </Modal>
             </Block>
-          </Block>
-          <Block row space="evenly">
-            <Block flex left>
+            <Block flex>
+              <Block center>
+                <Button
+                  center
+                  color="rgba(255, 177, 73, 1)"
+                  style={styles.button}
+                  onPress={() => this.props.navigation.navigate("Event")}
+                >
+                  <Block row>
+                    <Icon
+                      name="md-home"
+                      family="Ionicon"
+                      size={30}
+                      color={"white"}
+                      style={{ marginRight: 5 }}
+                    />
+                    <Text style={styles.socialTextButtons}>INVITE</Text>
+                  </Block>
+                </Button>
+              </Block>
+            </Block>
+            <Block>
+              <Text
+                color="#4f3961"
+                size={25}
+                style={{ marginTop: 15, marginLeft: 15 }}
+              >
+                More
+              </Text>
+              <Text color="#4f3961" size={18} style={{ marginLeft: 15 }}>
+                Get onboard and receive insights
+              </Text>
+            </Block>
+            <Block center>
               <Button
-                center
                 color="rgba(139, 204, 100, 1)"
-                style={styles.optionsButton}
-                onPress={() => navigation.navigate("Medical")}
+                style={styles.button}
+                onPress={() => this.props.navigation.navigate("Parliament")}
               >
                 <Block row>
                   <Icon
-                    name="ios-medkit"
+                    name="ios-hand"
                     family="Ionicon"
-                    size={40}
+                    size={25}
                     color={"white"}
                     style={{ marginRight: 5 }}
                   />
-                  <Text style={styles.socialTextButtons}>MEDICAL</Text>
+                  <Text style={styles.socialTextButtons}>
+                    Raise in Parliament
+                  </Text>
                 </Block>
               </Button>
             </Block>
-            <Block flex right>
+            <Block center>
               <Button
-                center
-                color="rgba(255, 177, 73, 1)"
-                style={styles.optionsButton}
-                onPress={() => navigation.navigate("Event")}
+                color="rgba(7, 182, 220, 1)"
+                style={styles.button}
+                onPress={() => this.props.navigation.navigate("Mplad")}
               >
                 <Block row>
                   <Icon
-                    name="md-home"
+                    name="ios-barcode"
                     family="Ionicon"
-                    size={40}
+                    size={25}
                     color={"white"}
                     style={{ marginRight: 5 }}
                   />
-                  <Text style={styles.socialTextButtons}>EVENT</Text>
+                  <Text style={styles.socialTextButtons}>MPLAD</Text>
                 </Block>
               </Button>
             </Block>
-          </Block>
-          <Block>
-            <Text
-              color="#4f3961"
-              size={25}
-              style={{ marginTop: 15, marginLeft: 15 }}
+            <Block center>
+              <Button
+                style={styles.button}
+                color="rgba(237, 116, 163, 1)"
+                // onPress={() => navigation.navigate("Jantv")}
+                onPress={() => {
+                  this.setState({ visibleServe: false, visibleJanTV: true });
+                }}
+              >
+                <Block row>
+                  <Icon
+                    name="md-tv"
+                    family="Ionicon"
+                    size={25}
+                    color={"white"}
+                    style={{ marginRight: 5 }}
+                  />
+                  <Text style={styles.socialTextButtons}>JAN TV</Text>
+                </Block>
+              </Button>
+            </Block>
+            <Modal
+              visible={this.state.visibleJanTV}
+              onTouchOutside={() => {
+                this.setState({ visibleServe: false, visibleJanTV: false });
+              }}
             >
-              More
-            </Text>
-            <Text color="#4f3961" size={18} style={{ marginLeft: 15 }}>
-              Get onboard and receive insights
-            </Text>
-          </Block>
-          <Block center>
-            <Button
-              color="rgba(7, 182, 220, 1)"
-              style={styles.button}
-              onPress={() => navigation.navigate("Mplad")}
-            >
-              <Block row>
-                <Icon
-                  name="ios-barcode"
-                  family="Ionicon"
-                  size={25}
-                  color={"white"}
-                  style={{ marginRight: 5 }}
-                />
-                <Text style={styles.socialTextButtons}>MPLAD</Text>
-              </Block>
-            </Button>
-          </Block>
-          <Block center>
-            <Button
-              color="rgba(255, 59, 38, 1)"
-              style={styles.button}
-              onPress={() => navigation.navigate("Update")}
-            >
-              <Block row>
-                <Icon
-                  name="ios-mail"
-                  family="Ionicon"
-                  size={25}
-                  color={"white"}
-                  style={{ marginRight: 5 }}
-                />
-                <Text style={styles.socialTextButtons}>UPDATE</Text>
-              </Block>
-            </Button>
-          </Block>
-          <Block center>
-            <Button
-              style={styles.button}
-              color="rgba(237, 116, 163, 1)"
-              onPress={() => navigation.navigate("Jantv")}
-            >
-              <Block row>
-                <Icon
-                  name="md-tv"
-                  family="Ionicon"
-                  size={25}
-                  color={"white"}
-                  style={{ marginRight: 5 }}
-                />
-                <Text style={styles.socialTextButtons}>JAN TV</Text>
-              </Block>
-            </Button>
+              <ModalContent>
+                <Button
+                  color="rgba(237, 116, 163, 1)"
+                  style={styles.buttonPopup}
+                  onPress={() => {
+                    this.setState({ visibleServe: false, visibleJanTV: false });
+                    this.props.navigation.navigate("Loksabha");
+                  }}
+                >
+                  <Block row>
+                    <Icon
+                      name="md-tv"
+                      family="Ionicon"
+                      size={30}
+                      color={"white"}
+                      style={{ marginRight: 5 }}
+                    />
+                    <Text style={styles.socialTextButtons}>Lok Sabha</Text>
+                  </Block>
+                </Button>
+                <Button
+                  color="rgba(237, 116, 163, 1)"
+                  style={styles.buttonPopup}
+                  onPress={() => {
+                    this.setState({ visibleServe: false, visibleJanTV: false });
+                    this.props.navigation.navigate("Public");
+                  }}
+                >
+                  <Block row>
+                    <Icon
+                      name="md-globe"
+                      family="Ionicon"
+                      size={30}
+                      color={"white"}
+                      style={{ marginRight: 5 }}
+                    />
+                    <Text style={styles.socialTextButtons}>Public</Text>
+                  </Block>
+                </Button>
+              </ModalContent>
+            </Modal>
           </Block>
         </Block>
-      </Block>
-    </ScrollView>
-  );
+      </ScrollView>
+    );
+  }
 }
 
-function ActiveScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Active Tickets!</Text>
-    </View>
-  );
+class ActiveScreen extends React.Component {
+  render() {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>Active Tickets!</Text>
+      </View>
+    );
+  }
 }
 
-function InProgressScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>InProgress Tickets!</Text>
-    </View>
-  );
+class InProgressScreen extends React.Component {
+  render() {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>InProgress Tickets!</Text>
+      </View>
+    );
+  }
 }
 
-function CompletedScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>kjhkjhkj</Text>
-    </View>
-  );
+class CompletedScreen extends React.Component {
+  render() {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>kjhkjhkj</Text>
+      </View>
+    );
+  }
 }
 
 const Tab = createBottomTabNavigator();
@@ -288,17 +418,7 @@ const styles = StyleSheet.create({
     height: 50,
     marginRight: 70,
     marginLeft: 70,
-    marginTop: 20,
-    borderRadius: 10,
-    borderWidth: 1.5,
-    borderColor: "#fff"
-  },
-  optionsButton: {
-    width: 150,
-    height: 100,
-    marginRight: 35,
-    marginLeft: 35,
-    marginTop: 20,
+    marginTop: 10,
     borderRadius: 10,
     borderWidth: 1.5,
     borderColor: "#fff"
@@ -307,6 +427,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "white",
     textAlignVertical: "center"
+  },
+  buttonPopup: {
+    height: 50,
+    width: 200,
+    marginRight: 10,
+    marginLeft: 10,
+    marginTop: 10,
+    borderRadius: 10,
+    borderWidth: 1.5,
+    borderColor: "#fff"
   },
   heading: {
     fontSize: 20

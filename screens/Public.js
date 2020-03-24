@@ -4,7 +4,7 @@ import { Block, Button, Text, Input } from "galio-framework";
 
 const { width } = Dimensions.get("screen");
 
-class Suggest extends React.Component {
+class Public extends React.Component {
   render() {
     return (
       <ScrollView
@@ -13,28 +13,7 @@ class Suggest extends React.Component {
       >
         <Block flex style={styles.container}>
           <Block style={styles.title}>
-            <Block>
-              <Text color="#4f3961" size={25}>
-                Fill Notes
-              </Text>
-            </Block>
-            <Block>
-              <Input
-                multiline
-                style={{ height: 150 }}
-                placeholder="Notes (Describe invitation in 100 words)"
-              ></Input>
-            </Block>
-          </Block>
-          <Block center style={{ paddingBottom: 10 }}>
-            <Button
-              style={styles.button}
-              color="#4f3961"
-              onPress={() => navigation.navigate("App")}
-              textStyle={{ color: "white" }}
-            >
-              SUBMIT
-            </Button>
+            <Text>List</Text>
           </Block>
         </Block>
       </ScrollView>
@@ -60,4 +39,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Suggest;
+export default Public;
