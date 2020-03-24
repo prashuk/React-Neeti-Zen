@@ -8,11 +8,10 @@ import {
   Alert
 } from "react-native";
 import { Block, Button, Text, theme, Input, Icon } from "galio-framework";
-
-const { width } = Dimensions.get("screen");
-
 import ApiKeys from "../constants/ApiKeys";
 import * as firebase from "firebase";
+
+const { width } = Dimensions.get("screen");
 
 class Onboarding extends React.Component {
   constructor(props) {
@@ -48,25 +47,41 @@ class Onboarding extends React.Component {
           .then(function(user) {
             global.User = user;
             navigation.navigate("App");
+          })
+          .catch(function(error) {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.log(errorCode);
+            console.log(errorMessage);
           });
       } catch (error) {
-        console.log(error.toString());
+        this.showAlert();
       }
     } else if (this.state.loginBtnText === "SIGN UP") {
-      firebase
-        .auth()
-        .createUserWithEmailAndPassword(this.state.email, this.state.password)
-        .then(userInfo => {
-          console.log(userInfo);
-          userInfo.user
-            .updateProfile({ displayName: displayName.trim() })
-            .then(() => {});
-        })
-        .catch(function(error) {
-          var errorCode = error.code;
-          var errorMessage = error.message;
-        });
+      try {
+        firebase
+          .auth()
+          .createUserWithEmailAndPassword(this.state.email, this.state.password)
+          .then(userInfo => {
+            console.log(userInfo);
+            userInfo.user
+              .updateProfile({ displayName: displayName.trim() })
+              .then(() => {});
+          })
+          .catch(function(error) {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.log(errorCode);
+            console.log(errorMessage);
+          });
+      } catch (error) {
+        this.showAlert();
+      }
     } else {
+      try {
+      } catch (error) {
+        this.showAlert();
+      }
     }
   }
 
