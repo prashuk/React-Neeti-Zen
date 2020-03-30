@@ -1,46 +1,173 @@
 import React from "react";
-import { StyleSheet, Dimensions, ScrollView } from "react-native";
-import { Block, Button, Text, theme, Input, Icon } from "galio-framework";
+import { StyleSheet, Dimensions, ScrollView, Alert } from "react-native";
+import { Block, Button, Text, theme, Input } from "galio-framework";
 import { Dropdown } from "react-native-material-dropdown";
 
-const { height, width } = Dimensions.get("screen");
+import RBSheet from "react-native-raw-bottom-sheet";
+import Sheet from "../components/Sheet";
+
+import * as firebase from "firebase";
+import "firebase/storage";
+
+const { width } = Dimensions.get("screen");
+
+const data = [
+  {
+    value: "Birthday"
+  },
+  {
+    value: "Marriage"
+  },
+  {
+    value: "Conference"
+  },
+  {
+    value: "Book Festival"
+  },
+  {
+    value: "Religious Festivities"
+  },
+  {
+    value: "Wedding Ceremony"
+  },
+  {
+    value: "Film Festival"
+  },
+  {
+    value: "Film Preview"
+  },
+  {
+    value: "Inauguration"
+  }
+];
 
 class Event extends React.Component {
-  render() {
-    const { navigation } = this.props;
-    let data = [
-      {
-        value: "Birthday"
-      },
-      {
-        value: "Marriage"
-      },
-      {
-        value: "Conference"
-      },
-      {
-        value: "Book Festival"
-      },
-      {
-        value: "Religious Festivities"
-      },
-      {
-        value: "Wedding Ceremony"
-      },
-      {
-        value: "Film Festival"
-      },
-      {
-        value: "Film Preview"
-      },
-      {
-        value: "Inauguration"
-      }
-    ];
+  constructor(props) {
+    super(props);
+    this.state = {
+      patientName: "",
+      address: "",
+      phone: "",
+      email: "",
+      occasion: "",
+      availability: "",
+      imgInvitation: "",
+      notes: "",
+      btnId: ""
+    };
+  }
 
+  uploadBtnPressed(event, buttonId) {
+    this.RBSheet.open();
+    this.setState({ btnId: buttonId });
+  }
+
+  handleImage = img => {
+    if (this.state.btnId === "invitation") {
+      this.setState({ imgInvitation: img });
+    }
+    this.RBSheet.close();
+  };
+
+  uploadImage = async (uri, name, ticket) => {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+
+    const imageRef = firebase
+      .storage()
+      .ref()
+      .child("images/" + ticket.toString() + "/" + name + ".jpg");
+    await imageRef.put(blob, { contentType: "image/jpg" }).catch(error => {
+      throw error;
+    });
+    const url = await imageRef.getDownloadURL().catch(error => {
+      throw error;
+    });
+    return url;
+  };
+
+  submitBtnPressed = async () => {
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, "0");
+    var mm = String(today.getMonth() + 1).padStart(2, "0");
+    var yyyy = today.getFullYear();
+    today = mm + "/" + dd + "/" + yyyy;
+
+    let ticketNumberDatabase;
+
+    firebase
+      .database()
+      .ref("ticket/ticket/")
+      .on("value", snapshot => {
+        ticketNumberDatabase = parseInt(snapshot.val());
+        ticketNumberDatabase = ticketNumberDatabase + 1;
+      });
+
+    const invitationImgURL = await this.uploadImage(
+      this.state.imgInvitation,
+      "aadhar_" +
+        global.User.user.email +
+        "_event_" +
+        ticketNumberDatabase.toString() +
+        ".jpg",
+      ticketNumberDatabase
+    );
+
+    var postData = {
+      date: today,
+      patientName: this.state.patientName,
+      address: this.state.address,
+      phone: this.state.phone,
+      email: this.state.email,
+      occasion: this.state.occasion,
+      availability: this.state.availability,
+      imgInvitation: invitationImgURL,
+      notes: this.state.notes,
+      type: "event",
+      status: "open"
+    };
+
+    var updates = {};
+    updates[
+      "users/" +
+        global.User.user.uid +
+        "/complaints/event/" +
+        ticketNumberDatabase
+    ] = postData;
+    updates["ticket/ticket/"] = ticketNumberDatabase;
+
+    firebase
+      .database()
+      .ref()
+      .update(updates)
+      .then(
+        Alert.alert(
+          "Complain Submitted: Ticket Number " +
+            (ticketNumberDatabase - 1).toString(),
+          "",
+          [
+            {
+              text: "OK",
+              onPress: () => {
+                this.props.navigation.goBack();
+              }
+            }
+          ],
+          { cancelable: false }
+        )
+      )
+      .catch(function(error) {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.log(errorCode);
+        console.log(errorMessage);
+      });
+  };
+
+  render() {
     return (
       <ScrollView
-        showsVerticalScrollIndicator={false}
+        showsVerticalScrollIndicator={true}
         contentContainerStyle={{ paddingBottom: 0 }}
       >
         <Block flex style={styles.container}>
@@ -51,16 +178,36 @@ class Event extends React.Component {
               </Text>
             </Block>
             <Block>
-              <Input placeholder="Name of Patient"></Input>
+              <Input
+                placeholder="Name of Patient"
+                onChangeText={text => {
+                  this.setState({ patientName: text });
+                }}
+              ></Input>
             </Block>
             <Block>
-              <Input placeholder="Address"></Input>
+              <Input
+                placeholder="Address"
+                onChangeText={text => {
+                  this.setState({ address: text });
+                }}
+              ></Input>
             </Block>
             <Block>
-              <Input placeholder="Phone Number"></Input>
+              <Input
+                placeholder="Phone Number"
+                onChangeText={text => {
+                  this.setState({ phone: text });
+                }}
+              ></Input>
             </Block>
             <Block>
-              <Input placeholder="Email"></Input>
+              <Input
+                placeholder="Email"
+                onChangeText={text => {
+                  this.setState({ email: text });
+                }}
+              ></Input>
             </Block>
             <Block
               style={{
@@ -69,10 +216,16 @@ class Event extends React.Component {
                 borderRadius: 10
               }}
             >
-              <Dropdown label="Occasion" data={data} />
+              <Dropdown
+                label="Occasion"
+                data={data}
+                onChangeText={text => {
+                  this.setState({ occasion: text });
+                }}
+              />
             </Block>
             <Button
-              style={styles.button}
+              style={styles.sideButton}
               color="#4f3961"
               textStyle={{ color: "white" }}
               onPress={() => navigation.navigate("Available Dates")}
@@ -80,27 +233,51 @@ class Event extends React.Component {
               Check Availability & Invitation Request
             </Button>
             <Button
-              style={styles.button}
+              style={styles.sideButton}
               color="#4f3961"
+              onPress={event => this.uploadBtnPressed(event, "invitation")}
               textStyle={{ color: "white" }}
             >
               Upload Invitation Card
             </Button>
             <Block>
-              <Input placeholder="Notes (Describe invitation in 100 words)"></Input>
+              <Input
+                placeholder="Notes (Describe invitation in 100 words)"
+                onChangeText={text => {
+                  this.setState({ notes: text });
+                }}
+              ></Input>
             </Block>
           </Block>
           <Block center style={{ paddingBottom: 10 }}>
             <Button
               style={styles.button}
               color="#4f3961"
-              onPress={() => navigation.navigate("App")}
+              onPress={this.submitBtnPressed}
               textStyle={{ color: "white" }}
             >
               SUBMIT
             </Button>
           </Block>
         </Block>
+        <RBSheet
+          ref={ref => {
+            this.RBSheet = ref;
+          }}
+          height={150}
+          duration={250}
+          customStyles={{
+            container: {
+              justifyContent: "center",
+              alignItems: "center"
+            }
+          }}
+        >
+          <Sheet
+            imageSelect={this.handleImage}
+            navigation={this.props.navigation}
+          />
+        </RBSheet>
       </ScrollView>
     );
   }
@@ -111,31 +288,26 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff2ff"
   },
   button: {
-    width: width - theme.SIZES.BASE * 4,
-    height: theme.SIZES.BASE * 3,
+    width: width - 40,
+    height: 50,
     shadowRadius: 10,
-    shadowOpacity: 0,
-    marginBottom: 10
-  },
-  drop: {
-    width: width - theme.SIZES.BASE * 4,
-    height: theme.SIZES.BASE * 3,
     marginBottom: 10
   },
   sideButton: {
-    backgroundColor: "red",
-    width: 40,
-    height: 40,
-    marginTop: 10,
-    marginLeft: 10
+    width: width - 60,
+    height: 50,
+    shadowRadius: 10,
+    marginBottom: 10
   },
   title: {
     marginTop: 20,
     marginRight: 30,
     marginLeft: 30
   },
-  subTitle: {
-    marginTop: 20
+  drop: {
+    width: width - theme.SIZES.BASE * 4,
+    height: theme.SIZES.BASE * 3,
+    marginBottom: 10
   }
 });
 
