@@ -75,7 +75,6 @@ class Expatriates extends React.Component {
   }
 
   handleImage = img => {
-    console;
     if (this.state.btnId === "passport") {
       this.setState({ imgPassport: img });
     }
@@ -169,7 +168,7 @@ class Expatriates extends React.Component {
       this.state.imgPassport,
       "passport_" +
         global.User.user.email +
-        "_" +
+        "_expatriates_" +
         ticketNumberDatabase.toString() +
         ".jpg",
       ticketNumberDatabase
@@ -179,7 +178,7 @@ class Expatriates extends React.Component {
       this.state.imgVisa,
       "visa_" +
         global.User.user.email +
-        "_" +
+        "_expatriates_" +
         ticketNumberDatabase.toString() +
         ".jpg",
       ticketNumberDatabase
@@ -189,7 +188,7 @@ class Expatriates extends React.Component {
       this.state.imgAadhar,
       "aadhar_" +
         global.User.user.email +
-        "_" +
+        "_expatriates_" +
         ticketNumberDatabase.toString() +
         ".jpg",
       ticketNumberDatabase
@@ -230,7 +229,8 @@ class Expatriates extends React.Component {
       .update(updates)
       .then(
         Alert.alert(
-          "Complain Submitted: Ticket Number " + ticketNumberDatabase-1,
+          "Complain Submitted: Ticket Number " +
+            (ticketNumberDatabase - 1).toString(),
           "",
           [
             {
