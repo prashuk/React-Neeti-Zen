@@ -28,6 +28,7 @@ import Privacy from "../screens/Privacy";
 
 import CustomDrawerContent from "./Menu";
 import { Header } from "../components";
+import { Camera } from "expo-camera";
 
 const { width } = Dimensions.get("screen");
 const Stack = createStackNavigator();
@@ -78,6 +79,24 @@ function HomeStack(props) {
           header: ({ navigation, scene }) => (
             <Header
               title="Expatriates"
+              back
+              bgColor="#4f3961"
+              titleColor="white"
+              iconColor="white"
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+          headerTransparent: false
+        }}
+      />
+      <Stack.Screen
+        name="Camera"
+        component={Camera}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="Camera"
               back
               bgColor="#4f3961"
               titleColor="white"

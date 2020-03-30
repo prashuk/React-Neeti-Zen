@@ -2,8 +2,9 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 4168,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null
+  "packagerPid": 2178,
+  "expoServerNgrokUrl": "https://cg-eng.anonymous.neeti-zen.exp.direct",
+  "packagerNgrokUrl": "https://packager.cg-eng.anonymous.neeti-zen.exp.direct",
+  "ngrokPid": 2188,
+  "webpackServerPort": null
 }

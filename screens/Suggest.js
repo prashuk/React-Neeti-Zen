@@ -1,10 +1,131 @@
 import React from "react";
-import { StyleSheet, Dimensions, ScrollView } from "react-native";
+import { StyleSheet, Dimensions, ScrollView, Alert } from "react-native";
 import { Block, Button, Text, Input } from "galio-framework";
+import * as firebase from "firebase";
 
-const { width } = Dimensions.get("screen");
+const { height, width } = Dimensions.get("screen");
 
 class Suggest extends React.Component {
+  state = {
+    complain: ""
+  };
+
+  constructor(props) {
+    super(props);
+  }
+
+  submitBtnPressed = () => {
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, "0");
+    var mm = String(today.getMonth() + 1).padStart(2, "0");
+    var yyyy = today.getFullYear();
+    today = mm + "/" + dd + "/" + yyyy;
+
+    var postData = {
+      date: today,
+      complain: this.state.complain,
+      type: "suggest",
+      status: "open"
+    };
+
+    let ticketNumberDatabase;
+
+    firebase
+      .database()
+      .ref("ticket/ticket/")
+      .on("value", snapshot => {
+        ticketNumberDatabase = parseInt(snapshot.val());
+        ticketNumberDatabase = ticketNumberDatabase + 1;
+      });
+
+    var updates = {};
+    updates[
+      "users/" +
+        global.User.user.uid +
+        "/complaints/suggest/" +
+        ticketNumberDatabase
+    ] = postData;
+    updates["ticket/ticket/"] = ticketNumberDatabase;
+
+    try {
+      firebase
+        .database()
+        .ref()
+        .update(updates)
+        .then(
+          Alert.alert(
+            "Complain Submitted",
+            "",
+            [
+              {
+                text: "OK",
+                onPress: () => {
+                  this.props.navigation.goBack();
+                }
+              }
+            ],
+            { cancelable: false }
+          )
+        )
+        .catch(function(error) {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          console.log(errorCode);
+          console.log(errorMessage);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+
+    //       try {
+    //         firebase
+    //           .database()
+    //           .ref(
+    //             "users/" +
+    //               global.User.user.uid +
+    //               "/complaints/suggest/" +
+    //               ticketNumberDatabase
+    //           )
+    //           .set({
+    //             date: today,
+    //             complain: this.state.complain
+    //           })
+    //           .then(() => {
+    //             console.log("Inserted!");
+
+    //             Alert.alert(
+    //               "Complain Submitted",
+    //               "",
+    //               [
+    //                 {
+    //                   text: "OK",
+    //                   onPress: () => {
+    //                     var updates = {};
+    //                     updates["ticket/ticket/"] = ticketNumberDatabase;
+    //                     firebase
+    //                       .database()
+    //                       .ref()
+    //                       .update(updates);
+    //                     this.props.navigation.goBack();
+    //                   }
+    //                 }
+    //               ],
+    //               { cancelable: false }
+    //             );
+    //           })
+    //           .catch(function(error) {
+    //             var errorCode = error.code;
+    //             var errorMessage = error.message;
+    //             console.log(errorCode);
+    //             console.log(errorMessage);
+    //           });
+    //       } catch (error) {
+    //         console.log(error);
+    //       }
+    //     });
+    
+  };
+
   render() {
     return (
       <ScrollView
@@ -23,6 +144,9 @@ class Suggest extends React.Component {
                 multiline
                 style={{ height: 150 }}
                 placeholder="Notes (Describe invitation in 100 words)"
+                onChangeText={text => {
+                  this.setState({ complain: text });
+                }}
               ></Input>
             </Block>
           </Block>
@@ -30,7 +154,7 @@ class Suggest extends React.Component {
             <Button
               style={styles.button}
               color="#4f3961"
-              onPress={() => navigation.navigate("App")}
+              onPress={this.submitBtnPressed}
               textStyle={{ color: "white" }}
             >
               SUBMIT
@@ -44,7 +168,9 @@ class Suggest extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff2ff"
+    backgroundColor: "#fff2ff",
+    height: height,
+    width: width
   },
   button: {
     width: width - 40,

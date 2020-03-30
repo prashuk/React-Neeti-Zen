@@ -348,30 +348,38 @@ class Home extends React.Component {
       userID: global.User.user.uid
     };
 
-    setTimeout(() => {
-      firebase
-        .database()
-        .ref("users/" + global.User.user.uid)
-        .set({
-          username: global.User.user.email,
-          name: "Prashuk Ajmera",
-          age: 27
-        })
-        .then(() => {
-          console.log("Inserted");
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    }, 5000);
+    // console.log(global.User.user);
 
-    firebase
-      .database()
-      .ref("users/" + global.User.user.uid)
-      .on("value", snapshot => {
-        const highscore = snapshot.val().name;
-        console.log("New high score: " + highscore);
-      });
+    // try {
+    //   firebase
+    //     .database()
+    //     .ref("users/" + global.User.user.uid + "/profile/")
+    //     .set({
+    //       username: global.User.user.email,
+    //       name: "",
+    //       phone: "",
+    //       age: "",
+    //       sex: "",
+    //       placeResidence: "",
+    //       zipCode: ""
+    //     })
+    //     .then(() => {
+    //       console.log("Inserted");
+    //     })
+    //     .catch(error => {
+    //       console.log(error);
+    //     });
+    // } catch (error) {
+    //   console.log(error);
+    // }
+
+    // firebase
+    //   .database()
+    //   .ref("users/" + global.User.user.uid)
+    //   .on("value", snapshot => {
+    //     const highscore = snapshot.val().name;
+    //     console.log("New high score: " + highscore);
+    //   });
   }
 
   render() {
