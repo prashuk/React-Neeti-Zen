@@ -4,7 +4,8 @@ import {
   Dimensions,
   ScrollView,
   StatusBar,
-  View
+  View,
+  SectionList
 } from "react-native";
 import { Block, Button, Icon, Text } from "galio-framework";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -15,12 +16,13 @@ import * as firebase from "firebase";
 const { width, height } = Dimensions.get("screen");
 
 class HomeScreen extends React.Component {
+  state = {
+    visibleServe: false,
+    visibleJanTV: false
+  };
+
   constructor(props) {
     super(props);
-    this.state = {
-      visibleServe: false,
-      visibleJanTV: false
-    };
   }
 
   render() {
@@ -49,7 +51,11 @@ class HomeScreen extends React.Component {
                 <Button
                   color="rgba(176, 108, 168, 1)"
                   style={styles.button}
-                  onPress={() => this.props.navigation.navigate("Suggest")}
+                  onPress={() =>
+                    this.props.navigation.navigate("Suggest", {
+                      handleData: this.handleData
+                    })
+                  }
                 >
                   <Block row>
                     <Icon
@@ -238,7 +244,6 @@ class HomeScreen extends React.Component {
               <Button
                 style={styles.button}
                 color="rgba(237, 116, 163, 1)"
-                // onPress={() => navigation.navigate("Jantv")}
                 onPress={() => {
                   this.setState({ visibleServe: false, visibleJanTV: true });
                 }}
@@ -310,10 +315,149 @@ class HomeScreen extends React.Component {
 }
 
 class ActiveScreen extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  componentWillMount() {
+    var childKey;
+    var childData;
+    firebase
+      .database()
+      .ref("users/" + global.User.user.uid + "/complaints/")
+      .once("value", snapshot => {
+        snapshot.forEach(childSnapshot => {
+          childKey = childSnapshot.key;
+          childData = Object.values(childSnapshot.val());
+          if (childKey === "suggest") {
+            global.dataForSuggest = childData;
+          } else if (childKey === "expatriates") {
+            global.dataForExpatriates = childData;
+          } else if (childKey === "medical") {
+            global.dataForMedical = childData;
+          } else if (childKey === "other") {
+            global.dataForOther = childData;
+          } else if (childKey === "event") {
+            global.dataForEvent = childData;
+          } else if (childKey === "parliament") {
+            global.dataForParliament = childData;
+          }
+        });
+      });
+  }
+
   render() {
+    const arrSuggestData = [];
+    if (typeof global.dataForSuggest !== "undefined") {
+      var k = 0;
+      for (var i = 0; i < global.dataForSuggest.length; i++) {
+        if (Object.values(global.dataForSuggest[i])[0]["status"] === "open") {
+          arrSuggestData[k] =
+            "Ticket Number: " + Object.values(global.dataForSuggest[i])[1];
+          k = k + 1;
+        }
+      }
+    }
+
+    const arrMedicalData = [];
+    if (typeof global.dataForMedical !== "undefined") {
+      for (var i = 0; i < global.dataForMedical.length; i++) {
+        if (Object.values(global.dataForMedical[i])[0]["status"] === "open") {
+          arrMedicalData[i] =
+            "Ticket Number: " + Object.values(global.dataForOther[i])[1];
+        }
+      }
+    }
+
+    const arrExpData = [];
+    if (typeof global.dataForExpatriates !== "undefined") {
+      for (var i = 0; i < global.dataForExpatriates.length; i++) {
+        if (
+          Object.values(global.dataForExpatriates[i])[0]["status"] === "open"
+        ) {
+          arrExpData[i] =
+            "Ticket Number: " + Object.values(global.dataForExpatriates[i])[1];
+        }
+      }
+    }
+
+    const arrOtherData = [];
+    if (typeof global.dataForOther !== "undefined") {
+      for (var i = 0; i < global.dataForOther.length; i++) {
+        if (Object.values(global.dataForOther[i])[0]["status"] === "open") {
+          arrOtherData[i] =
+            "Ticket Number: " + Object.values(global.dataForOther[i])[1];
+        }
+      }
+    }
+
+    const arrEventData = [];
+    if (typeof global.dataForEvent !== "undefined") {
+      for (var i = 0; i < global.dataForEvent.length; i++) {
+        if (Object.values(global.dataForEvent[i])[0]["status"] === "open") {
+          arrEventData[i] =
+            "Ticket Number: " + Object.values(global.dataForEvent[i])[1];
+        }
+      }
+    }
+
+    const arrParliamentData = [];
+    if (typeof global.dataForParliament !== "undefined") {
+      for (var i = 0; i < global.dataForParliament.length; i++) {
+        if (
+          Object.values(global.dataForParliament[i])[0]["status"] === "open"
+        ) {
+          arrParliamentData[i] =
+            "Ticket Number: " + Object.values(global.dataForParliament[i])[1];
+        }
+      }
+    }
+
+    const DATA = [
+      {
+        title: "Bring to Attention",
+        data: arrSuggestData
+      },
+      {
+        title: "Medical",
+        data: arrMedicalData
+      },
+      {
+        title: "Expatriates",
+        data: arrExpData
+      },
+      {
+        title: "Other",
+        data: arrOtherData
+      },
+      {
+        title: "Invite",
+        data: arrEventData
+      },
+      {
+        title: "Raise in Parliament",
+        data: arrParliamentData
+      }
+    ];
+
+    function Item({ title }) {
+      return (
+        <View style={styles.item}>
+          <Text style={styles.title}>{title}</Text>
+        </View>
+      );
+    }
+
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text>Active Tickets!</Text>
+      <View>
+        <SectionList
+          sections={DATA}
+          keyExtractor={(item, index) => item + index}
+          renderItem={({ item }) => <Item title={item} />}
+          renderSectionHeader={({ section: { title } }) => (
+            <Text style={styles.header}>{title}</Text>
+          )}
+        />
       </View>
     );
   }
@@ -321,9 +465,117 @@ class ActiveScreen extends React.Component {
 
 class InProgressScreen extends React.Component {
   render() {
+    const arrSuggestData = [];
+    if (typeof global.dataForSuggest !== "undefined") {
+      var k = 0;
+      for (var i = 0; i < global.dataForSuggest.length; i++) {
+        if (Object.values(global.dataForSuggest[i])[0]["status"] === "inprogress") {
+          arrSuggestData[k] =
+            "Ticket Number: " + Object.values(global.dataForSuggest[i])[1];
+          k = k + 1;
+        }
+      }
+    }
+
+    const arrMedicalData = [];
+    if (typeof global.dataForMedical !== "undefined") {
+      for (var i = 0; i < global.dataForMedical.length; i++) {
+        if (Object.values(global.dataForMedical[i])[0]["status"] === "inprogress") {
+          arrMedicalData[i] =
+            "Ticket Number: " + Object.values(global.dataForOther[i])[1];
+        }
+      }
+    }
+
+    const arrExpData = [];
+    if (typeof global.dataForExpatriates !== "undefined") {
+      for (var i = 0; i < global.dataForExpatriates.length; i++) {
+        if (
+          Object.values(global.dataForExpatriates[i])[0]["status"] === "inprogress"
+        ) {
+          arrExpData[i] =
+            "Ticket Number: " + Object.values(global.dataForExpatriates[i])[1];
+        }
+      }
+    }
+
+    const arrOtherData = [];
+    if (typeof global.dataForOther !== "undefined") {
+      for (var i = 0; i < global.dataForOther.length; i++) {
+        if (Object.values(global.dataForOther[i])[0]["status"] === "inprogress") {
+          arrOtherData[i] =
+            "Ticket Number: " + Object.values(global.dataForOther[i])[1];
+        }
+      }
+    }
+
+    const arrEventData = [];
+    if (typeof global.dataForEvent !== "undefined") {
+      for (var i = 0; i < global.dataForEvent.length; i++) {
+        if (Object.values(global.dataForEvent[i])[0]["status"] === "inprogress") {
+          arrEventData[i] =
+            "Ticket Number: " + Object.values(global.dataForEvent[i])[1];
+        }
+      }
+    }
+
+    const arrParliamentData = [];
+    if (typeof global.dataForParliament !== "undefined") {
+      for (var i = 0; i < global.dataForParliament.length; i++) {
+        if (
+          Object.values(global.dataForParliament[i])[0]["status"] === "inprogress"
+        ) {
+          arrParliamentData[i] =
+            "Ticket Number: " + Object.values(global.dataForParliament[i])[1];
+        }
+      }
+    }
+
+    const DATA = [
+      {
+        title: "Bring to Attention",
+        data: arrSuggestData
+      },
+      {
+        title: "Medical",
+        data: arrMedicalData
+      },
+      {
+        title: "Expatriates",
+        data: arrExpData
+      },
+      {
+        title: "Other",
+        data: arrOtherData
+      },
+      {
+        title: "Invite",
+        data: arrEventData
+      },
+      {
+        title: "Raise in Parliament",
+        data: arrParliamentData
+      }
+    ];
+
+    function Item({ title }) {
+      return (
+        <View style={styles.item}>
+          <Text style={styles.title}>{title}</Text>
+        </View>
+      );
+    }
+
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text>InProgress Tickets!</Text>
+      <View>
+        <SectionList
+          sections={DATA}
+          keyExtractor={(item, index) => item + index}
+          renderItem={({ item }) => <Item title={item} />}
+          renderSectionHeader={({ section: { title } }) => (
+            <Text style={styles.header}>{title}</Text>
+          )}
+        />
       </View>
     );
   }
@@ -331,9 +583,117 @@ class InProgressScreen extends React.Component {
 
 class CompletedScreen extends React.Component {
   render() {
+    const arrSuggestData = [];
+    if (typeof global.dataForSuggest !== "undefined") {
+      var k = 0;
+      for (var i = 0; i < global.dataForSuggest.length; i++) {
+        if (Object.values(global.dataForSuggest[i])[0]["status"] === "close") {
+          arrSuggestData[k] =
+            "Ticket Number: " + Object.values(global.dataForSuggest[i])[1];
+          k = k + 1;
+        }
+      }
+    }
+
+    const arrMedicalData = [];
+    if (typeof global.dataForMedical !== "undefined") {
+      for (var i = 0; i < global.dataForMedical.length; i++) {
+        if (Object.values(global.dataForMedical[i])[0]["status"] === "close") {
+          arrMedicalData[i] =
+            "Ticket Number: " + Object.values(global.dataForOther[i])[1];
+        }
+      }
+    }
+
+    const arrExpData = [];
+    if (typeof global.dataForExpatriates !== "undefined") {
+      for (var i = 0; i < global.dataForExpatriates.length; i++) {
+        if (
+          Object.values(global.dataForExpatriates[i])[0]["status"] === "close"
+        ) {
+          arrExpData[i] =
+            "Ticket Number: " + Object.values(global.dataForExpatriates[i])[1];
+        }
+      }
+    }
+
+    const arrOtherData = [];
+    if (typeof global.dataForOther !== "undefined") {
+      for (var i = 0; i < global.dataForOther.length; i++) {
+        if (Object.values(global.dataForOther[i])[0]["status"] === "close") {
+          arrOtherData[i] =
+            "Ticket Number: " + Object.values(global.dataForOther[i])[1];
+        }
+      }
+    }
+
+    const arrEventData = [];
+    if (typeof global.dataForEvent !== "undefined") {
+      for (var i = 0; i < global.dataForEvent.length; i++) {
+        if (Object.values(global.dataForEvent[i])[0]["status"] === "close") {
+          arrEventData[i] =
+            "Ticket Number: " + Object.values(global.dataForEvent[i])[1];
+        }
+      }
+    }
+
+    const arrParliamentData = [];
+    if (typeof global.dataForParliament !== "undefined") {
+      for (var i = 0; i < global.dataForParliament.length; i++) {
+        if (
+          Object.values(global.dataForParliament[i])[0]["status"] === "close"
+        ) {
+          arrParliamentData[i] =
+            "Ticket Number: " + Object.values(global.dataForParliament[i])[1];
+        }
+      }
+    }
+
+    const DATA = [
+      {
+        title: "Bring to Attention",
+        data: arrSuggestData
+      },
+      {
+        title: "Medical",
+        data: arrMedicalData
+      },
+      {
+        title: "Expatriates",
+        data: arrExpData
+      },
+      {
+        title: "Other",
+        data: arrOtherData
+      },
+      {
+        title: "Invite",
+        data: arrEventData
+      },
+      {
+        title: "Raise in Parliament",
+        data: arrParliamentData
+      }
+    ];
+
+    function Item({ title }) {
+      return (
+        <View style={styles.item}>
+          <Text style={styles.title}>{title}</Text>
+        </View>
+      );
+    }
+
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text>kjhkjhkj</Text>
+      <View>
+        <SectionList
+          sections={DATA}
+          keyExtractor={(item, index) => item + index}
+          renderItem={({ item }) => <Item title={item} />}
+          renderSectionHeader={({ section: { title } }) => (
+            <Text style={styles.header}>{title}</Text>
+          )}
+        />
       </View>
     );
   }
@@ -342,44 +702,12 @@ class CompletedScreen extends React.Component {
 const Tab = createBottomTabNavigator();
 
 class Home extends React.Component {
+  state = {
+    userID: global.User.user.uid
+  };
+
   constructor(props) {
     super(props);
-    this.state = {
-      userID: global.User.user.uid
-    };
-
-    // console.log(global.User.user);
-
-    // try {
-    //   firebase
-    //     .database()
-    //     .ref("users/" + global.User.user.uid + "/profile/")
-    //     .set({
-    //       username: global.User.user.email,
-    //       name: "",
-    //       phone: "",
-    //       age: "",
-    //       sex: "",
-    //       placeResidence: "",
-    //       zipCode: ""
-    //     })
-    //     .then(() => {
-    //       console.log("Inserted");
-    //     })
-    //     .catch(error => {
-    //       console.log(error);
-    //     });
-    // } catch (error) {
-    //   console.log(error);
-    // }
-
-    // firebase
-    //   .database()
-    //   .ref("users/" + global.User.user.uid)
-    //   .on("value", snapshot => {
-    //     const highscore = snapshot.val().name;
-    //     console.log("New high score: " + highscore);
-    //   });
   }
 
   render() {
@@ -408,7 +736,11 @@ class Home extends React.Component {
         }}
       >
         <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Active" component={ActiveScreen} />
+        <Tab.Screen
+          name="Active"
+          component={ActiveScreen}
+          data={this.state.dataServeOther}
+        />
         <Tab.Screen name="In Progress" component={InProgressScreen} />
         <Tab.Screen name="Completed" component={CompletedScreen} />
       </Tab.Navigator>
@@ -457,6 +789,23 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     padding: 16
+  },
+  item: {
+    backgroundColor: "#fff",
+    paddingTop: 5,
+    paddingBottom: 5,
+    paddingLeft: 30,
+    marginVertical: 2
+  },
+  header: {
+    fontSize: 17,
+    backgroundColor: "#fff2ff",
+    paddingLeft: 18,
+    paddingTop: 5,
+    paddingBottom: 5
+  },
+  title: {
+    fontSize: 14
   }
 });
 

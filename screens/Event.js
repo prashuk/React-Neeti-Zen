@@ -67,6 +67,7 @@ class Event extends React.Component {
       this.setState({ imgInvitation: img });
     }
     this.RBSheet.close();
+    Alert.alert("Uploaded");
   };
 
   uploadImage = async (uri, name, ticket) => {
@@ -114,26 +115,29 @@ class Event extends React.Component {
     );
 
     var postData = {
-      date: today,
-      patientName: this.state.patientName,
-      address: this.state.address,
-      phone: this.state.phone,
-      email: this.state.email,
-      occasion: this.state.occasion,
-      availability: this.state.availability,
-      imgInvitation: invitationImgURL,
-      notes: this.state.notes,
-      type: "event",
-      status: "open"
+      ticketNumber: ticketNumberDatabase,
+      description: {
+        date: today,
+        patientName: this.state.patientName,
+        address: this.state.address,
+        phone: this.state.phone,
+        email: this.state.email,
+        occasion: this.state.occasion,
+        availability: this.state.availability,
+        imgInvitation: invitationImgURL,
+        notes: this.state.notes,
+        type: "event",
+        status: "open"
+      }
     };
 
+    firebase
+      .database()
+      .ref("users/" + global.User.user.uid + "/complaints/event/")
+      .push()
+      .set(postData);
+
     var updates = {};
-    updates[
-      "users/" +
-        global.User.user.uid +
-        "/complaints/event/" +
-        ticketNumberDatabase
-    ] = postData;
     updates["ticket/ticket/"] = ticketNumberDatabase;
 
     firebase

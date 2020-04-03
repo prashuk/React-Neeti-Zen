@@ -19,8 +19,8 @@ class Onboarding extends React.Component {
 
     this.state = {
       name: "",
-      email: "",
-      password: "",
+      email: "test@gmail.com",
+      password: "1234567890",
       loginBtnText: "LOG IN",
       signUpBtnText: "Sign Up",
       formLogin: 1,
@@ -159,7 +159,8 @@ class Onboarding extends React.Component {
           <Block>
             <Input
               placeholder="Email"
-              onChangeText={text => this.setState({ email: text })}
+              value="test@gmail.com"
+              onChangeText={text => this.setState({ email: "test@gmail.com" })}
               iconContent={
                 <Icon
                   size={20}
@@ -174,7 +175,8 @@ class Onboarding extends React.Component {
           <Block>
             <Input
               placeholder="Password"
-              onChangeText={text => this.setState({ password: text })}
+              value="1234567890"
+              onChangeText={text => this.setState({ password: "1234567890" })}
               iconContent={
                 <Icon
                   size={20}

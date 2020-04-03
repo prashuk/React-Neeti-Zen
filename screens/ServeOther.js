@@ -33,19 +33,22 @@ class ServeOther extends React.Component {
       });
 
     var postData = {
-      date: today,
-      complain: this.state.complain,
-      type: "other",
-      status: "open"
+      ticketNumber: ticketNumberDatabase,
+      description: {
+        date: today,
+        complain: this.state.complain,
+        type: "other",
+        status: "open"
+      }
     };
 
+    firebase
+      .database()
+      .ref("users/" + global.User.user.uid + "/complaints/other/")
+      .push()
+      .set(postData);
+
     var updates = {};
-    updates[
-      "users/" +
-        global.User.user.uid +
-        "/complaints/other/" +
-        ticketNumberDatabase
-    ] = postData;
     updates["ticket/ticket/"] = ticketNumberDatabase;
 
     firebase

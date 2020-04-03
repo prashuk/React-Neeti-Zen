@@ -85,6 +85,7 @@ class Expatriates extends React.Component {
       this.setState({ imgAadhar: img });
     }
     this.RBSheet.close();
+    Alert.alert("Uploaded");
   };
 
   findOptionUsed() {
@@ -195,32 +196,35 @@ class Expatriates extends React.Component {
     );
 
     var postData = {
-      date: today,
-      job: this.state.selectJob,
-      reason: this.state.selectReason,
-      name: this.state.name,
-      addressPhone: this.state.addressPhone,
-      countryBirth: this.state.countryBirth,
-      countryResidence: this.state.countryResidence,
-      address: this.state.address,
-      imgPassport: passportImgURL,
-      imgVisa: visaImgURL,
-      imgAadhar: aadharImgURL,
-      email: this.state.email,
-      phoneNumber: this.state.phoneNumber,
-      employer: this.state.employer,
-      notes: this.state.notes,
-      type: "expatriates",
-      status: "open"
+      ticketNumber: ticketNumberDatabase,
+      description: {
+        date: today,
+        job: this.state.selectJob,
+        reason: this.state.selectReason,
+        name: this.state.name,
+        addressPhone: this.state.addressPhone,
+        countryBirth: this.state.countryBirth,
+        countryResidence: this.state.countryResidence,
+        address: this.state.address,
+        imgPassport: passportImgURL,
+        imgVisa: visaImgURL,
+        imgAadhar: aadharImgURL,
+        email: this.state.email,
+        phoneNumber: this.state.phoneNumber,
+        employer: this.state.employer,
+        notes: this.state.notes,
+        type: "expatriates",
+        status: "open"
+      }
     };
 
+    firebase
+      .database()
+      .ref("users/" + global.User.user.uid + "/complaints/expatriates/")
+      .push()
+      .set(postData);
+
     var updates = {};
-    updates[
-      "users/" +
-        global.User.user.uid +
-        "/complaints/expatriates/" +
-        ticketNumberDatabase
-    ] = postData;
     updates["ticket/ticket/"] = ticketNumberDatabase;
 
     firebase

@@ -49,6 +49,7 @@ class Medical extends React.Component {
       this.setState({ imgEstimate: img });
     }
     this.RBSheet.close();
+    Alert.alert("Uploaded");
   };
 
   uploadImage = async (uri, name, ticket) => {
@@ -116,34 +117,37 @@ class Medical extends React.Component {
     );
 
     var postData = {
-      date: today,
-      patientName: this.state.patientName,
-      age: this.state.age,
-      occupation: this.state.occupation,
-      fatherName: this.state.fatherName,
-      countFamily: this.state.countFamily,
-      address: this.state.address,
-      imgAddProof: addProofImgURL,
-      telephoneNumber: this.state.telephoneNumber,
-      aadharCard: this.state.aadharCard,
-      imgAadhar: aadharImgURL,
-      disease: this.state.disease,
-      financialAmt: this.state.financialAmt,
-      imgEstimate: estimateImgURL,
-      assistanceEarlier: this.state.assistanceEarlier,
-      otherSourceFund: this.state.otherSourceFund,
-      govEmployee: this.state.govEmployee,
-      type: "medical",
-      status: "open"
+      ticketNumber: ticketNumberDatabase,
+      description: {
+        date: today,
+        patientName: this.state.patientName,
+        age: this.state.age,
+        occupation: this.state.occupation,
+        fatherName: this.state.fatherName,
+        countFamily: this.state.countFamily,
+        address: this.state.address,
+        imgAddProof: addProofImgURL,
+        telephoneNumber: this.state.telephoneNumber,
+        aadharCard: this.state.aadharCard,
+        imgAadhar: aadharImgURL,
+        disease: this.state.disease,
+        financialAmt: this.state.financialAmt,
+        imgEstimate: estimateImgURL,
+        assistanceEarlier: this.state.assistanceEarlier,
+        otherSourceFund: this.state.otherSourceFund,
+        govEmployee: this.state.govEmployee,
+        type: "medical",
+        status: "open"
+      }
     };
 
+    firebase
+      .database()
+      .ref("users/" + global.User.user.uid + "/complaints/medical/")
+      .push()
+      .set(postData);
+
     var updates = {};
-    updates[
-      "users/" +
-        global.User.user.uid +
-        "/complaints/medical/" +
-        ticketNumberDatabase
-    ] = postData;
     updates["ticket/ticket/"] = ticketNumberDatabase;
 
     firebase

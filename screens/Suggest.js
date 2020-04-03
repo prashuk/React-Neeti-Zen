@@ -21,13 +21,6 @@ class Suggest extends React.Component {
     var yyyy = today.getFullYear();
     today = mm + "/" + dd + "/" + yyyy;
 
-    var postData = {
-      date: today,
-      complain: this.state.complain,
-      type: "suggest",
-      status: "open"
-    };
-
     let ticketNumberDatabase;
 
     firebase
@@ -38,13 +31,23 @@ class Suggest extends React.Component {
         ticketNumberDatabase = ticketNumberDatabase + 1;
       });
 
+    var postData = {
+      ticketNumber: ticketNumberDatabase,
+      description: {
+        date: today,
+        complain: this.state.complain,
+        type: "suggest",
+        status: "open"
+      }
+    };
+
+    firebase
+      .database()
+      .ref("users/" + global.User.user.uid + "/complaints/suggest/")
+      .push()
+      .set(postData);
+
     var updates = {};
-    updates[
-      "users/" +
-        global.User.user.uid +
-        "/complaints/suggest/" +
-        ticketNumberDatabase
-    ] = postData;
     updates["ticket/ticket/"] = ticketNumberDatabase;
 
     try {
@@ -54,7 +57,8 @@ class Suggest extends React.Component {
         .update(updates)
         .then(
           Alert.alert(
-            "Complain Submitted",
+            "Complain Submitted: Ticket Number " +
+              (ticketNumberDatabase - 1).toString(),
             "",
             [
               {
@@ -76,54 +80,6 @@ class Suggest extends React.Component {
     } catch (error) {
       console.log(error);
     }
-
-    //       try {
-    //         firebase
-    //           .database()
-    //           .ref(
-    //             "users/" +
-    //               global.User.user.uid +
-    //               "/complaints/suggest/" +
-    //               ticketNumberDatabase
-    //           )
-    //           .set({
-    //             date: today,
-    //             complain: this.state.complain
-    //           })
-    //           .then(() => {
-    //             console.log("Inserted!");
-
-    //             Alert.alert(
-    //               "Complain Submitted",
-    //               "",
-    //               [
-    //                 {
-    //                   text: "OK",
-    //                   onPress: () => {
-    //                     var updates = {};
-    //                     updates["ticket/ticket/"] = ticketNumberDatabase;
-    //                     firebase
-    //                       .database()
-    //                       .ref()
-    //                       .update(updates);
-    //                     this.props.navigation.goBack();
-    //                   }
-    //                 }
-    //               ],
-    //               { cancelable: false }
-    //             );
-    //           })
-    //           .catch(function(error) {
-    //             var errorCode = error.code;
-    //             var errorMessage = error.message;
-    //             console.log(errorCode);
-    //             console.log(errorMessage);
-    //           });
-    //       } catch (error) {
-    //         console.log(error);
-    //       }
-    //     });
-    
   };
 
   render() {

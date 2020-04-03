@@ -33,19 +33,22 @@ class Parliament extends React.Component {
       });
 
     var postData = {
-      date: today,
-      complain: this.state.complain,
-      type: "parliament",
-      status: "open"
+      ticketNumber: ticketNumberDatabase,
+      description: {
+        date: today,
+        complain: this.state.complain,
+        type: "parliament",
+        status: "open"
+      }
     };
 
+    firebase
+      .database()
+      .ref("users/" + global.User.user.uid + "/complaints/parliament/")
+      .push()
+      .set(postData);
+
     var updates = {};
-    updates[
-      "users/" +
-        global.User.user.uid +
-        "/complaints/parliament/" +
-        ticketNumberDatabase
-    ] = postData;
     updates["ticket/ticket/"] = ticketNumberDatabase;
 
     firebase
