@@ -42,19 +42,29 @@ const data = [
 ];
 
 class Event extends React.Component {
+  state = {
+    patientName: "",
+    address: "",
+    phone: "",
+    email: "",
+    occasion: "",
+    availability: "",
+    imgInvitation: "",
+    notes: "",
+    btnId: "",
+    ticketNumberDatabase: 0
+  };
+
   constructor(props) {
     super(props);
-    this.state = {
-      patientName: "",
-      address: "",
-      phone: "",
-      email: "",
-      occasion: "",
-      availability: "",
-      imgInvitation: "",
-      notes: "",
-      btnId: ""
-    };
+
+    firebase
+      .database()
+      .ref("ticket/ticket/")
+      .on("value", snapshot => {
+        let ticketNumberDatabase = parseInt(snapshot.val());
+        this.state.ticketNumberDatabase = ticketNumberDatabase + 1;
+      });
   }
 
   uploadBtnPressed(event, buttonId) {
@@ -88,21 +98,13 @@ class Event extends React.Component {
   };
 
   submitBtnPressed = async () => {
+    var ticketNumberDatabase = this.state.ticketNumberDatabase;
+
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, "0");
     var mm = String(today.getMonth() + 1).padStart(2, "0");
     var yyyy = today.getFullYear();
     today = mm + "/" + dd + "/" + yyyy;
-
-    let ticketNumberDatabase;
-
-    firebase
-      .database()
-      .ref("ticket/ticket/")
-      .on("value", snapshot => {
-        ticketNumberDatabase = parseInt(snapshot.val());
-        ticketNumberDatabase = ticketNumberDatabase + 1;
-      });
 
     const invitationImgURL = await this.uploadImage(
       this.state.imgInvitation,
@@ -135,36 +137,34 @@ class Event extends React.Component {
       .database()
       .ref("users/" + global.User.user.uid + "/complaints/event/")
       .push()
-      .set(postData);
+      .set(postData)
+      .then(() => {
+        var updates = {};
+        updates["ticket/ticket/"] = ticketNumberDatabase;
 
-    var updates = {};
-    updates["ticket/ticket/"] = ticketNumberDatabase;
-
-    firebase
-      .database()
-      .ref()
-      .update(updates)
-      .then(
-        Alert.alert(
-          "Complain Submitted: Ticket Number " +
-            (ticketNumberDatabase - 1).toString(),
-          "",
-          [
-            {
-              text: "OK",
-              onPress: () => {
-                this.props.navigation.goBack();
-              }
-            }
-          ],
-          { cancelable: false }
-        )
-      )
-      .catch(function(error) {
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        console.log(errorCode);
-        console.log(errorMessage);
+        firebase
+          .database()
+          .ref()
+          .update(updates)
+          .then(
+            Alert.alert(
+              "Complain Submitted: Ticket Number " +
+                (ticketNumberDatabase - 1).toString(),
+              "",
+              [
+                {
+                  text: "OK",
+                  onPress: () => {
+                    this.props.navigation.goBack();
+                  }
+                }
+              ],
+              { cancelable: false }
+            )
+          )
+          .catch(function(error) {
+            console.log(error.message);
+          });
       });
   };
 

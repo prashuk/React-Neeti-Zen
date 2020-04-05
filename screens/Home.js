@@ -5,12 +5,12 @@ import {
   ScrollView,
   StatusBar,
   View,
-  SectionList
+  SectionList,
+  TouchableOpacity
 } from "react-native";
-import { Block, Button, Icon, Text } from "galio-framework";
+import { Block, Button, Text, Icon } from "galio-framework";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Modal, { ModalContent } from "react-native-modals";
-import { Ionicons } from "@expo/vector-icons";
 import * as firebase from "firebase";
 
 const { width, height } = Dimensions.get("screen");
@@ -23,6 +23,33 @@ class HomeScreen extends React.Component {
 
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
+    var childKey;
+    var childData;
+    firebase
+      .database()
+      .ref("users/" + global.User.user.uid + "/complaints/")
+      .once("value", snapshot => {
+        snapshot.forEach(childSnapshot => {
+          childKey = childSnapshot.key;
+          childData = Object.values(childSnapshot.val());
+          if (childKey === "suggest") {
+            global.dataForSuggest = childData;
+          } else if (childKey === "expatriates") {
+            global.dataForExpatriates = childData;
+          } else if (childKey === "medical") {
+            global.dataForMedical = childData;
+          } else if (childKey === "other") {
+            global.dataForOther = childData;
+          } else if (childKey === "event") {
+            global.dataForEvent = childData;
+          } else if (childKey === "parliament") {
+            global.dataForParliament = childData;
+          }
+        });
+      });
   }
 
   render() {
@@ -315,37 +342,6 @@ class HomeScreen extends React.Component {
 }
 
 class ActiveScreen extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  componentWillMount() {
-    var childKey;
-    var childData;
-    firebase
-      .database()
-      .ref("users/" + global.User.user.uid + "/complaints/")
-      .once("value", snapshot => {
-        snapshot.forEach(childSnapshot => {
-          childKey = childSnapshot.key;
-          childData = Object.values(childSnapshot.val());
-          if (childKey === "suggest") {
-            global.dataForSuggest = childData;
-          } else if (childKey === "expatriates") {
-            global.dataForExpatriates = childData;
-          } else if (childKey === "medical") {
-            global.dataForMedical = childData;
-          } else if (childKey === "other") {
-            global.dataForOther = childData;
-          } else if (childKey === "event") {
-            global.dataForEvent = childData;
-          } else if (childKey === "parliament") {
-            global.dataForParliament = childData;
-          }
-        });
-      });
-  }
-
   render() {
     const arrSuggestData = [];
     if (typeof global.dataForSuggest !== "undefined") {
@@ -469,7 +465,9 @@ class InProgressScreen extends React.Component {
     if (typeof global.dataForSuggest !== "undefined") {
       var k = 0;
       for (var i = 0; i < global.dataForSuggest.length; i++) {
-        if (Object.values(global.dataForSuggest[i])[0]["status"] === "inprogress") {
+        if (
+          Object.values(global.dataForSuggest[i])[0]["status"] === "inprogress"
+        ) {
           arrSuggestData[k] =
             "Ticket Number: " + Object.values(global.dataForSuggest[i])[1];
           k = k + 1;
@@ -480,7 +478,9 @@ class InProgressScreen extends React.Component {
     const arrMedicalData = [];
     if (typeof global.dataForMedical !== "undefined") {
       for (var i = 0; i < global.dataForMedical.length; i++) {
-        if (Object.values(global.dataForMedical[i])[0]["status"] === "inprogress") {
+        if (
+          Object.values(global.dataForMedical[i])[0]["status"] === "inprogress"
+        ) {
           arrMedicalData[i] =
             "Ticket Number: " + Object.values(global.dataForOther[i])[1];
         }
@@ -491,7 +491,8 @@ class InProgressScreen extends React.Component {
     if (typeof global.dataForExpatriates !== "undefined") {
       for (var i = 0; i < global.dataForExpatriates.length; i++) {
         if (
-          Object.values(global.dataForExpatriates[i])[0]["status"] === "inprogress"
+          Object.values(global.dataForExpatriates[i])[0]["status"] ===
+          "inprogress"
         ) {
           arrExpData[i] =
             "Ticket Number: " + Object.values(global.dataForExpatriates[i])[1];
@@ -502,7 +503,9 @@ class InProgressScreen extends React.Component {
     const arrOtherData = [];
     if (typeof global.dataForOther !== "undefined") {
       for (var i = 0; i < global.dataForOther.length; i++) {
-        if (Object.values(global.dataForOther[i])[0]["status"] === "inprogress") {
+        if (
+          Object.values(global.dataForOther[i])[0]["status"] === "inprogress"
+        ) {
           arrOtherData[i] =
             "Ticket Number: " + Object.values(global.dataForOther[i])[1];
         }
@@ -512,7 +515,9 @@ class InProgressScreen extends React.Component {
     const arrEventData = [];
     if (typeof global.dataForEvent !== "undefined") {
       for (var i = 0; i < global.dataForEvent.length; i++) {
-        if (Object.values(global.dataForEvent[i])[0]["status"] === "inprogress") {
+        if (
+          Object.values(global.dataForEvent[i])[0]["status"] === "inprogress"
+        ) {
           arrEventData[i] =
             "Ticket Number: " + Object.values(global.dataForEvent[i])[1];
         }
@@ -523,7 +528,8 @@ class InProgressScreen extends React.Component {
     if (typeof global.dataForParliament !== "undefined") {
       for (var i = 0; i < global.dataForParliament.length; i++) {
         if (
-          Object.values(global.dataForParliament[i])[0]["status"] === "inprogress"
+          Object.values(global.dataForParliament[i])[0]["status"] ===
+          "inprogress"
         ) {
           arrParliamentData[i] =
             "Ticket Number: " + Object.values(global.dataForParliament[i])[1];
@@ -701,6 +707,94 @@ class CompletedScreen extends React.Component {
 
 const Tab = createBottomTabNavigator();
 
+function MyTabBar({ state, descriptors, navigation }) {
+  return (
+    <View
+      style={{
+        flexDirection: "row",
+        borderTopWidth: 1,
+        borderTopColor: "#DCDCDC"
+      }}
+    >
+      {state.routes.map((route, index) => {
+        const { options } = descriptors[route.key];
+        const label =
+          options.tabBarLabel !== undefined
+            ? options.tabBarLabel
+            : options.title !== undefined
+            ? options.title
+            : route.name;
+
+        const isFocused = state.index === index;
+
+        const onPress = () => {
+          const event = navigation.emit({
+            type: "tabPress",
+            target: route.key
+          });
+
+          if (!isFocused && !event.defaultPrevented) {
+            navigation.navigate(route.name);
+          }
+        };
+
+        const onLongPress = () => {
+          navigation.emit({
+            type: "tabLongPress",
+            target: route.key
+          });
+        };
+
+        return (
+          <TouchableOpacity
+            accessibilityRole="button"
+            accessibilityStates={isFocused ? ["selected"] : []}
+            accessibilityLabel={options.tabBarAccessibilityLabel}
+            testID={options.tabBarTestID}
+            onPress={onPress}
+            onLongPress={onLongPress}
+            style={{
+              flex: 1,
+              alignItems: "center",
+              justifyContent: "center",
+              height: 50
+            }}
+          >
+            <Icon
+              name={
+                label === "Home"
+                  ? "ios-home"
+                  : label === "Active"
+                  ? "ios-open"
+                  : label === "In Progress"
+                  ? "ios-book"
+                  : label === "Completed"
+                  ? "ios-cloud-done"
+                  : ""
+              }
+              family="Ionicon"
+              size={25}
+              color={isFocused ? "red" : "#888888"}
+              style={{ marginTop: 5 }}
+            />
+            <Text
+              style={{
+                color: isFocused ? "red" : "#888888",
+                fontSize: 12,
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center"
+              }}
+            >
+              {label}
+            </Text>
+          </TouchableOpacity>
+        );
+      })}
+    </View>
+  );
+}
+
 class Home extends React.Component {
   state = {
     userID: global.User.user.uid
@@ -712,35 +806,9 @@ class Home extends React.Component {
 
   render() {
     return (
-      <Tab.Navigator
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
-
-            if (route.name === "Home") {
-              iconName = focused ? "ios-home" : "ios-home";
-            } else if (route.name === "Active") {
-              iconName = focused ? "ios-open" : "ios-open";
-            } else if (route.name === "In Progress") {
-              iconName = focused ? "ios-book" : "ios-book";
-            } else if (route.name === "Completed") {
-              iconName = focused ? "ios-cloud-done" : "ios-cloud-done";
-            }
-
-            return <Ionicons name={iconName} size={size} color={color} />;
-          }
-        })}
-        tabBarOptions={{
-          activeTintColor: "tomato",
-          inactiveTintColor: "gray"
-        }}
-      >
+      <Tab.Navigator tabBar={props => <MyTabBar {...props} />}>
         <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen
-          name="Active"
-          component={ActiveScreen}
-          data={this.state.dataServeOther}
-        />
+        <Tab.Screen name="Active" component={ActiveScreen} />
         <Tab.Screen name="In Progress" component={InProgressScreen} />
         <Tab.Screen name="Completed" component={CompletedScreen} />
       </Tab.Navigator>

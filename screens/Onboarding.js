@@ -19,8 +19,8 @@ class Onboarding extends React.Component {
 
     this.state = {
       name: "",
-      email: "test@gmail.com",
-      password: "1234567890",
+      email: "",
+      password: "",
       loginBtnText: "LOG IN",
       signUpBtnText: "Sign Up",
       formLogin: 1,
@@ -40,48 +40,46 @@ class Onboarding extends React.Component {
   loginBtnPressed() {
     const { navigation } = this.props;
     if (this.state.loginBtnText === "LOG IN") {
-      try {
-        firebase
-          .auth()
-          .signInWithEmailAndPassword(this.state.email, this.state.password)
-          .then(function(user) {
-            global.User = user;
-            navigation.navigate("App");
-          })
-          .catch(function(error) {
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            console.log(errorCode);
-            console.log(errorMessage);
-          });
-      } catch (error) {
-        this.showAlert();
-      }
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(this.state.email, this.state.password)
+        .then(user => {
+          global.User = user;
+          console.log(user)
+          navigation.navigate("App");
+        })
+        .catch(function(error) {
+          alert(error.message);
+        });
     } else if (this.state.loginBtnText === "SIGN UP") {
-      try {
-        firebase
-          .auth()
-          .createUserWithEmailAndPassword(this.state.email, this.state.password)
-          .then(userInfo => {
-            console.log(userInfo);
-            userInfo.user
-              .updateProfile({ displayName: displayName.trim() })
-              .then(() => {});
-          })
-          .catch(function(error) {
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            console.log(errorCode);
-            console.log(errorMessage);
-          });
-      } catch (error) {
-        this.showAlert();
-      }
-    } else {
-      try {
-      } catch (error) {
-        this.showAlert();
-      }
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(this.state.email, this.state.password)
+        .then(userCredentials => {
+          if (userCredentials.user) {
+            userCredentials.user
+              .updateProfile({
+                displayName: this.state.name
+              })
+              .then(s => {
+                alert("Registration Complete");
+                this.setState({
+                  formLogin: 1,
+                  formSignup: 0,
+                  formEnterOTP: 0,
+                  formForgotPwd: 0,
+                  loginFlag: 0,
+                  loginBtnText: "LOG IN",
+                  signUpBtnText: "Sign Up"
+                });
+              });
+          }
+        })
+        .catch(function(error) {
+          alert(error.message);
+        });
+    } else if (this.state.loginBtnText === "RESET PASSWORD") {
+      this.showAlert();
     }
   }
 
@@ -159,8 +157,7 @@ class Onboarding extends React.Component {
           <Block>
             <Input
               placeholder="Email"
-              value="test@gmail.com"
-              onChangeText={text => this.setState({ email: "test@gmail.com" })}
+              onChangeText={text => this.setState({ email: text })}
               iconContent={
                 <Icon
                   size={20}
@@ -175,8 +172,7 @@ class Onboarding extends React.Component {
           <Block>
             <Input
               placeholder="Password"
-              value="1234567890"
-              onChangeText={text => this.setState({ password: "1234567890" })}
+              onChangeText={text => this.setState({ password: text })}
               iconContent={
                 <Icon
                   size={20}

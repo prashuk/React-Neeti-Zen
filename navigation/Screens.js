@@ -3,7 +3,6 @@ import React from "react";
 import { Dimensions } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import Onboarding from "../screens/Onboarding";
 

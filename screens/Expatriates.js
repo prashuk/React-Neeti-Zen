@@ -47,26 +47,37 @@ const data = [
 ];
 
 class Expatriates extends React.Component {
+  state = {
+    selectJob: "",
+    selectReason: "",
+    name: "",
+    addressPhone: "",
+    countryBirth: "",
+    countryResidence: "",
+    address: "",
+    imgPassport: "",
+    imgVisa: "",
+    imgAadhar: "",
+    email: "",
+    phoneNumber: 0,
+    employer: "",
+    notes: "",
+    btnId: "",
+    ticketNumberDatabase: 0
+  };
+
   constructor(props) {
     super(props);
-    this.state = {
-      selectJob: "",
-      selectReason: "",
-      name: "",
-      addressPhone: "",
-      countryBirth: "",
-      countryResidence: "",
-      address: "",
-      imgPassport: "",
-      imgVisa: "",
-      imgAadhar: "",
-      email: "",
-      phoneNumber: 0,
-      employer: "",
-      notes: "",
-      btnId: ""
-    };
+
     this.findOptionUsed = this.findOptionUsed.bind(this);
+
+    firebase
+      .database()
+      .ref("ticket/ticket/")
+      .on("value", snapshot => {
+        let ticketNumberDatabase = parseInt(snapshot.val());
+        this.state.ticketNumberDatabase = ticketNumberDatabase + 1;
+      });
   }
 
   uploadBtnPressed(event, buttonId) {
@@ -149,21 +160,13 @@ class Expatriates extends React.Component {
   };
 
   submitBtnPressed = async () => {
+    var ticketNumberDatabase = this.state.ticketNumberDatabase;
+
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, "0");
     var mm = String(today.getMonth() + 1).padStart(2, "0");
     var yyyy = today.getFullYear();
     today = mm + "/" + dd + "/" + yyyy;
-
-    let ticketNumberDatabase;
-
-    firebase
-      .database()
-      .ref("ticket/ticket/")
-      .on("value", snapshot => {
-        ticketNumberDatabase = parseInt(snapshot.val());
-        ticketNumberDatabase = ticketNumberDatabase + 1;
-      });
 
     const passportImgURL = await this.uploadImage(
       this.state.imgPassport,
@@ -222,36 +225,34 @@ class Expatriates extends React.Component {
       .database()
       .ref("users/" + global.User.user.uid + "/complaints/expatriates/")
       .push()
-      .set(postData);
+      .set(postData)
+      .then(() => {
+        var updates = {};
+        updates["ticket/ticket/"] = this.state.ticketNumberDatabase;
 
-    var updates = {};
-    updates["ticket/ticket/"] = ticketNumberDatabase;
-
-    firebase
-      .database()
-      .ref()
-      .update(updates)
-      .then(
-        Alert.alert(
-          "Complain Submitted: Ticket Number " +
-            (ticketNumberDatabase - 1).toString(),
-          "",
-          [
-            {
-              text: "OK",
-              onPress: () => {
-                this.props.navigation.goBack();
-              }
-            }
-          ],
-          { cancelable: false }
-        )
-      )
-      .catch(function(error) {
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        console.log(errorCode);
-        console.log(errorMessage);
+        firebase
+          .database()
+          .ref()
+          .update(updates)
+          .then(
+            Alert.alert(
+              "Complain Submitted: Ticket Number " +
+                (this.state.ticketNumberDatabase - 1).toString(),
+              "",
+              [
+                {
+                  text: "OK",
+                  onPress: () => {
+                    this.props.navigation.goBack();
+                  }
+                }
+              ],
+              { cancelable: false }
+            )
+          )
+          .catch(function(error) {
+            console.log(error.message);
+          });
       });
   };
 

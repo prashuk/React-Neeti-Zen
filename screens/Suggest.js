@@ -7,29 +7,30 @@ const { height, width } = Dimensions.get("screen");
 
 class Suggest extends React.Component {
   state = {
-    complain: ""
+    complain: "",
+    ticketNumberDatabase: 0
   };
 
   constructor(props) {
     super(props);
-  }
-
-  submitBtnPressed = () => {
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, "0");
-    var mm = String(today.getMonth() + 1).padStart(2, "0");
-    var yyyy = today.getFullYear();
-    today = mm + "/" + dd + "/" + yyyy;
-
-    let ticketNumberDatabase;
 
     firebase
       .database()
       .ref("ticket/ticket/")
       .on("value", snapshot => {
-        ticketNumberDatabase = parseInt(snapshot.val());
-        ticketNumberDatabase = ticketNumberDatabase + 1;
+        let ticketNumberDatabase = parseInt(snapshot.val());
+        this.state.ticketNumberDatabase = ticketNumberDatabase + 1;
       });
+  }
+
+  submitBtnPressed = () => {
+    var ticketNumberDatabase = this.state.ticketNumberDatabase;
+
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, "0");
+    var mm = String(today.getMonth() + 1).padStart(2, "0");
+    var yyyy = today.getFullYear();
+    today = mm + "/" + dd + "/" + yyyy;
 
     var postData = {
       ticketNumber: ticketNumberDatabase,
@@ -45,41 +46,35 @@ class Suggest extends React.Component {
       .database()
       .ref("users/" + global.User.user.uid + "/complaints/suggest/")
       .push()
-      .set(postData);
+      .set(postData)
+      .then(() => {
+        var updates = {};
+        updates["ticket/ticket/"] = ticketNumberDatabase;
 
-    var updates = {};
-    updates["ticket/ticket/"] = ticketNumberDatabase;
-
-    try {
-      firebase
-        .database()
-        .ref()
-        .update(updates)
-        .then(
-          Alert.alert(
-            "Complain Submitted: Ticket Number " +
-              (ticketNumberDatabase - 1).toString(),
-            "",
-            [
-              {
-                text: "OK",
-                onPress: () => {
-                  this.props.navigation.goBack();
+        firebase
+          .database()
+          .ref()
+          .update(updates)
+          .then(
+            Alert.alert(
+              "Complain Submitted: Ticket Number " +
+                (ticketNumberDatabase - 1).toString(),
+              "",
+              [
+                {
+                  text: "OK",
+                  onPress: () => {
+                    this.props.navigation.goBack();
+                  }
                 }
-              }
-            ],
-            { cancelable: false }
+              ],
+              { cancelable: false }
+            )
           )
-        )
-        .catch(function(error) {
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          console.log(errorCode);
-          console.log(errorMessage);
-        });
-    } catch (error) {
-      console.log(error);
-    }
+          .catch(function(error) {
+            console.log(error.message);
+          });
+      });
   };
 
   render() {
