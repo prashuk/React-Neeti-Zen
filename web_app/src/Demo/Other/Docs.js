@@ -11,7 +11,7 @@ class Docs extends Component {
                 <Row>
                     <Col>
                         <Card title='Quick Installation' isOption>
-                            <p> - First of all it's required to install latest Node and npm - <a href="https://nodejs.org/en/" target="_blank" rel="noopener noreferrer">nodejs</a></p>
+                            {/* <p> - First of all it's required to install latest Node and npm - <a href="https://nodejs.org/en/" target="_blank" rel="noopener noreferrer">nodejs</a></p>
                             <p> - Unzip <code>datta-able-react-lite.zip</code> file, Inside that directory you will find the <code>datta-able-react-lite/</code> folder</p>
                             <p> - Open your terminal/cmd then navigate to project directory <code>datta-able-react-lite/</code></p>
                             <p> - Install npm packages using command <code>'npm install'</code>,  this will install required node.js third-party plugins into the <code>node_modules/</code> folder.</p>
@@ -28,7 +28,7 @@ class Docs extends Component {
                                 <p>like, basename: '/project-folder-name'</p>
                             </div>
                             <p> - Build project using command <code>'npm run build'</code>, It will create <code>build/</code> folder inside datta-able-react-lite/ folder. </p>
-                            <p> - Your app is ready to be deployed. </p>
+                            <p> - Your app is ready to be deployed. </p> */}
                         </Card>
                     </Col>
                 </Row>

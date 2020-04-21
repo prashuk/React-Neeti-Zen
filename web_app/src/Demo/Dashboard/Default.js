@@ -22,13 +22,12 @@ class Dashboard extends React.Component {
                                 <div className="row d-flex align-items-center">
                                     <div className="col-9">
                                         <h3 className="f-w-300 d-flex align-items-center m-b-0">
-                                            <i className="feather icon-arrow-up text-c-green f-30 m-r-5" />{" "}
-                                            18
+                                            18 / 55
                                         </h3>
                                     </div>
 
                                     <div className="col-3 text-right">
-                                        <p className="m-b-0">50%</p>
+                                        <p className="m-b-0">32%</p>
                                     </div>
                                 </div>
                                 <div
@@ -38,8 +37,8 @@ class Dashboard extends React.Component {
                                     <div
                                         className="progress-bar progress-c-theme"
                                         role="progressbar"
-                                        style={{ width: "50%" }}
-                                        aria-valuenow="50"
+                                        style={{ width: "32%" }}
+                                        aria-valuenow="32"
                                         aria-valuemin="0"
                                         aria-valuemax="100"
                                     />
@@ -54,13 +53,12 @@ class Dashboard extends React.Component {
                                 <div className="row d-flex align-items-center">
                                     <div className="col-9">
                                         <h3 className="f-w-300 d-flex align-items-center m-b-0">
-                                            <i className="feather icon-arrow-down text-c-red f-30 m-r-5" />{" "}
-                                            26
+                                            26 / 55
                                         </h3>
                                     </div>
 
                                     <div className="col-3 text-right">
-                                        <p className="m-b-0">36%</p>
+                                        <p className="m-b-0">48%</p>
                                     </div>
                                 </div>
                                 <div
@@ -68,10 +66,10 @@ class Dashboard extends React.Component {
                                     style={{ height: "7px" }}
                                 >
                                     <div
-                                        className="progress-bar progress-c-theme2"
+                                        className="progress-bar progress-c-theme"
                                         role="progressbar"
-                                        style={{ width: "35%" }}
-                                        aria-valuenow="35"
+                                        style={{ width: "48%" }}
+                                        aria-valuenow="48"
                                         aria-valuemin="0"
                                         aria-valuemax="100"
                                     />
@@ -86,13 +84,12 @@ class Dashboard extends React.Component {
                                 <div className="row d-flex align-items-center">
                                     <div className="col-9">
                                         <h3 className="f-w-300 d-flex align-items-center m-b-0">
-                                            <i className="feather icon-arrow-up text-c-green f-30 m-r-5" />{" "}
-                                            9
+                                            11 / 55
                                         </h3>
                                     </div>
 
                                     <div className="col-3 text-right">
-                                        <p className="m-b-0">70%</p>
+                                        <p className="m-b-0">20%</p>
                                     </div>
                                 </div>
                                 <div
@@ -102,8 +99,8 @@ class Dashboard extends React.Component {
                                     <div
                                         className="progress-bar progress-c-theme"
                                         role="progressbar"
-                                        style={{ width: "70%" }}
-                                        aria-valuenow="70"
+                                        style={{ width: "20%" }}
+                                        aria-valuenow="20"
                                         aria-valuemin="0"
                                         aria-valuemax="100"
                                     />
@@ -130,11 +127,10 @@ class Dashboard extends React.Component {
                                             </td>
                                             <td>
                                                 <h6 className="mb-1">
-                                                    Isabella Christensen
+                                                    Ticket 1
                                                 </h6>
                                                 <p className="m-0">
-                                                    Lorem Ipsum is simply dummy
-                                                    text of…
+                                                    Expatriates
                                                 </p>
                                             </td>
                                             <td>
@@ -144,95 +140,17 @@ class Dashboard extends React.Component {
                                                 </h6>
                                             </td>
                                             <td>
-                                                <a
+                                                {/* <a
                                                     href={DEMO.BLANK_LINK}
                                                     className="label theme-bg2 text-white f-12"
                                                 >
                                                     Reject
-                                                </a>
+                                                </a> */}
                                                 <a
                                                     href={DEMO.BLANK_LINK}
                                                     className="label theme-bg text-white f-12"
                                                 >
-                                                    Approve
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr className="unread">
-                                            <td>
-                                                <img
-                                                    className="rounded-circle"
-                                                    style={{ width: "40px" }}
-                                                    src={avatar2}
-                                                    alt="activity-user"
-                                                />
-                                            </td>
-                                            <td>
-                                                <h6 className="mb-1">
-                                                    Mathilde Andersen
-                                                </h6>
-                                                <p className="m-0">
-                                                    Lorem Ipsum is simply dummy
-                                                    text of…
-                                                </p>
-                                            </td>
-                                            <td>
-                                                <h6 className="text-muted">
-                                                    <i className="fa fa-circle text-c-red f-10 m-r-15" />
-                                                    11 MAY 10:35
-                                                </h6>
-                                            </td>
-                                            <td>
-                                                <a
-                                                    href={DEMO.BLANK_LINK}
-                                                    className="label theme-bg2 text-white f-12"
-                                                >
-                                                    Reject
-                                                </a>
-                                                <a
-                                                    href={DEMO.BLANK_LINK}
-                                                    className="label theme-bg text-white f-12"
-                                                >
-                                                    Approve
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr className="unread">
-                                            <td>
-                                                <img
-                                                    className="rounded-circle"
-                                                    style={{ width: "40px" }}
-                                                    src={avatar3}
-                                                    alt="activity-user"
-                                                />
-                                            </td>
-                                            <td>
-                                                <h6 className="mb-1">
-                                                    Karla Sorensen
-                                                </h6>
-                                                <p className="m-0">
-                                                    Lorem Ipsum is simply dummy
-                                                    text of…
-                                                </p>
-                                            </td>
-                                            <td>
-                                                <h6 className="text-muted">
-                                                    <i className="fa fa-circle text-c-green f-10 m-r-15" />
-                                                    9 MAY 17:38
-                                                </h6>
-                                            </td>
-                                            <td>
-                                                <a
-                                                    href={DEMO.BLANK_LINK}
-                                                    className="label theme-bg2 text-white f-12"
-                                                >
-                                                    Reject
-                                                </a>
-                                                <a
-                                                    href={DEMO.BLANK_LINK}
-                                                    className="label theme-bg text-white f-12"
-                                                >
-                                                    Approve
+                                                    Assign To
                                                 </a>
                                             </td>
                                         </tr>
@@ -247,31 +165,30 @@ class Dashboard extends React.Component {
                                             </td>
                                             <td>
                                                 <h6 className="mb-1">
-                                                    Ida Jorgensen
+                                                    Ticket 1
                                                 </h6>
                                                 <p className="m-0">
-                                                    Lorem Ipsum is simply dummy
-                                                    text of…
+                                                    Expatriates
                                                 </p>
                                             </td>
                                             <td>
-                                                <h6 className="text-muted f-w-300">
-                                                    <i className="fa fa-circle text-c-red f-10 m-r-15" />
-                                                    19 MAY 12:56
+                                                <h6 className="text-muted">
+                                                    <i className="fa fa-circle text-c-green f-10 m-r-15" />
+                                                    11 MAY 12:56
                                                 </h6>
                                             </td>
                                             <td>
-                                                <a
+                                                {/* <a
                                                     href={DEMO.BLANK_LINK}
                                                     className="label theme-bg2 text-white f-12"
                                                 >
                                                     Reject
-                                                </a>
+                                                </a> */}
                                                 <a
                                                     href={DEMO.BLANK_LINK}
                                                     className="label theme-bg text-white f-12"
                                                 >
-                                                    Approve
+                                                    Assign To
                                                 </a>
                                             </td>
                                         </tr>
@@ -280,37 +197,36 @@ class Dashboard extends React.Component {
                                                 <img
                                                     className="rounded-circle"
                                                     style={{ width: "40px" }}
-                                                    src={avatar2}
+                                                    src={avatar1}
                                                     alt="activity-user"
                                                 />
                                             </td>
                                             <td>
                                                 <h6 className="mb-1">
-                                                    Albert Andersen
+                                                    Ticket 1
                                                 </h6>
                                                 <p className="m-0">
-                                                    Lorem Ipsum is simply dummy
-                                                    text of…
+                                                    Expatriates
                                                 </p>
                                             </td>
                                             <td>
                                                 <h6 className="text-muted">
-                                                    <i className="fa fa-circle text-c-green f-10 m-r-15" />
-                                                    21 July 12:56
+                                                    <i className="fa fa-circle text-c-red f-10 m-r-15" />
+                                                    11 MAY 12:56
                                                 </h6>
                                             </td>
                                             <td>
-                                                <a
+                                                {/* <a
                                                     href={DEMO.BLANK_LINK}
                                                     className="label theme-bg2 text-white f-12"
                                                 >
                                                     Reject
-                                                </a>
+                                                </a> */}
                                                 <a
                                                     href={DEMO.BLANK_LINK}
                                                     className="label theme-bg text-white f-12"
                                                 >
-                                                    Approve
+                                                    Assign To
                                                 </a>
                                             </td>
                                         </tr>
@@ -322,10 +238,12 @@ class Dashboard extends React.Component {
                     <Col md={10} xl={4}>
                         <Card>
                             <Card.Header>
-                                <Card.Title as="h5">Pie Basic Chart</Card.Title>
+                                <Card.Title as="h5">
+                                    Tickets Category Chart
+                                </Card.Title>
                             </Card.Header>
                             <Card.Body className="text-center">
-                                <PieBasicChart/>
+                                <PieBasicChart />
                             </Card.Body>
                         </Card>
                     </Col>
