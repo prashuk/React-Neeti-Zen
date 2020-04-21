@@ -8,6 +8,6 @@
 
 ### `npm run eject`
 
-### `npm run build` 
+### `npm run build`
 
 
