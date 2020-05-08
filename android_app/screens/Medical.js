@@ -3,6 +3,7 @@ import { StyleSheet, Dimensions, ScrollView, Alert } from "react-native";
 import { Block, Button, Text, Input } from "galio-framework";
 import RBSheet from "react-native-raw-bottom-sheet";
 import Sheet from "../components/Sheet";
+import Spinner from "react-native-loading-spinner-overlay";
 
 import * as firebase from "firebase";
 import "firebase/storage";
@@ -22,13 +23,14 @@ class Medical extends React.Component {
         aadharCard: "",
         imgAadhar: "",
         disease: "",
-        financialAmt: 0,
+        financialAmt: "",
         imgEstimate: "",
         assistanceEarlier: "",
         otherSourceFund: "",
         govEmployee: "",
         btnId: "",
         ticketNumberDatabase: 0,
+        spinner: false,
     };
 
     constructor(props) {
@@ -82,6 +84,29 @@ class Medical extends React.Component {
     };
 
     submitBtnPressed = async () => {
+        if (
+            this.state.patientName === "" ||
+            this.state.age === "" ||
+            this.state.occupation === "" ||
+            this.state.fatherName === "" ||
+            this.state.countFamily === "" ||
+            this.state.address === "" ||
+            this.state.imgAddProof === "" ||
+            this.state.telephoneNumber === "" ||
+            this.state.aadharCard === "" ||
+            this.state.imgAadhar === "" ||
+            this.state.disease === "" ||
+            this.state.financialAmt === "" ||
+            this.state.imgEstimate === "" ||
+            this.state.assistanceEarlier === "" ||
+            this.state.otherSourceFund === "" ||
+            this.state.govEmployee === ""
+        ) {
+            alert("Fill all fields");
+            return;
+        }
+
+        this.setState({ spinner: true });
         var ticketNumberDatabase = this.state.ticketNumberDatabase;
 
         var today = new Date();
@@ -159,6 +184,7 @@ class Medical extends React.Component {
                     .ref()
                     .update(updates)
                     .then(
+                        this.setState({ spinner: false }),
                         Alert.alert(
                             "Complain Submitted: Ticket Number " +
                                 ticketNumberDatabase.toString(),
@@ -185,7 +211,12 @@ class Medical extends React.Component {
             <ScrollView
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{ paddingBottom: 0 }}
+                keyboardShouldPersistTaps="always"
             >
+                <Spinner
+                    visible={this.state.spinner}
+                    textStyle={styles.spinnerTextStyle}
+                />
                 <Block flex style={styles.container}>
                     <Block style={styles.title}>
                         <Block>
@@ -254,6 +285,7 @@ class Medical extends React.Component {
                         <Block>
                             <Input
                                 placeholder="Telephone Number"
+                                type={"number-pad"}
                                 onChangeText={(text) => {
                                     this.setState({ telephoneNumber: text });
                                 }}
@@ -288,6 +320,7 @@ class Medical extends React.Component {
                         <Block>
                             <Input
                                 placeholder="Financial Assistance Amount"
+                                type={"number-pad"}
                                 onChangeText={(text) => {
                                     this.setState({ financialAmt: text });
                                 }}

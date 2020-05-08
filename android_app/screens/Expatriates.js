@@ -1,14 +1,12 @@
 import React from "react";
-
 import { StyleSheet, Dimensions, ScrollView, Alert } from "react-native";
 import { Block, Button, Text, Input } from "galio-framework";
 import { Dropdown } from "react-native-material-dropdown";
-
 import RBSheet from "react-native-raw-bottom-sheet";
 import Sheet from "../components/Sheet";
-
 import * as firebase from "firebase";
 import "firebase/storage";
+import Spinner from "react-native-loading-spinner-overlay";
 
 const { width } = Dimensions.get("screen");
 
@@ -64,6 +62,7 @@ class Expatriates extends React.Component {
         notes: "",
         btnId: "",
         ticketNumberDatabase: 0,
+        spinner: false,
     };
 
     constructor(props) {
@@ -162,6 +161,27 @@ class Expatriates extends React.Component {
     };
 
     submitBtnPressed = async () => {
+        if (
+            this.state.selectJob === "" ||
+            this.state.selectReason === "" ||
+            this.state.name === "" ||
+            this.state.addressPhone === "" ||
+            this.state.countryBirth === "" ||
+            this.state.countryResidence === "" ||
+            this.state.address === "" ||
+            this.state.imgPassport === "" ||
+            this.state.imgVisa === "" ||
+            this.state.imgAadhar === "" ||
+            this.state.email === "" ||
+            this.state.phoneNumber === 0 ||
+            this.state.employer === "" ||
+            this.state.notes === ""
+        ) {
+            alert("Fill all fields");
+            return;
+        }
+
+        this.setState({ spinner: true });
         var ticketNumberDatabase = this.state.ticketNumberDatabase;
 
         var today = new Date();
@@ -237,6 +257,7 @@ class Expatriates extends React.Component {
                     .ref()
                     .update(updates)
                     .then(
+                        this.setState({ spinner: false }),
                         Alert.alert(
                             "Complain Submitted: Ticket Number " +
                                 ticketNumberDatabase.toString(),
@@ -260,7 +281,14 @@ class Expatriates extends React.Component {
 
     render() {
         return (
-            <ScrollView showsVerticalScrollIndicator={false}>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                keyboardShouldPersistTaps="always"
+            >
+                <Spinner
+                    visible={this.state.spinner}
+                    textStyle={styles.spinnerTextStyle}
+                />
                 <Block flex style={styles.container}>
                     <Block style={styles.title}>
                         <Block>
@@ -381,6 +409,8 @@ class Expatriates extends React.Component {
                         <Block>
                             <Input
                                 placeholder="Email"
+                                type={"email-address"}
+                                autoCapitalize="none"
                                 onChangeText={(text) => {
                                     this.setState({ email: text });
                                 }}
@@ -389,6 +419,7 @@ class Expatriates extends React.Component {
                         <Block>
                             <Input
                                 placeholder="Phone Number"
+                                type={"number-pad"}
                                 onChangeText={(text) => {
                                     this.setState({ phoneNumber: text });
                                 }}
@@ -404,7 +435,7 @@ class Expatriates extends React.Component {
                         </Block>
                         <Block>
                             <Input
-                                placeholder="Notes (Problem in 100 words)"
+                                placeholder="Word Limit: 100 Words"
                                 onChangeText={(text) => {
                                     this.setState({ notes: text });
                                 }}

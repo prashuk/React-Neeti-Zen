@@ -59,7 +59,7 @@ function HomeStack(props) {
         options={{
           header: ({ navigation, scene }) => (
             <Header
-              title="Suggest"
+              title="Bring To Attention"
               back
               bgColor="#4f3961"
               titleColor="white"
@@ -113,7 +113,7 @@ function HomeStack(props) {
         options={{
           header: ({ navigation, scene }) => (
             <Header
-              title="Medical Emergency"
+              title="Medical"
               back
               bgColor="#4f3961"
               titleColor="white"
@@ -149,7 +149,7 @@ function HomeStack(props) {
         options={{
           header: ({ navigation, scene }) => (
             <Header
-              title="Event"
+              title="Invite"
               back
               bgColor="#4f3961"
               titleColor="white"

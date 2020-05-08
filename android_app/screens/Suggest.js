@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, Dimensions, ScrollView, Alert } from "react-native";
 import { Block, Button, Text, Input } from "galio-framework";
 import * as firebase from "firebase";
+import Spinner from "react-native-loading-spinner-overlay";
 
 const { height, width } = Dimensions.get("screen");
 
@@ -9,6 +10,7 @@ class Suggest extends React.Component {
     state = {
         complain: "",
         ticketNumberDatabase: 0,
+        spinner: false,
     };
 
     constructor(props) {
@@ -24,6 +26,12 @@ class Suggest extends React.Component {
     }
 
     submitBtnPressed = () => {
+        if (this.state.complain === "") {
+            alert("Fill all fields");
+            return;
+        }
+
+        this.setState({ spinner: true });
         var ticketNumberDatabase = this.state.ticketNumberDatabase;
 
         var today = new Date();
@@ -56,6 +64,7 @@ class Suggest extends React.Component {
                     .ref()
                     .update(updates)
                     .then(
+                        this.setState({ spinner: false }),
                         Alert.alert(
                             "Complain Submitted: Ticket Number " +
                                 ticketNumberDatabase.toString(),
@@ -82,7 +91,12 @@ class Suggest extends React.Component {
             <ScrollView
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{ paddingBottom: 0 }}
+                keyboardShouldPersistTaps="always"
             >
+                <Spinner
+                    visible={this.state.spinner}
+                    textStyle={styles.spinnerTextStyle}
+                />
                 <Block flex style={styles.container}>
                     <Block style={styles.title}>
                         <Block>
@@ -92,9 +106,9 @@ class Suggest extends React.Component {
                         </Block>
                         <Block>
                             <Input
-                                multiline
+                                multiline={true}
                                 style={{ height: 150 }}
-                                placeholder="Notes (Describe invitation in 100 words)"
+                                placeholder="Word Limit: 100 Words"
                                 onChangeText={(text) => {
                                     this.setState({ complain: text });
                                 }}

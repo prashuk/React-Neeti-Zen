@@ -3,6 +3,7 @@ import { Row, Col, Card, Table } from "react-bootstrap";
 
 import Aux from "../../hoc/_Aux";
 import DEMO from "../../store/constant";
+import NavSearch from "../../App/layout/AdminLayout/NavBar/NavLeft/NavSearch/index";
 
 import avatar1 from "../../assets/images/user/avatar-1.jpg";
 import avatar2 from "../../assets/images/user/avatar-2.jpg";
@@ -112,6 +113,11 @@ class Dashboard extends React.Component {
                         <Card className="Recent-Users">
                             <Card.Header>
                                 <Card.Title as="h5">Recent Tickets</Card.Title>
+                                <ul className="navbar-nav mr-auto">
+                                    <li className="nav-item">
+                                        <NavSearch />
+                                    </li>
+                                </ul>
                             </Card.Header>
                             <Card.Body className="px-0 py-2">
                                 <Table responsive hover>

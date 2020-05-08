@@ -1,9 +1,9 @@
 import React from "react";
 import { StyleSheet, Dimensions, ScrollView, Alert } from "react-native";
 import { Block, Button, Text, Input } from "galio-framework";
-
 import * as firebase from "firebase";
 import "firebase/storage";
+import Spinner from "react-native-loading-spinner-overlay";
 
 const { width } = Dimensions.get("screen");
 
@@ -11,6 +11,7 @@ class Parliament extends React.Component {
     state = {
         complain: "",
         ticketNumberDatabase: 0,
+        spinner: false,
     };
 
     constructor(props) {
@@ -26,6 +27,13 @@ class Parliament extends React.Component {
     }
 
     submitBtnPressed = () => {
+
+        if (this.state.complain === "") {
+            alert("Fill all fields");
+            return;
+        }
+        
+        this.setState({ spinner: true });
         var ticketNumberDatabase = this.state.ticketNumberDatabase;
 
         var today = new Date();
@@ -58,6 +66,7 @@ class Parliament extends React.Component {
                     .ref()
                     .update(updates)
                     .then(
+                        this.setState({ spinner: false }),
                         Alert.alert(
                             "Complain Submitted: Ticket Number " +
                                 ticketNumberDatabase.toString(),
@@ -84,7 +93,12 @@ class Parliament extends React.Component {
             <ScrollView
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{ paddingBottom: 0 }}
+                keyboardShouldPersistTaps="always"
             >
+                <Spinner
+                    visible={this.state.spinner}
+                    textStyle={styles.spinnerTextStyle}
+                />
                 <Block flex style={styles.container}>
                     <Block style={styles.title}>
                         <Block>
@@ -99,7 +113,7 @@ class Parliament extends React.Component {
                                 onChangeText={(text) => {
                                     this.setState({ complain: text });
                                 }}
-                                placeholder="Notes (Describe invitation in 100 words)"
+                                placeholder="Word Limit: 100 Words"
                             ></Input>
                         </Block>
                     </Block>

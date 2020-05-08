@@ -2,10 +2,9 @@ import React from "react";
 import { StyleSheet, Dimensions, ScrollView, Alert } from "react-native";
 import { Block, Button, Text, theme, Input } from "galio-framework";
 import { Dropdown } from "react-native-material-dropdown";
-
 import RBSheet from "react-native-raw-bottom-sheet";
 import Sheet from "../components/Sheet";
-
+import Spinner from "react-native-loading-spinner-overlay";
 import * as firebase from "firebase";
 import "firebase/storage";
 
@@ -53,6 +52,7 @@ class Event extends React.Component {
         notes: "",
         btnId: "",
         ticketNumberDatabase: 0,
+        spinner: false,
     };
 
     constructor(props) {
@@ -100,6 +100,21 @@ class Event extends React.Component {
     };
 
     submitBtnPressed = async () => {
+        if (
+            this.state.patientName === "" ||
+            this.state.address === "" ||
+            this.state.phone === "" ||
+            this.state.email === "" ||
+            this.state.occasion === "" ||
+            this.state.availability === "" ||
+            this.state.imgInvitation === "" ||
+            this.state.notes === ""
+        ) {
+            alert("Fill all fields");
+            return;
+        }
+
+        this.setState({ spinner: true });
         var ticketNumberDatabase = this.state.ticketNumberDatabase;
 
         var today = new Date();
@@ -149,6 +164,7 @@ class Event extends React.Component {
                     .ref()
                     .update(updates)
                     .then(
+                        this.setState({ spinner: false }),
                         Alert.alert(
                             "Complain Submitted: Ticket Number " +
                                 ticketNumberDatabase.toString(),
@@ -175,7 +191,12 @@ class Event extends React.Component {
             <ScrollView
                 showsVerticalScrollIndicator={true}
                 contentContainerStyle={{ paddingBottom: 0 }}
+                keyboardShouldPersistTaps="always"
             >
+                <Spinner
+                    visible={this.state.spinner}
+                    textStyle={styles.spinnerTextStyle}
+                />
                 <Block flex style={styles.container}>
                     <Block style={styles.title}>
                         <Block>
@@ -202,6 +223,7 @@ class Event extends React.Component {
                         <Block>
                             <Input
                                 placeholder="Phone Number"
+                                type={"number-pad"}
                                 onChangeText={(text) => {
                                     this.setState({ phone: text });
                                 }}
@@ -210,6 +232,7 @@ class Event extends React.Component {
                         <Block>
                             <Input
                                 placeholder="Email"
+                                type={"email-address"}
                                 onChangeText={(text) => {
                                     this.setState({ email: text });
                                 }}
@@ -252,7 +275,7 @@ class Event extends React.Component {
                         </Button>
                         <Block>
                             <Input
-                                placeholder="Notes (Describe invitation in 100 words)"
+                                placeholder="Word Limit: 100 Words"
                                 onChangeText={(text) => {
                                     this.setState({ notes: text });
                                 }}
