@@ -417,7 +417,6 @@ class ActiveScreen extends React.Component {
         } else {
             this.setState({ refresh: 0 });
         }
-        console.log(this.state.refresh);
     }
 
     render() {
@@ -833,6 +832,16 @@ class CompletedScreen extends React.Component {
     }
 }
 
+class UpdateScreen extends React.Component {
+    render() {
+        return (
+            <View>
+                <Text>Update Screen</Text>
+            </View>
+        );
+    }
+}
+
 const Tab = createBottomTabNavigator();
 
 function MyTabBar({ state, descriptors, navigation }) {
@@ -892,6 +901,8 @@ function MyTabBar({ state, descriptors, navigation }) {
                             name={
                                 label === "Home"
                                     ? "ios-home"
+                                    : label === "Update"
+                                    ? "ios-arrow-down"
                                     : label === "Active"
                                     ? "ios-open"
                                     : label === "In Progress"
@@ -936,6 +947,7 @@ class Home extends React.Component {
         return (
             <Tab.Navigator tabBar={(props) => <MyTabBar {...props} />}>
                 <Tab.Screen name="Home" component={HomeScreen} />
+                <Tab.Screen name="Update" component={UpdateScreen} />
                 <Tab.Screen name="Active" component={ActiveScreen} />
                 <Tab.Screen name="In Progress" component={InProgressScreen} />
                 <Tab.Screen name="Completed" component={CompletedScreen} />

@@ -306,7 +306,7 @@ function ProfileStack(props) {
         options={{
           header: ({ navigation, scene }) => (
             <Header
-              title="Profile"
+              title="Update Profile"
               navigation={navigation}
               scene={scene}
               bgColor="#4f3961"
