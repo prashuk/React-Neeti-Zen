@@ -7,6 +7,7 @@ import {
     View,
     SectionList,
     TouchableOpacity,
+    TouchableHighlight,
 } from "react-native";
 import { Block, Button, Text, Icon } from "galio-framework";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -411,6 +412,10 @@ class ActiveScreen extends React.Component {
         refresh: 0,
     };
 
+    constructor(props) {
+        super(props);
+    }
+
     componentDidMount() {
         if (this.state.refresh === 0) {
             this.setState({ refresh: 1 });
@@ -420,6 +425,7 @@ class ActiveScreen extends React.Component {
     }
 
     render() {
+        const { navigation } = this.props;
         const arrSuggestData = [];
         if (typeof global.dataForSuggest !== "undefined") {
             var k = 0;
@@ -536,7 +542,15 @@ class ActiveScreen extends React.Component {
         function Item({ title }) {
             return (
                 <View style={styles.item}>
-                    <Text style={styles.title}>{title}</Text>
+                    <TouchableOpacity
+                        onPress={() =>
+                            navigation.navigate("TicketDetails", {
+                                title: title,
+                            })
+                        }
+                    >
+                        <Text style={styles.title}>{title}</Text>
+                    </TouchableOpacity>
                 </View>
             );
         }
@@ -1000,10 +1014,10 @@ const styles = StyleSheet.create({
     },
     item: {
         backgroundColor: "#fff",
-        paddingTop: 5,
-        paddingBottom: 5,
+        paddingTop: 12,
+        paddingBottom: 12,
         paddingLeft: 30,
-        marginVertical: 2,
+        marginVertical: 1,
     },
     header: {
         fontSize: 17,

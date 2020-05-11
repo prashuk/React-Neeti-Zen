@@ -6,6 +6,8 @@ import {
     Dimensions,
     TouchableOpacity,
     Alert,
+    CheckBox,
+    View,
 } from "react-native";
 import { Block, Button, Text, theme, Input, Icon } from "galio-framework";
 import ApiKeys from "../constants/ApiKeys";
@@ -19,6 +21,7 @@ class Onboarding extends React.Component {
         super(props);
 
         this.state = {
+            spinner: false,
             name: "",
             email: "",
             age: "",
@@ -32,18 +35,24 @@ class Onboarding extends React.Component {
             formEnterOTP: 0,
             formForgotPwd: 0,
             loginFlag: 0,
-            spinner: false,
+            terms: false,
         };
-
-        this.selectForm = this.selectForm.bind(this);
 
         if (!firebase.apps.length) {
             firebase.initializeApp(ApiKeys.FirebaseConfig);
         }
     }
 
-    loginBtnPressed = () => {
+    updateCheckedState = () => {
+        this.setState({ terms: !this.state.terms });
+    };
+
+    updateState = async () => {
         this.setState({ spinner: true });
+    };
+
+    loginBtnPressed = () => {
+        this.updateState();
         const { navigation } = this.props;
 
         if (this.state.loginBtnText === "LOG IN") {
@@ -74,7 +83,8 @@ class Onboarding extends React.Component {
                 this.state.age === "" ||
                 this.state.place === "" ||
                 this.state.mobile === "" ||
-                this.state.password === ""
+                this.state.password === "" ||
+                this.state.terms === false
             ) {
                 this.setState({ spinner: false });
                 alert("Fill all fields");
@@ -127,9 +137,7 @@ class Onboarding extends React.Component {
             }
             this.showAlert();
         }
-
-        this.setState({ spinner: false });
-    }
+    };
 
     signupBtnPressed() {
         if (this.state.formSignup === 0) {
@@ -331,6 +339,7 @@ class Onboarding extends React.Component {
                     <Block>
                         <Input
                             placeholder="Mobile Number"
+                            type={"phone-pad"}
                             onChangeText={(text) =>
                                 this.setState({ mobile: text })
                             }
@@ -363,6 +372,16 @@ class Onboarding extends React.Component {
                                 ></Icon>
                             }
                         ></Input>
+                    </Block>
+                    <Block>
+                        <View style={styles.checkboxContainer}>
+                            <CheckBox
+                                value={this.state.terms}
+                                onValueChange={this.updateCheckedState}
+                                style={styles.checkbox}
+                            />
+                            <Text style={styles.label}>I agree to Terms & Condition and Privacy Policy</Text>
+                        </View>
                     </Block>
                 </Block>
             );
@@ -414,7 +433,7 @@ class Onboarding extends React.Component {
                             <Button
                                 style={styles.button}
                                 color="#4f3961"
-                                onPress={() => this.loginBtnPressed()}
+                                onPress={this.loginBtnPressed}
                                 textStyle={{ color: "white" }}
                             >
                                 {this.state.loginBtnText}
@@ -468,6 +487,15 @@ const styles = StyleSheet.create({
         height: 93,
         position: "relative",
         marginTop: "-35%",
+    },
+    checkboxContainer: {
+        flexDirection: "row",
+    },
+    checkbox: {
+        alignSelf: "center",
+    },
+    label: {
+        margin: 8,
     },
 });
 
