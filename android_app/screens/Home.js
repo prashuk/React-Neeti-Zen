@@ -7,7 +7,6 @@ import {
     View,
     SectionList,
     TouchableOpacity,
-    TouchableHighlight,
 } from "react-native";
 import { Block, Button, Text, Icon } from "galio-framework";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -15,6 +14,149 @@ import Modal, { ModalContent } from "react-native-modals";
 import * as firebase from "firebase";
 
 const { width, height } = Dimensions.get("screen");
+
+var refresh = function () {
+
+    var childKey;
+    var childData;
+    firebase
+        .database()
+        .ref("users/" + global.User.user.uid + "/complaints/")
+        .on("value", (snapshot) => {
+            snapshot.forEach((childSnapshot) => {
+                childKey = childSnapshot.key;
+                childData = Object.values(childSnapshot.val());
+                if (childKey === "suggest") {
+                    global.dataForSuggest = childData;
+                } else if (childKey === "expatriates") {
+                    global.dataForExpatriates = childData;
+                } else if (childKey === "medical") {
+                    global.dataForMedical = childData;
+                } else if (childKey === "other") {
+                    global.dataForOther = childData;
+                } else if (childKey === "event") {
+                    global.dataForEvent = childData;
+                } else if (childKey === "parliament") {
+                    global.dataForParliament = childData;
+                }
+            });
+        });
+
+    const arrSuggestData = [];
+    if (typeof global.dataForSuggest !== "undefined") {
+        var k = 0;
+        for (var i = 0; i < global.dataForSuggest.length; i++) {
+            if (
+                Object.values(global.dataForSuggest[i])[0]["status"] === "open"
+            ) {
+                arrSuggestData[k] =
+                    "Ticket Number: " +
+                    Object.values(global.dataForSuggest[i])[1];
+                k = k + 1;
+            }
+        }
+    }
+
+    const arrMedicalData = [];
+    if (typeof global.dataForMedical !== "undefined") {
+        var k = 0;
+        for (var i = 0; i < global.dataForMedical.length; i++) {
+            if (
+                Object.values(global.dataForMedical[i])[0]["status"] === "open"
+            ) {
+                arrMedicalData[k] =
+                    "Ticket Number: " +
+                    Object.values(global.dataForMedical[i])[1];
+                k = k + 1;
+            }
+        }
+    }
+
+    const arrExpData = [];
+    if (typeof global.dataForExpatriates !== "undefined") {
+        var k = 0;
+        for (var i = 0; i < global.dataForExpatriates.length; i++) {
+            if (
+                Object.values(global.dataForExpatriates[i])[0]["status"] ===
+                "open"
+            ) {
+                arrExpData[k] =
+                    "Ticket Number: " +
+                    Object.values(global.dataForExpatriates[i])[1];
+                k = k + 1;
+            }
+        }
+    }
+
+    const arrOtherData = [];
+    if (typeof global.dataForOther !== "undefined") {
+        var k = 0;
+        for (var i = 0; i < global.dataForOther.length; i++) {
+            if (Object.values(global.dataForOther[i])[0]["status"] === "open") {
+                arrOtherData[k] =
+                    "Ticket Number: " +
+                    Object.values(global.dataForOther[i])[1];
+                k = k + 1;
+            }
+        }
+    }
+
+    const arrEventData = [];
+    if (typeof global.dataForEvent !== "undefined") {
+        var k = 0;
+        for (var i = 0; i < global.dataForEvent.length; i++) {
+            if (Object.values(global.dataForEvent[i])[0]["status"] === "open") {
+                arrEventData[k] =
+                    "Ticket Number: " +
+                    Object.values(global.dataForEvent[i])[1];
+                k = k + 1;
+            }
+        }
+    }
+
+    const arrParliamentData = [];
+    if (typeof global.dataForParliament !== "undefined") {
+        var k = 0;
+        for (var i = 0; i < global.dataForParliament.length; i++) {
+            if (
+                Object.values(global.dataForParliament[i])[0]["status"] ===
+                "open"
+            ) {
+                arrParliamentData[k] =
+                    "Ticket Number: " +
+                    Object.values(global.dataForParliament[i])[1];
+                k = k + 1;
+            }
+        }
+    }
+
+    global.DATA = [
+        {
+            title: "Bring to Attention",
+            data: arrSuggestData,
+        },
+        {
+            title: "Medical",
+            data: arrMedicalData,
+        },
+        {
+            title: "Expatriates",
+            data: arrExpData,
+        },
+        {
+            title: "Other",
+            data: arrOtherData,
+        },
+        {
+            title: "Invite",
+            data: arrEventData,
+        },
+        {
+            title: "Raise in Parliament",
+            data: arrParliamentData,
+        },
+    ];
+};
 
 class HomeScreen extends React.Component {
     state = {
@@ -25,30 +167,7 @@ class HomeScreen extends React.Component {
     constructor(props) {
         super(props);
 
-        var childKey;
-        var childData;
-        firebase
-            .database()
-            .ref("users/" + global.User.user.uid + "/complaints/")
-            .on("value", (snapshot) => {
-                snapshot.forEach((childSnapshot) => {
-                    childKey = childSnapshot.key;
-                    childData = Object.values(childSnapshot.val());
-                    if (childKey === "suggest") {
-                        global.dataForSuggest = childData;
-                    } else if (childKey === "expatriates") {
-                        global.dataForExpatriates = childData;
-                    } else if (childKey === "medical") {
-                        global.dataForMedical = childData;
-                    } else if (childKey === "other") {
-                        global.dataForOther = childData;
-                    } else if (childKey === "event") {
-                        global.dataForEvent = childData;
-                    } else if (childKey === "parliament") {
-                        global.dataForParliament = childData;
-                    }
-                });
-            });
+        refresh();
     }
 
     render() {
@@ -409,7 +528,7 @@ class HomeScreen extends React.Component {
 
 class ActiveScreen extends React.Component {
     state = {
-        refresh: 0,
+        data: global.DATA,
     };
 
     constructor(props) {
@@ -417,128 +536,15 @@ class ActiveScreen extends React.Component {
     }
 
     componentDidMount() {
-        if (this.state.refresh === 0) {
-            this.setState({ refresh: 1 });
-        } else {
-            this.setState({ refresh: 0 });
-        }
+        setInterval(() => {
+            if (this.state.data !== global.DATA) {
+                this.setState({ data: global.DATA });
+            }
+        }, 5000);
     }
 
     render() {
         const { navigation } = this.props;
-        const arrSuggestData = [];
-        if (typeof global.dataForSuggest !== "undefined") {
-            var k = 0;
-            for (var i = 0; i < global.dataForSuggest.length; i++) {
-                if (
-                    Object.values(global.dataForSuggest[i])[0]["status"] ===
-                    "open"
-                ) {
-                    arrSuggestData[k] =
-                        "Ticket Number: " +
-                        Object.values(global.dataForSuggest[i])[1];
-                    k = k + 1;
-                }
-            }
-        }
-
-        const arrMedicalData = [];
-        if (typeof global.dataForMedical !== "undefined") {
-            for (var i = 0; i < global.dataForMedical.length; i++) {
-                if (
-                    Object.values(global.dataForMedical[i])[0]["status"] ===
-                    "open"
-                ) {
-                    arrMedicalData[i] =
-                        "Ticket Number: " +
-                        Object.values(global.dataForOther[i])[1];
-                }
-            }
-        }
-
-        const arrExpData = [];
-        if (typeof global.dataForExpatriates !== "undefined") {
-            for (var i = 0; i < global.dataForExpatriates.length; i++) {
-                if (
-                    Object.values(global.dataForExpatriates[i])[0]["status"] ===
-                    "open"
-                ) {
-                    arrExpData[i] =
-                        "Ticket Number: " +
-                        Object.values(global.dataForExpatriates[i])[1];
-                }
-            }
-        }
-
-        const arrOtherData = [];
-        if (typeof global.dataForOther !== "undefined") {
-            for (var i = 0; i < global.dataForOther.length; i++) {
-                if (
-                    Object.values(global.dataForOther[i])[0]["status"] ===
-                    "open"
-                ) {
-                    arrOtherData[i] =
-                        "Ticket Number: " +
-                        Object.values(global.dataForOther[i])[1];
-                }
-            }
-        }
-
-        const arrEventData = [];
-        if (typeof global.dataForEvent !== "undefined") {
-            for (var i = 0; i < global.dataForEvent.length; i++) {
-                if (
-                    Object.values(global.dataForEvent[i])[0]["status"] ===
-                    "open"
-                ) {
-                    arrEventData[i] =
-                        "Ticket Number: " +
-                        Object.values(global.dataForEvent[i])[1];
-                }
-            }
-        }
-
-        const arrParliamentData = [];
-        if (typeof global.dataForParliament !== "undefined") {
-            for (var i = 0; i < global.dataForParliament.length; i++) {
-                if (
-                    Object.values(global.dataForParliament[i])[0]["status"] ===
-                    "open"
-                ) {
-                    arrParliamentData[i] =
-                        "Ticket Number: " +
-                        Object.values(global.dataForParliament[i])[1];
-                }
-            }
-        }
-
-        const DATA = [
-            {
-                title: "Bring to Attention",
-                data: arrSuggestData,
-            },
-            {
-                title: "Medical",
-                data: arrMedicalData,
-            },
-            {
-                title: "Expatriates",
-                data: arrExpData,
-            },
-            {
-                title: "Other",
-                data: arrOtherData,
-            },
-            {
-                title: "Invite",
-                data: arrEventData,
-            },
-            {
-                title: "Raise in Parliament",
-                data: arrParliamentData,
-            },
-        ];
-
         function Item({ title }) {
             return (
                 <View style={styles.item}>
@@ -558,7 +564,7 @@ class ActiveScreen extends React.Component {
         return (
             <View>
                 <SectionList
-                    sections={DATA}
+                    sections={this.state.data}
                     keyExtractor={(item, index) => item + index}
                     renderItem={({ item }) => <Item title={item} />}
                     renderSectionHeader={({ section: { title } }) => (
@@ -597,7 +603,7 @@ class InProgressScreen extends React.Component {
                 ) {
                     arrMedicalData[i] =
                         "Ticket Number: " +
-                        Object.values(global.dataForOther[i])[1];
+                        Object.values(global.dataForMedical[i])[1];
                 }
             }
         }
@@ -735,7 +741,7 @@ class CompletedScreen extends React.Component {
                 ) {
                     arrMedicalData[i] =
                         "Ticket Number: " +
-                        Object.values(global.dataForOther[i])[1];
+                        Object.values(global.dataForMedical[i])[1];
                 }
             }
         }
@@ -879,6 +885,8 @@ function MyTabBar({ state, descriptors, navigation }) {
                 const isFocused = state.index === index;
 
                 const onPress = () => {
+                    refresh();
+                    
                     const event = navigation.emit({
                         type: "tabPress",
                         target: route.key,
@@ -947,6 +955,8 @@ function MyTabBar({ state, descriptors, navigation }) {
         </View>
     );
 }
+
+var x = 1;
 
 class Home extends React.Component {
     state = {

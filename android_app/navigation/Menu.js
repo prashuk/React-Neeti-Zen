@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, StyleSheet, Image } from "react-native";
+import { ScrollView, StyleSheet, Image, Text } from "react-native";
 import { Block } from "galio-framework";
 
 import { DrawerItem as DrawerCustomItem } from "../components";
@@ -21,6 +21,7 @@ function CustomDrawerContent({
         "Privacy Policy",
         "Sign Off",
     ];
+
     return (
         <Block
             style={styles.container}

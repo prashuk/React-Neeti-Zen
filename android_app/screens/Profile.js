@@ -54,8 +54,6 @@ class Profile extends React.Component {
             return;
         }
 
-        console.log(this.state.mobile);
-
         firebase
             .database()
             .ref("users/" + global.User.user.uid + "/profile/")
@@ -84,8 +82,6 @@ class Profile extends React.Component {
                 this.setState({ spinner: false });
                 alert(error.message);
             });
-
-        console.log("hel");
     };
 
     render() {

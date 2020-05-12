@@ -135,7 +135,17 @@ class Onboarding extends React.Component {
                 alert("Enter email id");
                 return;
             }
-            this.showAlert();
+            firebase
+                .auth()
+                .sendPasswordResetEmail(this.state.email)
+                .then((user) => {
+                    this.setState({ spinner: false });
+                    alert("Please check your email");
+                })
+                .catch((error) => {
+                    this.setState({ spinner: false });
+                    alert(error);
+                });
         }
     };
 
@@ -380,13 +390,14 @@ class Onboarding extends React.Component {
                                 onValueChange={this.updateCheckedState}
                                 style={styles.checkbox}
                             />
-                            <Text style={styles.label}>I agree to Terms & Condition and Privacy Policy</Text>
+                            <Text style={styles.label}>
+                                I agree to Terms & Condition and Privacy Policy
+                            </Text>
                         </View>
                     </Block>
                 </Block>
             );
         }
-
         if (this.state.formForgotPwd === 1) {
             return (
                 <Block style={{ padding: 20 }}>
