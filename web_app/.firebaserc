@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "default": "neeti-zen",
+    "neeti-zen": "neeti-zen",
+    "neeti-zen-alias": "neeti-zen"
+  }
+}

@@ -1,19 +1,83 @@
 export default {
     items: [
         {
-            id: 'navigation',
-            title: 'HOME',
-            type: 'group',
-            icon: 'icon-navigation',
+            id: "navigation",
+            title: "HOME",
+            type: "group",
+            icon: "icon-navigation",
             children: [
                 {
-                    id: 'dashboard',
-                    title: 'DASHBOARD',
-                    type: 'item',
-                    url: '/dashboard/default',
-                    icon: 'feather icon-home',
-                }
-            ]
+                    id: "dashboard",
+                    title: "DASHBOARD",
+                    type: "item",
+                    url: "/dashboard/default",
+                    icon: "feather icon-home",
+                },
+            ],
+        },
+        {
+            id: "navigation",
+            title: "UPLOAD CENTER",
+            type: "group",
+            icon: "icon-navigation",
+            children: [
+                {
+                    id: "sample-page1",
+                    title: "JAN TV",
+                    type: "item",
+                    url: "/sample-page1",
+                    classes: "nav-item",
+                    icon: "feather icon-sidebar",
+                },
+                {
+                    id: "sample-page2",
+                    title: "MPLAD",
+                    type: "item",
+                    url: "/sample-page2",
+                    classes: "nav-item",
+                    icon: "feather icon-sidebar",
+                },
+                {
+                    id: "sample-page3",
+                    title: "Update",
+                    type: "item",
+                    url: "/sample-page3",
+                    classes: "nav-item",
+                    icon: "feather icon-sidebar",
+                },
+            ],
+        },
+        {
+            id: "navigation",
+            title: "INVITES",
+            type: "group",
+            icon: "icon-navigation",
+            children: [
+                {
+                    id: "sample-page4",
+                    title: "Calender",
+                    type: "item",
+                    url: "/sample-page4",
+                    classes: "nav-item",
+                    icon: "feather icon-sidebar",
+                },
+            ],
+        },
+        {
+            id: "navigation",
+            title: "MODERATOR",
+            type: "group",
+            icon: "icon-navigation",
+            children: [
+                {
+                    id: "sample-page5",
+                    title: "Moderators",
+                    type: "item",
+                    url: "/sample-page5",
+                    classes: "nav-item",
+                    icon: "feather icon-sidebar",
+                },
+            ],
         },
         // {
         //     id: 'ui-element',
@@ -67,42 +131,42 @@ export default {
         //         }
         //     ]
         // },
-        {
-            id: 'ui-forms',
-            title: 'TASK',
-            type: 'group',
-            icon: 'icon-group',
-            children: [
-                {
-                    id: 'form-basic',
-                    title: 'JAN TV',
-                    type: 'item',
-                    url: '/forms/form-basic',
-                    icon: 'feather icon-file-text'
-                },
-                {
-                    id: 'bootstrap',
-                    title: 'MP LAD',
-                    type: 'item',
-                    icon: 'feather icon-server',
-                    url: '/tables/bootstrap'
-                },
-                {
-                    id: 'bootstrap',
-                    title: 'DATE AVAILABLE',
-                    type: 'item',
-                    icon: 'feather icon-server',
-                    url: '/tables/bootstrap'
-                },
-                {
-                    id: 'bootstrap',
-                    title: 'SPEECHES',
-                    type: 'item',
-                    icon: 'feather icon-server',
-                    url: '/tables/bootstrap'
-                }
-            ]
-        },
+        // {
+        //     id: "ui-forms",
+        //     title: "TASK",
+        //     type: "group",
+        //     icon: "icon-group",
+        //     children: [
+        //         {
+        //             id: "form-basic",
+        //             title: "JAN TV",
+        //             type: "item",
+        //             url: "/forms/form-basic",
+        //             icon: "feather icon-file-text",
+        //         },
+        //         {
+        //             id: "bootstrap",
+        //             title: "MP LAD",
+        //             type: "item",
+        //             icon: "feather icon-server",
+        //             url: "/tables/bootstrap",
+        //         },
+        //         {
+        //             id: "bootstrap",
+        //             title: "DATE AVAILABLE",
+        //             type: "item",
+        //             icon: "feather icon-server",
+        //             url: "/tables/bootstrap",
+        //         },
+        //         {
+        //             id: "bootstrap",
+        //             title: "SPEECHES",
+        //             type: "item",
+        //             icon: "feather icon-server",
+        //             url: "/tables/bootstrap",
+        //         },
+        //     ],
+        // },
         // {
         //     id: 'chart-maps',
         //     title: 'Chart & Maps',
@@ -159,7 +223,6 @@ export default {
         //                 }
         //             ]
         //         },
-
         //         {
         //             id: 'sample-page',
         //             title: 'Sample Page',
@@ -246,5 +309,5 @@ export default {
         //         }*/
         //     ]
         // }
-    ]
-}
+    ],
+};

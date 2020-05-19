@@ -12,9 +12,9 @@ const navLogo = (props) => {
         <Aux>
             <div className="navbar-brand header-logo">
                 <a href={DEMO.BLANK_LINK} className="b-brand">
-                    <div className="b-bg">
-                        {/* <i className="feather icon-trending-up" /> */}
-                    </div>
+                    {/* <div className="b-bg">
+                        <i className="feather icon-trending-up" />
+                    </div> */}
                     <span className="b-title">Neeti Zen</span>
                 </a>
                 <a

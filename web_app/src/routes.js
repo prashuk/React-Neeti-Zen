@@ -27,7 +27,7 @@ const OtherSamplePage = React.lazy(() => import('./Demo/Other/SamplePage'));
 const OtherDocs = React.lazy(() => import('./Demo/Other/Docs'));
 
 const routes = [
-    { path: '/dashboard/default', exact: true, name: 'Default', component: DashboardDefault },
+    { path: '/', exact: true, name: 'Default', component: DashboardDefault },
     { path: '/basic/button', exact: true, name: 'Basic Button', component: UIBasicButton },
     { path: '/basic/badges', exact: true, name: 'Basic Badges', component: UIBasicBadges },
     { path: '/basic/breadcrumb-paging', exact: true, name: 'Basic Breadcrumb Pagination', component: UIBasicBreadcrumbPagination },
@@ -38,7 +38,11 @@ const routes = [
     { path: '/tables/bootstrap', exact: true, name: 'Bootstrap Table', component: BootstrapTable },
     { path: '/charts/nvd3', exact: true, name: 'Nvd3 Chart', component: Nvd3Chart },
     { path: '/maps/google-map', exact: true, name: 'Google Map', component: GoogleMap },
-    { path: '/sample-page', exact: true, name: 'Sample Page', component: OtherSamplePage },
+    { path: '/sample-page1', exact: true, name: 'Sample Page', component: OtherSamplePage },
+    { path: '/sample-page2', exact: true, name: 'Sample Page', component: OtherSamplePage },
+    { path: '/sample-page3', exact: true, name: 'Sample Page', component: OtherSamplePage },
+    { path: '/sample-page4', exact: true, name: 'Sample Page', component: OtherSamplePage },
+    { path: '/sample-page5', exact: true, name: 'Sample Page', component: OtherSamplePage },
     { path: '/docs', exact: true, name: 'Documentation', component: OtherDocs },
 ];
 
