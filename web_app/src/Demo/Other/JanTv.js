@@ -2,21 +2,23 @@ import React, { Component } from "react";
 import { Row, Col, Form, Button, Card, Table } from "react-bootstrap";
 import Aux from "../../hoc/_Aux";
 import MainCard from "../../App/components/MainCard";
+import ApiKeys from "../../store/ApiKeys";
 import * as firebase from "firebase";
 import { getModerators } from "../../store/data";
-import ApiKeys from "../../store/ApiKeys";
 
-class AddModerator extends Component {
+class JanTv extends Component {
   state = {
     name: "",
     email: "",
+    link: "",
+    note: "",
     moderatorsEmail: [],
     moderatorsName: [],
   };
 
   constructor(props) {
     super(props);
-    
+
     if (!firebase.apps.length) {
       firebase.initializeApp(ApiKeys.FirebaseConfig);
     }
@@ -51,59 +53,48 @@ class AddModerator extends Component {
     return firebase.database().ref().update(updates);
   }
 
-  showModerator = () => {
-    var updateData = getModerators();
-    updateData.then((result) => {
-      this.setState({
-        moderatorsEmail: Object.keys(result),
-        moderatorsName: Object.values(result),
-      });
-    });
-  };
-
-  showEmail = () => {
-    return this.state.moderatorsEmail.map((email) => <tr>{email}</tr>);
-  };
-
-  showName = () => {
-    return this.state.moderatorsName.map((name) => <tr>{name}</tr>);
-  };
+  showModerator = () => {};
 
   render() {
     return (
       <Aux>
         <Row>
           <Col>
-            <MainCard title="Add Moderator">
+            <MainCard title="Jan TV Link" isOption>
               <Card.Body>
                 <Row>
                   <Col md={6}>
                     <Form>
+                      <Form.Group controlId="exampleForm.ControlSelect1">
+                        <Form.Label>Upload Type</Form.Label>
+                        <Form.Control as="select">
+                          <option>Parliament</option>
+                          <option>Other</option>
+                        </Form.Control>
+                      </Form.Group>
                       <Form.Group controlId="exampleForm.ControlInput1">
-                        <Form.Label>Name</Form.Label>
+                        <Form.Label>Link</Form.Label>
                         <Form.Control
                           type="text"
-                          placeholder="Name"
+                          placeholder="Link"
                           onChange={(text) => {
-                            this.setState({ name: text.target.value });
+                            this.setState({ link: text.target.value });
                           }}
-                          value={this.state.name}
+                          value={this.state.link}
                         />
                       </Form.Group>
-                      <Form.Group controlId="formBasicEmail">
-                        <Form.Label>Email</Form.Label>
+                      <Form.Group controlId="exampleForm.ControlTextarea1">
+                        <Form.Label>Notes</Form.Label>
                         <Form.Control
-                          type="email"
-                          placeholder="Email"
+                          type="text"
+                          placeholder="Word Limit: 100 words"
                           onChange={(text) => {
-                            this.setState({ email: text.target.value });
+                            this.setState({ note: text.target.value });
                           }}
-                          value={this.state.email}
+                          as="textarea"
+                          rows="5"
+                          value={this.state.note}
                         />
-                      </Form.Group>
-                      <Form.Group controlId="formBasicPassword">
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control type="password" placeholder="Password" />
                       </Form.Group>
                       <Button variant="primary" onClick={this.submitHandle}>
                         Submit
@@ -113,17 +104,22 @@ class AddModerator extends Component {
                 </Row>
               </Card.Body>
             </MainCard>
-            <MainCard title="Moderators List">
+            <MainCard title="Past Uploads">
               <Table responsive>
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                  </tr>
-                </thead>
                 <tbody>
-                  <td>{this.showName()}</td>
-                  <td>{this.showEmail()}</td>
+                  <tr>
+                    <tr>Type: </tr>
+                    <tr>Link: </tr>
+                    <tr>Notes: </tr>
+                  </tr>
+                </tbody>
+                <tbody>
+                  <br />
+                  <tr>
+                    <tr>Type: </tr>
+                    <tr>Link: </tr>
+                    <tr>Notes: </tr>
+                  </tr>
                 </tbody>
               </Table>
             </MainCard>
@@ -134,4 +130,4 @@ class AddModerator extends Component {
   }
 }
 
-export default AddModerator;
+export default JanTv;
