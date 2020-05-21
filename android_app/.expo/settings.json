@@ -4,5 +4,5 @@
   "dev": true,
   "minify": false,
   "urlRandomness": "tx-ip4",
-  "https": true
+  "https": false
 }

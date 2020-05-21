@@ -24,6 +24,7 @@ const Nvd3Chart = React.lazy(() => import('./Demo/Charts/Nvd3Chart/index'));
 const GoogleMap = React.lazy(() => import('./Demo/Maps/GoogleMap/index'));
 
 const OtherSamplePage = React.lazy(() => import('./Demo/Other/SamplePage'));
+const AddModerator = React.lazy(() => import('./Demo/Other/AddModerator'));
 const OtherDocs = React.lazy(() => import('./Demo/Other/Docs'));
 
 const routes = [
@@ -42,7 +43,7 @@ const routes = [
     { path: '/sample-page2', exact: true, name: 'Sample Page', component: OtherSamplePage },
     { path: '/sample-page3', exact: true, name: 'Sample Page', component: OtherSamplePage },
     { path: '/sample-page4', exact: true, name: 'Sample Page', component: OtherSamplePage },
-    { path: '/sample-page5', exact: true, name: 'Sample Page', component: OtherSamplePage },
+    { path: '/add-moderator', exact: true, name: 'Sample Page', component: AddModerator },
     { path: '/docs', exact: true, name: 'Documentation', component: OtherDocs },
 ];
 
