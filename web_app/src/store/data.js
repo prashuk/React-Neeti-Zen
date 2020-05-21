@@ -1,8 +1,6 @@
 import * as firebase from "firebase";
 
 export async function getData() {
-  var childKey;
-  var childData;
   let data = new Map();
   await firebase
     .database()
@@ -10,8 +8,6 @@ export async function getData() {
     .once("value")
     .then(function (snapshot) {
       snapshot.forEach((childSnapshot) => {
-        childKey = childSnapshot.key;
-        childData = Object.values(childSnapshot.val());
         childSnapshot.forEach((actualSnapshot) => {
           var userData = Object.values(actualSnapshot.val());
           data.set(userData[1], userData[0]);
