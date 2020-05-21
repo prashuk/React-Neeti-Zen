@@ -160,7 +160,7 @@ class Dashboard extends React.Component {
   showModerator = () => {
     var updateData = getModerators();
     updateData.then((result) => {
-      this.setState({ moderators: result });
+      this.setState({ moderators: Object.values(result) });
     });
   };
 
@@ -171,7 +171,7 @@ class Dashboard extends React.Component {
 
   handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = this.rows.map((n) => n.ticket);
+      const newSelecteds = this.state.rows.map((n) => n.ticket);
       this.setState({ selected: newSelecteds });
       return;
     }

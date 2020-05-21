@@ -22,14 +22,14 @@ export async function getData() {
 }
 
 export async function getModerators() {
-  let data = [];
+  let data = {};
   await firebase
     .database()
     .ref("loginType/moderator/")
     .once("value")
     .then(function (snapshot) {
       snapshot.forEach((childSnapshot) => {
-        data.push(Object.values(childSnapshot.val()));
+        data[childSnapshot.val()["email"]] = childSnapshot.val()["name"];
       });
     });
   return data;
