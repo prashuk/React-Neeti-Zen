@@ -30,3 +30,31 @@ export async function getModerators() {
     });
   return data;
 }
+
+export async function getJanTv() {
+  let data = {};
+  await firebase
+    .database()
+    .ref("jantv/")
+    .once("value")
+    .then(function (snapshot) {
+      snapshot.forEach((childSnapshot) => {
+        data[childSnapshot.key] = childSnapshot.val();
+      });
+    });
+  return data;
+}
+
+export async function getUpdate() {
+  let data = {};
+  await firebase
+    .database()
+    .ref("update/")
+    .once("value")
+    .then(function (snapshot) {
+      snapshot.forEach((childSnapshot) => {
+        data[childSnapshot.key] = childSnapshot.val();
+      });
+    });
+  return data;
+}

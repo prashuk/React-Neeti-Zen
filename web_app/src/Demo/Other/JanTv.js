@@ -4,16 +4,14 @@ import Aux from "../../hoc/_Aux";
 import MainCard from "../../App/components/MainCard";
 import ApiKeys from "../../store/ApiKeys";
 import * as firebase from "firebase";
-import { getModerators } from "../../store/data";
+import { getJanTv } from "../../store/data";
 
 class JanTv extends Component {
   state = {
-    name: "",
-    email: "",
+    type: "Parliament",
     link: "",
     note: "",
-    moderatorsEmail: [],
-    moderatorsName: [],
+    jantvData: [],
   };
 
   constructor(props) {
@@ -23,51 +21,65 @@ class JanTv extends Component {
       firebase.initializeApp(ApiKeys.FirebaseConfig);
     }
 
-    this.showModerator();
+    this.showJantv();
   }
 
   submitHandle = () => {
-    if (this.state.email === "" || this.state.name === "") {
+    if (
+      this.state.type === "" ||
+      this.state.link === "" ||
+      this.state.note === ""
+    ) {
       alert("Please all fields!");
       return;
     }
-    this.writeNewPost(this.state.email, this.state.name);
-    alert("Moderator Added!");
-    this.setState({ name: "", email: "" });
+    this.writeNewPost(this.state.type, this.state.link, this.state.note);
+    alert("JAN TV Data Uploaded!");
+    this.setState({ type: "", link: "", note: "" });
   };
 
-  writeNewPost(email, name) {
+  writeNewPost(type, link, note) {
     var postData = {
-      name: name,
-      email: email,
+      type: type,
+      link: link,
+      note: note,
     };
 
-    var newPostKey = firebase
-      .database()
-      .ref()
-      .child("loginType/moderator/")
-      .push().key;
+    var newPostKey = firebase.database().ref().child("jantv/").push().key;
     var updates = {};
-    updates["loginType/moderator/" + newPostKey] = postData;
+    updates["jantv/" + newPostKey] = postData;
 
     return firebase.database().ref().update(updates);
   }
 
-  showModerator = () => {};
+  showJantv = () => {
+    var updatedData = getJanTv();
+    updatedData.then((result) => {
+      this.setState({
+        jantvData: Object.values(result),
+      });
+    });
+  };
 
   render() {
     return (
       <Aux>
         <Row>
           <Col>
-            <MainCard title="Jan TV Link" isOption>
+            <MainCard title="Jan TV Link">
               <Card.Body>
                 <Row>
                   <Col md={6}>
                     <Form>
                       <Form.Group controlId="exampleForm.ControlSelect1">
                         <Form.Label>Upload Type</Form.Label>
-                        <Form.Control as="select">
+                        <Form.Control
+                          as="select"
+                          onChange={(text) => {
+                            this.setState({ type: text.target.value });
+                          }}
+                          value={this.state.type}
+                        >
                           <option>Parliament</option>
                           <option>Other</option>
                         </Form.Control>
@@ -106,21 +118,23 @@ class JanTv extends Component {
             </MainCard>
             <MainCard title="Past Uploads">
               <Table responsive>
-                <tbody>
-                  <tr>
-                    <tr>Type: </tr>
-                    <tr>Link: </tr>
-                    <tr>Notes: </tr>
-                  </tr>
-                </tbody>
-                <tbody>
-                  <br />
-                  <tr>
-                    <tr>Type: </tr>
-                    <tr>Link: </tr>
-                    <tr>Notes: </tr>
-                  </tr>
-                </tbody>
+                {this.state.jantvData.map((res) => {
+                  return (
+                    <tbody key={res.link}>
+                      <br />
+                      <tr>
+                        <tr>Type: {res.type}</tr>
+                        <tr>
+                          Link:{" "}
+                          <a href={res.link} target="_blank">
+                            {res.link}
+                          </a>
+                        </tr>
+                        <tr>Note: {res.note}</tr>
+                      </tr>
+                    </tbody>
+                  );
+                })}
               </Table>
             </MainCard>
           </Col>

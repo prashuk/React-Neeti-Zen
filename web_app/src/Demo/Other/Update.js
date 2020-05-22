@@ -4,16 +4,13 @@ import Aux from "../../hoc/_Aux";
 import MainCard from "../../App/components/MainCard";
 import ApiKeys from "../../store/ApiKeys";
 import * as firebase from "firebase";
-import { getModerators } from "../../store/data";
+import { getUpdate } from "../../store/data";
 
 class Update extends Component {
   state = {
-    name: "",
-    email: "",
-    link: "",
     note: "",
-    moderatorsEmail: [],
-    moderatorsName: [],
+    link: "",
+    updateData: [],
   };
 
   constructor(props) {
@@ -23,44 +20,47 @@ class Update extends Component {
       firebase.initializeApp(ApiKeys.FirebaseConfig);
     }
 
-    this.showModerator();
+    this.showUpdate();
   }
 
   submitHandle = () => {
-    if (this.state.email === "" || this.state.name === "") {
+    if (this.state.note === "") {
       alert("Please all fields!");
       return;
     }
-    this.writeNewPost(this.state.email, this.state.name);
-    alert("Moderator Added!");
-    this.setState({ name: "", email: "" });
+    this.writeNewPost(this.state.note, this.state.link);
+    alert("Update Data Uploaded!");
+    this.setState({ note: "", link: "" });
   };
 
-  writeNewPost(email, name) {
+  writeNewPost(note, link) {
     var postData = {
-      name: name,
-      email: email,
+      note: note,
+      link: link,
     };
 
-    var newPostKey = firebase
-      .database()
-      .ref()
-      .child("loginType/moderator/")
-      .push().key;
+    var newPostKey = firebase.database().ref().child("update/").push().key;
     var updates = {};
-    updates["loginType/moderator/" + newPostKey] = postData;
+    updates["update/" + newPostKey] = postData;
 
     return firebase.database().ref().update(updates);
   }
 
-  showModerator = () => {};
+  showUpdate = () => {
+    var updatedData = getUpdate();
+    updatedData.then((result) => {
+      this.setState({
+        updateData: Object.values(result),
+      });
+    });
+  };
 
   render() {
     return (
       <Aux>
         <Row>
           <Col>
-            <MainCard title="Update Link" isOption>
+            <MainCard title="Update Link">
               <Card.Body>
                 <Row>
                   <Col md={6}>
@@ -99,19 +99,22 @@ class Update extends Component {
             </MainCard>
             <MainCard title="Past Updates">
               <Table responsive>
-                <tbody>
-                  <tr>
-                    <tr>Notes: </tr>
-                    <tr>Link: </tr>
-                  </tr>
-                </tbody>
-                <tbody>
-                  <br />
-                  <tr>
-                    <tr>Notes: </tr>
-                    <tr>Link: </tr>
-                  </tr>
-                </tbody>
+                {this.state.updateData.map((res) => {
+                  return (
+                    <tbody key={res.link}>
+                      <br />
+                      <tr>
+                        <tr>Notes: {res.note}</tr>
+                        <tr>
+                          Link:{" "}
+                          <a href={res.link} target="_blank">
+                            {res.link}
+                          </a>
+                        </tr>
+                      </tr>
+                    </tbody>
+                  );
+                })}
               </Table>
             </MainCard>
           </Col>
