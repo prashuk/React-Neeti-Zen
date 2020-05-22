@@ -58,3 +58,17 @@ export async function getUpdate() {
     });
   return data;
 }
+
+export async function getMplad() {
+  let data = {};
+  await firebase
+    .database()
+    .ref("mplad/")
+    .once("value")
+    .then(function (snapshot) {
+      snapshot.forEach((childSnapshot) => {
+        data[childSnapshot.key] = childSnapshot.val();
+      });
+    });
+  return data;
+}
