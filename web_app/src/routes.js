@@ -22,6 +22,7 @@ const Mplad = React.lazy(() => import('./Demo/Other/Mplad'));
 const Update = React.lazy(() => import('./Demo/Other/Update'));
 const Calendar = React.lazy(() => import('./Demo/Other/Calendar'));
 const AddModerator = React.lazy(() => import('./Demo/Other/AddModerator'));
+const TicketInfo = React.lazy(() => import('./Demo/Other/TicketInfo'));
 
 const OtherDocs = React.lazy(() => import('./Demo/Other/Docs'));
 const OtherSamplePage = React.lazy(() => import('./Demo/Other/SamplePage'));
@@ -44,6 +45,7 @@ const routes = [
     { path: '/update', exact: true, name: 'Sample Page', component: Update },
     { path: '/calendar', exact: true, name: 'Sample Page', component: Calendar },
     { path: '/add-moderator', exact: true, name: 'Sample Page', component: AddModerator },
+    { path: '/ticket-info', exact: true, name: 'Ticket Info', component: TicketInfo },
 ];
 
 export default routes;

@@ -14,6 +14,7 @@ import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Paper from "@material-ui/core/Paper";
+import { NavLink } from "react-router-dom";
 import { getData, getModerators } from "../../store/data";
 
 function createData(ticket, type, date, status, assigned) {
@@ -87,7 +88,7 @@ function EnhancedTableHead(props) {
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
             >
-              {headCell.label}
+              <b>{headCell.label}</b>
               {orderBy === headCell.id ? <span></span> : null}
             </TableSortLabel>
           </TableCell>
@@ -151,7 +152,10 @@ class Dashboard extends React.Component {
         var status =
           value["status"].charAt(0).toUpperCase() + value["status"].slice(1);
         this.setState({
-          rows: [...this.state.rows, createData(key, type, date, status, "")],
+          rows: [
+            ...this.state.rows,
+            createData(key, type, date, status, "None"),
+          ],
         });
       });
     });
@@ -202,14 +206,44 @@ class Dashboard extends React.Component {
           <Col md={6} xl={3}>
             <Card>
               <Card.Body>
-                <h6 className="mb-4">All Tickets</h6>
+                <h6 className="mb-4">
+                  <b>All Tickets</b>
+                </h6>
+                <div className="row d-flex align-items-center">
+                  <div className="col-9">
+                    <h3 className="f-w-300 d-flex align-items-center m-b-0">
+                      55
+                    </h3>
+                  </div>
+                  <div className="col-3 text-right">
+                    <p className="m-b-0">100%</p>
+                  </div>
+                </div>
+                <div className="progress m-t-30" style={{ height: "7px" }}>
+                  <div
+                    className="progress-bar progress-c-theme"
+                    role="progressbar"
+                    style={{ width: "100%" }}
+                    aria-valuenow="100"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  />
+                </div>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col md={6} xl={3}>
+            <Card>
+              <Card.Body>
+                <h6 className="mb-4">
+                  <b>Open Tickets</b>
+                </h6>
                 <div className="row d-flex align-items-center">
                   <div className="col-9">
                     <h3 className="f-w-300 d-flex align-items-center m-b-0">
                       18 / 55
                     </h3>
                   </div>
-
                   <div className="col-3 text-right">
                     <p className="m-b-0">32%</p>
                   </div>
@@ -230,35 +264,9 @@ class Dashboard extends React.Component {
           <Col md={6} xl={3}>
             <Card>
               <Card.Body>
-                <h6 className="mb-4">Open Tickets</h6>
-                <div className="row d-flex align-items-center">
-                  <div className="col-9">
-                    <h3 className="f-w-300 d-flex align-items-center m-b-0">
-                      18 / 55
-                    </h3>
-                  </div>
-
-                  <div className="col-3 text-right">
-                    <p className="m-b-0">32%</p>
-                  </div>
-                </div>
-                <div className="progress m-t-30" style={{ height: "7px" }}>
-                  <div
-                    className="progress-bar progress-c-theme"
-                    role="progressbar"
-                    style={{ width: "32%" }}
-                    aria-valuenow="32"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                  />
-                </div>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col md={6} xl={3}>
-            <Card>
-              <Card.Body>
-                <h6 className="mb-4">In Progress Tickets</h6>
+                <h6 className="mb-4">
+                  <b>In Progress Tickets</b>
+                </h6>
                 <div className="row d-flex align-items-center">
                   <div className="col-9">
                     <h3 className="f-w-300 d-flex align-items-center m-b-0">
@@ -285,7 +293,9 @@ class Dashboard extends React.Component {
           <Col md={6} xl={3}>
             <Card>
               <Card.Body>
-                <h6 className="mb-4">Closed Tickets</h6>
+                <h6 className="mb-4">
+                  <b>Closed Tickets</b>
+                </h6>
                 <div className="row d-flex align-items-center">
                   <div className="col-9">
                     <h3 className="f-w-300 d-flex align-items-center m-b-0">
@@ -366,7 +376,11 @@ class Dashboard extends React.Component {
                                     scope="row"
                                     padding="none"
                                   >
-                                    {row.ticket}
+                                    <p className="mb-0 text-muted">
+                                      <NavLink to="/ticket-info">
+                                        {row.ticket}
+                                      </NavLink>
+                                    </p>
                                   </TableCell>
                                   <TableCell align="right">
                                     {row.type}
@@ -378,18 +392,7 @@ class Dashboard extends React.Component {
                                     {row.status}
                                   </TableCell>
                                   <TableCell align="right">
-                                    <select>
-                                      {this.state.moderators.map(
-                                        (moderator) => (
-                                          <option
-                                            key={moderator}
-                                            value={moderator}
-                                          >
-                                            {moderator}
-                                          </option>
-                                        )
-                                      )}
-                                    </select>
+                                    {row.assigned}
                                   </TableCell>
                                 </TableRow>
                               );
