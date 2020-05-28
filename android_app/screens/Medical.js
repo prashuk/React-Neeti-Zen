@@ -167,6 +167,7 @@ class Medical extends React.Component {
         govEmployee: this.state.govEmployee,
         type: "medical",
         status: "open",
+        assignedTo: "admin",
       },
     };
 

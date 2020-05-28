@@ -6,7 +6,7 @@ import * as Permissions from "expo-permissions";
 class Camera extends React.Component {
   state = {
     hasCameraPermission: null,
-    type: Camera.Constants.Type.back
+    type: Camera.Constants.Type.back,
   };
 
   componentWillMount() {
@@ -30,21 +30,21 @@ class Camera extends React.Component {
               style={{
                 flex: 1,
                 backgroundColor: "transparent",
-                flexDirection: "row"
+                flexDirection: "row",
               }}
             >
               <TouchableOpacity
                 style={{
                   flex: 0.1,
                   alignSelf: "flex-end",
-                  alignItems: "center"
+                  alignItems: "center",
                 }}
                 onPress={() => {
                   this.setState({
                     type:
                       this.state.type === Camera.Constants.Type.back
                         ? Camera.Constants.Type.front
-                        : Camera.Constants.Type.back
+                        : Camera.Constants.Type.back,
                   });
                 }}
               >

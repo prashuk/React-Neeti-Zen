@@ -19,12 +19,12 @@ class Help extends React.Component {
 const styles = StyleSheet.create({
   home: {
     width: width,
-    backgroundColor: "#fff2ff"
+    backgroundColor: "#fff2ff",
   },
   button: {
     marginBottom: theme.SIZES.BASE,
-    width: width - theme.SIZES.BASE * 2
-  }
+    width: width - theme.SIZES.BASE * 2,
+  },
 });
 
 export default Help;

@@ -23,12 +23,12 @@ class Signup extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: theme.COLORS.WHITE
+    backgroundColor: theme.COLORS.WHITE,
   },
   padded: {
     paddingHorizontal: theme.SIZES.BASE,
-    paddingBottom: 20
-  }
+    paddingBottom: 20,
+  },
 });
 
 export default Signup;

@@ -23,12 +23,12 @@ class AvailableDates extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff2ff"
+    backgroundColor: "#fff2ff",
   },
   padded: {
     paddingHorizontal: theme.SIZES.BASE,
-    paddingBottom: 20
-  }
+    paddingBottom: 20,
+  },
 });
 
 export default AvailableDates;

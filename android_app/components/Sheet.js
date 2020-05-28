@@ -7,7 +7,7 @@ const { height, width } = Dimensions.get("screen");
 
 class Sheet extends React.Component {
   state = {
-    image: ""
+    image: "",
   };
 
   constructor(props) {
@@ -19,7 +19,7 @@ class Sheet extends React.Component {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1
+      quality: 1,
     });
 
     if (!result.cancelled) {
@@ -47,7 +47,7 @@ class Sheet extends React.Component {
             style={styles.button}
             color="#4f3961"
             onPress={() => {
-                navigation.navigate("Camera");
+              navigation.navigate("Camera");
             }}
             textStyle={{ color: "white" }}
           >
@@ -63,20 +63,20 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#fff2ff",
     height: height,
-    width: width
+    width: width,
   },
   button: {
     width: width - 40,
     height: 50,
     shadowRadius: 10,
     shadowOpacity: 0,
-    marginBottom: 10
+    marginBottom: 10,
   },
   title: {
     marginTop: 20,
     marginRight: 30,
-    marginLeft: 30
-  }
+    marginLeft: 30,
+  },
 });
 
 export default Sheet;

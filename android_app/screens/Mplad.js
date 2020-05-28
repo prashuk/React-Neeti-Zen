@@ -19,8 +19,8 @@ class Mplad extends React.Component {
 const styles = StyleSheet.create({
   home: {
     width: width,
-    backgroundColor: "#fff2ff"
-  }
+    backgroundColor: "#fff2ff",
+  },
 });
 
 export default Mplad;

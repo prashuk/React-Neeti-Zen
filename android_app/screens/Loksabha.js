@@ -23,20 +23,20 @@ class Loksabha extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff2ff"
+    backgroundColor: "#fff2ff",
   },
   button: {
     width: width - 40,
     height: 50,
     shadowRadius: 10,
     shadowOpacity: 0,
-    marginBottom: 10
+    marginBottom: 10,
   },
   title: {
     marginTop: 20,
     marginRight: 30,
-    marginLeft: 30
-  }
+    marginLeft: 30,
+  },
 });
 
 export default Loksabha;

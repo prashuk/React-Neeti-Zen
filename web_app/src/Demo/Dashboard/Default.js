@@ -110,8 +110,8 @@ EnhancedTableHead.propTypes = {
 
 class Dashboard extends React.Component {
   state = {
-    order: "asc",
-    orderBy: "type",
+    order: "desc",
+    orderBy: "ticket",
     selected: [],
     page: 0,
     dense: false,
@@ -129,7 +129,7 @@ class Dashboard extends React.Component {
 
     firebase
       .auth()
-      .signInWithEmailAndPassword("test@gmail.com", "1234567890")
+      .signInWithEmailAndPassword("prashuk.ajmera@yahoo.com", "Covid2020")
       .then((user) => {
         global.User = user;
       })
@@ -151,10 +151,12 @@ class Dashboard extends React.Component {
           value["date"].charAt(0).toUpperCase() + value["date"].slice(1);
         var status =
           value["status"].charAt(0).toUpperCase() + value["status"].slice(1);
+        var assigned =
+          value["assignedTo"].charAt(0).toUpperCase() + value["assignedTo"].slice(1);
         this.setState({
           rows: [
             ...this.state.rows,
-            createData(key, type, date, status, "None"),
+            createData(key, type, date, status, assigned),
           ],
         });
       });

@@ -1,5 +1,3 @@
-import argonTheme from './Theme';
+import argonTheme from "./Theme";
 
-export {
-  argonTheme
-};
+export { argonTheme };
