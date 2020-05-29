@@ -1,51 +1,36 @@
-import React from 'react';
-import $ from 'jquery';
+import React from "react";
+import $ from "jquery";
 
 window.jQuery = $;
 window.$ = $;
 global.jQuery = $;
 
-const DashboardDefault = React.lazy(() => import('./Demo/Dashboard/Default'));
-const UIBasicButton = React.lazy(() => import('./Demo/UIElements/Basic/Button'));
-const UIBasicBadges = React.lazy(() => import('./Demo/UIElements/Basic/Badges'));
-const UIBasicBreadcrumbPagination = React.lazy(() => import('./Demo/UIElements/Basic/BreadcrumbPagination'));
-const UIBasicCollapse = React.lazy(() => import('./Demo/UIElements/Basic/Collapse'));
-const UIBasicTabsPills = React.lazy(() => import('./Demo/UIElements/Basic/TabsPills'));
-const UIBasicBasicTypography = React.lazy(() => import('./Demo/UIElements/Basic/Typography'));
-const FormsElements = React.lazy(() => import('./Demo/Forms/FormsElements'));
-const BootstrapTable = React.lazy(() => import('./Demo/Tables/BootstrapTable'));
-const Nvd3Chart = React.lazy(() => import('./Demo/Charts/Nvd3Chart/index'));
-const GoogleMap = React.lazy(() => import('./Demo/Maps/GoogleMap/index'));
-
-const JanTv = React.lazy(() => import('./Demo/Other/JanTv'));
-const Mplad = React.lazy(() => import('./Demo/Other/Mplad'));
-const Update = React.lazy(() => import('./Demo/Other/Update'));
-const Calendar = React.lazy(() => import('./Demo/Other/Calendar'));
-const AddModerator = React.lazy(() => import('./Demo/Other/AddModerator'));
-const TicketInfo = React.lazy(() => import('./Demo/Other/TicketInfo'));
-
-const OtherDocs = React.lazy(() => import('./Demo/Other/Docs'));
-const OtherSamplePage = React.lazy(() => import('./Demo/Other/SamplePage'));
+const DashboardDefault = React.lazy(() => import("./Demo/Dashboard/Default"));
+const JanTv = React.lazy(() => import("./Demo/Other/JanTv"));
+const Mplad = React.lazy(() => import("./Demo/Other/Mplad"));
+const Update = React.lazy(() => import("./Demo/Other/Update"));
+const Calendar = React.lazy(() => import("./Demo/Other/Calendar"));
+const AddModerator = React.lazy(() => import("./Demo/Other/AddModerator"));
+const TicketInfo = React.lazy(() => import("./Demo/Other/TicketInfo"));
 
 const routes = [
-    { path: '/', exact: true, name: 'Default', component: DashboardDefault },
-    { path: '/basic/button', exact: true, name: 'Basic Button', component: UIBasicButton },
-    { path: '/basic/badges', exact: true, name: 'Basic Badges', component: UIBasicBadges },
-    { path: '/basic/breadcrumb-paging', exact: true, name: 'Basic Breadcrumb Pagination', component: UIBasicBreadcrumbPagination },
-    { path: '/basic/collapse', exact: true, name: 'Basic Collapse', component: UIBasicCollapse },
-    { path: '/basic/tabs-pills', exact: true, name: 'Basic Tabs & Pills', component: UIBasicTabsPills },
-    { path: '/basic/typography', exact: true, name: 'Basic Typography', component: UIBasicBasicTypography },
-    { path: '/forms/form-basic', exact: true, name: 'Forms Elements', component: FormsElements },
-    { path: '/tables/bootstrap', exact: true, name: 'Bootstrap Table', component: BootstrapTable },
-    { path: '/charts/nvd3', exact: true, name: 'Nvd3 Chart', component: Nvd3Chart },
-    { path: '/maps/google-map', exact: true, name: 'Google Map', component: GoogleMap },
-    { path: '/docs', exact: true, name: 'Documentation', component: OtherDocs },
-    { path: '/jantv', exact: true, name: 'Sample Page', component: JanTv },
-    { path: '/mplad', exact: true, name: 'Sample Page', component: Mplad },
-    { path: '/update', exact: true, name: 'Sample Page', component: Update },
-    { path: '/calendar', exact: true, name: 'Sample Page', component: Calendar },
-    { path: '/add-moderator', exact: true, name: 'Sample Page', component: AddModerator },
-    { path: '/ticket-info', exact: true, name: 'Ticket Info', component: TicketInfo },
+  { path: "/", exact: true, name: "Default", component: DashboardDefault },
+  { path: "/jantv", exact: true, name: "Sample Page", component: JanTv },
+  { path: "/mplad", exact: true, name: "Sample Page", component: Mplad },
+  { path: "/update", exact: true, name: "Sample Page", component: Update },
+  { path: "/calendar", exact: true, name: "Sample Page", component: Calendar },
+  {
+    path: "/add-moderator",
+    exact: true,
+    name: "Sample Page",
+    component: AddModerator,
+  },
+  {
+    path: "/ticket-info",
+    exact: true,
+    name: "Ticket Info",
+    component: TicketInfo,
+  },
 ];
 
 export default routes;

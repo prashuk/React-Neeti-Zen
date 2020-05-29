@@ -1,7 +1,6 @@
 import React from "react";
 import { Row, Col, Card } from "react-bootstrap";
 import Aux from "../../hoc/_Aux";
-import PieBasicChart from "../Charts/Nvd3Chart/PieBasicChart";
 import * as firebase from "firebase";
 import ApiKeys from "../../store/ApiKeys";
 import PropTypes from "prop-types";
@@ -15,6 +14,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Paper from "@material-ui/core/Paper";
 import { NavLink } from "react-router-dom";
+import NVD3Chart from "react-nvd3";
 import { getData, getModerators } from "../../store/data";
 
 function createData(ticket, type, date, status, assigned) {
@@ -99,7 +99,6 @@ function EnhancedTableHead(props) {
 }
 
 EnhancedTableHead.propTypes = {
-  classes: PropTypes.object.isRequired,
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
   onSelectAllClick: PropTypes.func.isRequired,
@@ -118,6 +117,16 @@ class Dashboard extends React.Component {
     rowsPerPage: 5,
     rows: [],
     moderators: [],
+    openTickets: 0,
+    inProgressTickets: 0,
+    closedTickets: 0,
+    suggestTickets: 0,
+    medicalTickets: 0,
+    expatriatesTickets: 0,
+    serveOtherTickets: 0,
+    inviteTickets: 0,
+    parliamentTickets: 0,
+    datum: [],
   };
 
   constructor(props) {
@@ -144,20 +153,79 @@ class Dashboard extends React.Component {
   showData = () => {
     var updateData = getData();
     updateData.then((result) => {
-      result.forEach((value, key) => {
+      result.forEach((value, key, map) => {
         var type =
           value["type"].charAt(0).toUpperCase() + value["type"].slice(1);
         var date =
           value["date"].charAt(0).toUpperCase() + value["date"].slice(1);
         var status =
           value["status"].charAt(0).toUpperCase() + value["status"].slice(1);
+
+        if (status === "Open")
+          this.setState({ openTickets: this.state.openTickets + 1 });
+
+        if (status === "InProgress")
+          this.setState({
+            inProgressTickets: this.state.inProgressTickets + 1,
+          });
+
+        if (status === "Closed")
+          this.setState({ closedTickets: this.state.closedTickets + 1 });
+
+        if (type === "Suggest")
+          this.setState({ suggestTickets: this.state.suggestTickets + 1 });
+
+        if (type === "Medical")
+          this.setState({ medicalTickets: this.state.medicalTickets + 1 });
+
+        if (type === "Expatriates")
+          this.setState({
+            expatriatesTickets: this.state.expatriatesTickets + 1,
+          });
+
+        if (type === "Other")
+          this.setState({
+            serveOtherTickets: this.state.serveOtherTickets + 1,
+          });
+
+        if (type === "Event")
+          this.setState({ inviteTickets: this.state.inviteTickets + 1 });
+
+        if (type === "Parliament")
+          this.setState({
+            parliamentTickets: this.state.parliamentTickets + 1,
+          });
+
         var assigned =
-          value["assignedTo"].charAt(0).toUpperCase() + value["assignedTo"].slice(1);
+          value["assignedTo"].charAt(0).toUpperCase() +
+          value["assignedTo"].slice(1);
+
+        var datum = [
+          { key: "Suggest", y: this.state.suggestTickets, color: "#ff8a65" },
+          { key: "Medical", y: this.state.medicalTickets, color: "#f4c22b" },
+          {
+            key: "Expatriates",
+            y: this.state.expatriatesTickets,
+            color: "#3ebfea",
+          },
+          {
+            key: "Serve Other",
+            y: this.state.serveOtherTickets,
+            color: "#4F5467",
+          },
+          { key: "Invite", y: this.state.inviteTickets, color: "#1de9b6" },
+          {
+            key: "Parliament",
+            y: this.state.parliamentTickets,
+            color: "#a389d4",
+          },
+        ];
         this.setState({
           rows: [
             ...this.state.rows,
             createData(key, type, date, status, assigned),
           ],
+          datum: datum,
         });
       });
     });
@@ -199,6 +267,46 @@ class Dashboard extends React.Component {
     });
   };
 
+  styleFunctionOpenTickets = () => {
+    var percent = (
+      (this.state.openTickets * 100) /
+      this.state.rows.length
+    ).toString();
+    return {
+      width: percent + "%",
+    };
+  };
+
+  styleFunctionInProgressTickets = () => {
+    var percent = (
+      (this.state.inProgressTickets * 100) /
+      this.state.rows.length
+    ).toString();
+    return {
+      width: percent + "%",
+    };
+  };
+
+  styleFunctionClosedTickets = () => {
+    var percent = (
+      (this.state.closedTickets * 100) /
+      this.state.rows.length
+    ).toString();
+    return {
+      width: percent + "%",
+    };
+  };
+
+  styleFunctionAllTickets = () => {
+    var percent = (
+      (this.state.rows.length * 100) /
+      this.state.rows.length
+    ).toString();
+    return {
+      width: percent + "%",
+    };
+  };
+
   isSelected = (ticket) => this.state.selected.indexOf(ticket) !== -1;
 
   render() {
@@ -214,21 +322,20 @@ class Dashboard extends React.Component {
                 <div className="row d-flex align-items-center">
                   <div className="col-9">
                     <h3 className="f-w-300 d-flex align-items-center m-b-0">
-                      55
+                      {this.state.rows.length}
                     </h3>
                   </div>
                   <div className="col-3 text-right">
-                    <p className="m-b-0">100%</p>
+                    <p className="m-b-0">
+                      {(this.state.rows.length * 100) / this.state.rows.length}%
+                    </p>
                   </div>
                 </div>
                 <div className="progress m-t-30" style={{ height: "7px" }}>
                   <div
                     className="progress-bar progress-c-theme"
                     role="progressbar"
-                    style={{ width: "100%" }}
-                    aria-valuenow="100"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
+                    style={this.styleFunctionAllTickets()}
                   />
                 </div>
               </Card.Body>
@@ -243,21 +350,20 @@ class Dashboard extends React.Component {
                 <div className="row d-flex align-items-center">
                   <div className="col-9">
                     <h3 className="f-w-300 d-flex align-items-center m-b-0">
-                      18 / 55
+                      {this.state.openTickets} / {this.state.rows.length}
                     </h3>
                   </div>
                   <div className="col-3 text-right">
-                    <p className="m-b-0">32%</p>
+                    <p className="m-b-0">
+                      {(this.state.openTickets * 100) / this.state.rows.length}%
+                    </p>
                   </div>
                 </div>
                 <div className="progress m-t-30" style={{ height: "7px" }}>
                   <div
                     className="progress-bar progress-c-theme"
                     role="progressbar"
-                    style={{ width: "32%" }}
-                    aria-valuenow="32"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
+                    style={this.styleFunctionOpenTickets()}
                   />
                 </div>
               </Card.Body>
@@ -272,21 +378,22 @@ class Dashboard extends React.Component {
                 <div className="row d-flex align-items-center">
                   <div className="col-9">
                     <h3 className="f-w-300 d-flex align-items-center m-b-0">
-                      26 / 55
+                      {this.state.inProgressTickets} / {this.state.rows.length}
                     </h3>
                   </div>
                   <div className="col-3 text-right">
-                    <p className="m-b-0">48%</p>
+                    <p className="m-b-0">
+                      {(this.state.inProgressTickets * 100) /
+                        this.state.rows.length}
+                      %
+                    </p>
                   </div>
                 </div>
                 <div className="progress m-t-30" style={{ height: "7px" }}>
                   <div
                     className="progress-bar progress-c-theme"
                     role="progressbar"
-                    style={{ width: "48%" }}
-                    aria-valuenow="48"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
+                    style={this.styleFunctionInProgressTickets()}
                   />
                 </div>
               </Card.Body>
@@ -301,21 +408,22 @@ class Dashboard extends React.Component {
                 <div className="row d-flex align-items-center">
                   <div className="col-9">
                     <h3 className="f-w-300 d-flex align-items-center m-b-0">
-                      11 / 55
+                      {this.state.closedTickets} / {this.state.rows.length}
                     </h3>
                   </div>
                   <div className="col-3 text-right">
-                    <p className="m-b-0">20%</p>
+                    <p className="m-b-0">
+                      {(this.state.closedTickets * 100) /
+                        this.state.rows.length}
+                      %
+                    </p>
                   </div>
                 </div>
                 <div className="progress m-t-30" style={{ height: "7px" }}>
                   <div
                     className="progress-bar progress-c-theme"
                     role="progressbar"
-                    style={{ width: "20%" }}
-                    aria-valuenow="20"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
+                    style={this.styleFunctionClosedTickets()}
                   />
                 </div>
               </Card.Body>
@@ -422,7 +530,14 @@ class Dashboard extends React.Component {
                 <Card.Title as="h5">Tickets Category Chart</Card.Title>
               </Card.Header>
               <Card.Body className="text-center">
-                <PieBasicChart />
+                <NVD3Chart
+                  id="chart"
+                  height={300}
+                  type="pieChart"
+                  datum={this.state.datum}
+                  x="key"
+                  y="y"
+                />
               </Card.Body>
             </Card>
           </Col>

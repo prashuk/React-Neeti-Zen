@@ -4,13 +4,20 @@ export async function getData() {
   let data = new Map();
   await firebase
     .database()
-    .ref("users/SR7gsON7QIUcskVh5IXVhaeOPk13/complaints/")
+    .ref("users/")
     .once("value")
     .then(function (snapshot) {
       snapshot.forEach((childSnapshot) => {
         childSnapshot.forEach((actualSnapshot) => {
           var userData = Object.values(actualSnapshot.val());
-          data.set(userData[1], userData[0]);
+          var complainData = actualSnapshot.key;
+          if (complainData === "complaints") {
+            userData.forEach((s) => {
+              Object.values(s).forEach((value) => {
+                data.set(value["ticketNumber"], value["description"]);
+              });
+            });
+          }
         });
       });
     });
