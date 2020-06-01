@@ -26,7 +26,7 @@ const routes = [
     component: AddModerator,
   },
   {
-    path: "/ticket-info",
+    path: "ticket-info/:ticketId",
     exact: true,
     name: "Ticket Info",
     component: TicketInfo,

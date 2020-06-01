@@ -18,7 +18,7 @@ class ComponentToPrint extends Component {
     if (!firebase.apps.length) {
       firebase.initializeApp(ApiKeys.FirebaseConfig);
     }
-
+    console.log(this.props.params.ticketId);
     this.showModerator();
   }
 
@@ -112,7 +112,7 @@ class TicketInfo extends React.Component {
           content={() => this.componentRef}
           trigger={() => <a href="#">Download</a>}
         />
-        <ComponentToPrint ref={el => (this.componentRef = el)} />
+        <ComponentToPrint ref={(el) => (this.componentRef = el)} />
       </div>
     );
   }

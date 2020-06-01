@@ -487,7 +487,9 @@ class Dashboard extends React.Component {
                                     padding="none"
                                   >
                                     <p className="mb-0 text-muted">
-                                      <NavLink to="/ticket-info">
+                                      <NavLink
+                                        to={`ticket-info/${row.ticket}`}
+                                      >
                                         {row.ticket}
                                       </NavLink>
                                     </p>

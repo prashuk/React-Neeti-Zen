@@ -63,14 +63,45 @@ export async function getUpdate() {
         data[childSnapshot.key] = childSnapshot.val();
       });
     });
+    console.log(data)
   return data;
 }
+
+// export async function getUpdate() {
+//   let data = {};
+//   await firebase
+//     .database()
+//     .ref("update/")
+//     .on("value", (snapshot) => {
+//       // console.log(snapshot.val())
+//       snapshot.forEach((childSnapshot) => {
+//         console.log(childSnapshot.key);
+//         data[childSnapshot.key] = childSnapshot.val();
+//       });
+//     });
+//   // console.log(data);
+//   return data;
+// }
 
 export async function getMplad() {
   let data = {};
   await firebase
     .database()
     .ref("mplad/")
+    .once("value")
+    .then(function (snapshot) {
+      snapshot.forEach((childSnapshot) => {
+        data[childSnapshot.key] = childSnapshot.val();
+      });
+    });
+  return data;
+}
+
+export async function getCalendarDates() {
+  let data = {};
+  await firebase
+    .database()
+    .ref("calendarDates/")
     .once("value")
     .then(function (snapshot) {
       snapshot.forEach((childSnapshot) => {

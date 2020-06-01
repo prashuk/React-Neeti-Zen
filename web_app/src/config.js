@@ -1,6 +1,6 @@
 export default {
     defaultPath: "/",
-    basename: "/signin", // only at build time to set, like /neetizen
+    basename: "/", // only at build time to set, like /neetizen
     layout: "vertical", // vertical, horizontal (not available in lite version)
     preLayout: null, // (not available in lite version)
     collapseMenu: false, // mini-menu

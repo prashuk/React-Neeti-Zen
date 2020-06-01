@@ -7,11 +7,15 @@ import {
   View,
   SectionList,
   TouchableOpacity,
+  Platform,
 } from "react-native";
 import { Block, Button, Text, Icon } from "galio-framework";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Modal, { ModalContent } from "react-native-modals";
 import * as firebase from "firebase";
+import { Notifications } from "expo";
+import * as Permissions from "expo-permissions";
+import Constants from "expo-constants";
 
 const { width, height } = Dimensions.get("screen");
 
@@ -149,9 +153,48 @@ class HomeScreen extends React.Component {
 
   constructor(props) {
     super(props);
-
+    this.registerForPushNotificationsAsync(global.User);
     refresh();
   }
+
+  registerForPushNotificationsAsync = async (currentUser) => {
+    if (Constants.isDevice) {
+      const { status: existingStatus } = await Permissions.getAsync(
+        Permissions.NOTIFICATIONS
+      );
+      let finalStatus = existingStatus;
+      if (existingStatus !== "granted") {
+        const { status } = await Permissions.askAsync(
+          Permissions.NOTIFICATIONS
+        );
+        finalStatus = status;
+      }
+      if (finalStatus !== "granted") {
+        alert("Failed to get push token for push notification!");
+        return;
+      }
+
+      let token = await Notifications.getExpoPushTokenAsync();
+
+      var updates = {};
+      updates["/expoToken"] = token;
+      await firebase
+        .database()
+        .ref("users/" + currentUser.user.uid)
+        .update(updates);
+    } else {
+      alert("Must use physical device for Push Notifications");
+    }
+
+    if (Platform.OS === "android") {
+      Notifications.createChannelAndroidAsync("default", {
+        name: "default",
+        sound: true,
+        priority: "max",
+        vibrate: [0, 250, 250, 250],
+      });
+    }
+  };
 
   render() {
     return (

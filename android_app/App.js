@@ -9,15 +9,15 @@ import Screens from "./navigation/Screens";
 import { argonTheme } from "./constants";
 
 export default class App extends React.Component {
-    render() {
-        return (
-            <NavigationContainer>
-                <GalioProvider theme={argonTheme}>
-                    <Block flex>
-                        <Screens />
-                    </Block>
-                </GalioProvider>
-            </NavigationContainer>
-        );
-    }
+  render() {
+    return (
+      <NavigationContainer>
+        <GalioProvider theme={argonTheme}>
+          <Block flex>
+            <Screens />
+          </Block>
+        </GalioProvider>
+      </NavigationContainer>
+    );
+  }
 }
