@@ -36,8 +36,8 @@ class Signin extends React.Component {
   };
 
   doLogin = async () => {
-    if (this.state.user === "" || this.state.password === "") {
-      alert("Please enter email/password!");
+    if (this.state.user === "neetizenhelp@gmail.com" || this.state.password === "password") {
+      alert("Please enter correct email id/password!");
       return;
     }
 
