@@ -63,21 +63,21 @@ export default {
         },
       ],
     },
-    {
-      id: "navigation",
-      title: "MODERATOR",
-      type: "group",
-      icon: "icon-navigation",
-      children: [
-        {
-          id: "add-moderator",
-          title: "MODERATORS",
-          type: "item",
-          url: "/add-moderator",
-          classes: "nav-item",
-          icon: "feather icon-sidebar",
-        },
-      ],
-    },
+    // {
+    //   id: "navigation",
+    //   title: "MODERATOR",
+    //   type: "group",
+    //   icon: "icon-navigation",
+    //   children: [
+    //     {
+    //       id: "add-moderator",
+    //       title: "MODERATORS",
+    //       type: "item",
+    //       url: "/add-moderator",
+    //       classes: "nav-item",
+    //       icon: "feather icon-sidebar",
+    //     },
+    //   ],
+    // },
   ],
 };

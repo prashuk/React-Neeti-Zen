@@ -167,7 +167,7 @@ class Event extends React.Component {
             Alert.alert(
               "Complain Submitted: Ticket Number " +
                 ticketNumberDatabase.toString(),
-              "",
+              "Your request has been submitted and is pending approval.",
               [
                 {
                   text: "OK",

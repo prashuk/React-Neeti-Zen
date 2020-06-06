@@ -117,7 +117,7 @@ class Update extends Component {
                         <tr>Notes: {res.note}</tr>
                         <tr>
                           Link:{" "}
-                          <a href={res.link} target="_blank">
+                          <a href={res.link} target="_blank" rel="noopener noreferrer">
                             {res.link}
                           </a>
                         </tr>

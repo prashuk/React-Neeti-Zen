@@ -28,10 +28,16 @@ class Calendar extends Component {
 
   submitHandle = () => {
     if (this.state.date === "") {
-      alert("Please all fields!");
+      alert("Please all fields");
       return;
     }
+    if (!this.validateDate(this.state.date)) {
+      alert("Enter date in DD/MM/YYYY format");
+      return;
+    }
+
     this.writeNewPost(this.state.date);
+
     alert("Date Entered!");
     this.setState({ date: "" });
   };
@@ -59,6 +65,11 @@ class Calendar extends Component {
     });
   };
 
+  validateDate = (date) => {
+    var date_regex = /^(0[1-9]|1\d|2\d|3[01])\/(0[1-9]|1[0-2])\/(19|20)\d{2}$/;
+    return date_regex.test(date);
+  };
+
   render() {
     return (
       <Aux>
@@ -73,7 +84,7 @@ class Calendar extends Component {
                         <Form.Label>Enter Available Date</Form.Label>
                         <Form.Control
                           type="text"
-                          placeholder="Enter date in DD-MM-YYYY format"
+                          placeholder="Enter date in DD/MM/YYYY format"
                           onChange={(text) => {
                             this.editDate(text.target.value);
                           }}

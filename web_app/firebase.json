@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "neeti-zen",
     "public": "build",
     "ignore": [
       "firebase.json",

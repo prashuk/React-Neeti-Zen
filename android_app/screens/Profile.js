@@ -122,7 +122,7 @@ class Profile extends React.Component {
             </Block>
             <Block>
               <Input
-                placeholder="Place & Pin Code"
+                placeholder="Address with Pin Code"
                 value={this.state.place}
                 onChangeText={(text) => {
                   this.setState({ place: text });

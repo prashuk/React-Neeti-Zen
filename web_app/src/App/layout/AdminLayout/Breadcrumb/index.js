@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import config from "../../../../config";
 import navigation from "../../../../menu-items";
-import DEMO from "../../../../store/constant";
 import Aux from "../../../../hoc/_Aux";
 
 class Breadcrumb extends Component {
@@ -47,24 +46,11 @@ class Breadcrumb extends Component {
     };
 
     render() {
-        let main, item;
         let breadcrumb = "";
         let title = "Welcome";
-        if (this.state.main && this.state.main.type === "collapse") {
-            main = (
-                <li className="breadcrumb-item">
-                    <a href={DEMO.BLANK_LINK}>{this.state.main.title}</a>
-                </li>
-            );
-        }
 
         if (this.state.item && this.state.item.type === "item") {
             title = this.state.item.title;
-            item = (
-                <li className="breadcrumb-item">
-                    <a href={DEMO.BLANK_LINK}>{title}</a>
-                </li>
-            );
 
             if (this.state.item.breadcrumbs !== false) {
                 breadcrumb = (

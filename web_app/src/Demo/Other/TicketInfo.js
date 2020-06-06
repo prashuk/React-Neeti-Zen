@@ -18,7 +18,6 @@ class ComponentToPrint extends Component {
     if (!firebase.apps.length) {
       firebase.initializeApp(ApiKeys.FirebaseConfig);
     }
-    console.log(this.props.params.ticketId);
     this.showModerator();
   }
 
@@ -48,7 +47,7 @@ class ComponentToPrint extends Component {
                       <th scope="row">Date Submitted</th>
                       <td>Jan 01, 2020</td>
                     </tr>
-                    <tr>
+                    {/* <tr>
                       <th scope="row">Assigned To</th>
                       <td>
                         <Col md={3}>
@@ -61,7 +60,7 @@ class ComponentToPrint extends Component {
                           </Form.Control>
                         </Col>
                       </td>
-                    </tr>
+                    </tr> */}
                     <tr>
                       <th scope="row">Current Status</th>
                       <td>
@@ -110,7 +109,7 @@ class TicketInfo extends React.Component {
       <div>
         <ReactToPrint
           content={() => this.componentRef}
-          trigger={() => <a href="#">Download</a>}
+          trigger={() => <a href="!#">Download</a>}
         />
         <ComponentToPrint ref={(el) => (this.componentRef = el)} />
       </div>

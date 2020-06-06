@@ -126,7 +126,7 @@ class JanTv extends Component {
                         <tr>Type: {res.type}</tr>
                         <tr>
                           Link:{" "}
-                          <a href={res.link} target="_blank">
+                          <a href={res.link} target="_blank" rel="noopener noreferrer">
                             {res.link}
                           </a>
                         </tr>

@@ -141,7 +141,7 @@ class Mplad extends Component {
                       <tr>
                         <tr>
                           File:{" "}
-                          <a href={res.fileUrl} target="_blank">
+                          <a href={res.fileUrl} target="_blank" rel="noopener noreferrer">
                             {res.fileName}
                           </a>
                         </tr>

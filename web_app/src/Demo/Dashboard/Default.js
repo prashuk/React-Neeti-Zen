@@ -136,16 +136,6 @@ class Dashboard extends React.Component {
       firebase.initializeApp(ApiKeys.FirebaseConfig);
     }
 
-    firebase
-      .auth()
-      .signInWithEmailAndPassword("prashuk.ajmera@yahoo.com", "Covid2020")
-      .then((user) => {
-        global.User = user;
-      })
-      .catch((error) => {
-        alert(error.message);
-      });
-
     this.showData();
     this.showModerator();
   }
@@ -487,9 +477,7 @@ class Dashboard extends React.Component {
                                     padding="none"
                                   >
                                     <p className="mb-0 text-muted">
-                                      <NavLink
-                                        to={`ticket-info/${row.ticket}`}
-                                      >
+                                      <NavLink to="/ticket-info">
                                         {row.ticket}
                                       </NavLink>
                                     </p>
