@@ -1,8 +1,8 @@
 import React from "react";
 import * as firebase from "firebase";
-import ApiKeys from "../../../store/ApiKeys";
-import "./../../../assets/scss/style.scss";
-import Aux from "../../../hoc/_Aux";
+import ApiKeys from "../../store/ApiKeys";
+import "./../../assets/scss/style.scss";
+import Aux from "../../hoc/_Aux";
 
 class Signin extends React.Component {
   state = {
@@ -36,7 +36,7 @@ class Signin extends React.Component {
   };
 
   doLogin = async () => {
-    if (this.state.user === "neetizenhelp@gmail.com" || this.state.password === "password") {
+    if (this.state.user !== "neetizenhelp@gmail.com" || this.state.password !== "password") {
       alert("Please enter correct email id/password!");
       return;
     }
