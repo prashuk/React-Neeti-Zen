@@ -189,8 +189,8 @@ class Dashboard extends React.Component {
           });
 
         var assigned =
-          value["assignedTo"].charAt(0).toUpperCase() +
-          value["assignedTo"].slice(1);
+          value["assigned"].charAt(0).toUpperCase() +
+          value["assigned"].slice(1);
 
         var datum = [
           { key: "Suggest", y: this.state.suggestTickets, color: "#ff8a65" },

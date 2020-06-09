@@ -155,6 +155,15 @@ class HomeScreen extends React.Component {
     super(props);
     this.registerForPushNotificationsAsync(global.User);
     refresh();
+
+    firebase
+      .database()
+      .ref("users/" + global.User.user.uid + "/profile/")
+      .once("value")
+      .then((snapshot) => {
+        var name = snapshot.val()["name"];
+        global.currentUserName = name;
+      });
   }
 
   registerForPushNotificationsAsync = async (currentUser) => {

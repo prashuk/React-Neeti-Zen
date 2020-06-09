@@ -161,7 +161,6 @@ class Expatriates extends React.Component {
   submitBtnPressed = async () => {
     if (
       this.state.selectJob === "" ||
-      this.state.selectReason === "" ||
       this.state.name === "" ||
       this.state.addressPhone === "" ||
       this.state.countryBirth === "" ||
@@ -186,7 +185,7 @@ class Expatriates extends React.Component {
     var dd = String(today.getDate()).padStart(2, "0");
     var mm = String(today.getMonth() + 1).padStart(2, "0");
     var yyyy = today.getFullYear();
-    today = mm + "/" + dd + "/" + yyyy;
+    today = dd + "/" + mm + "/" + yyyy;
 
     const passportImgURL = await this.uploadImage(
       this.state.imgPassport,
@@ -221,24 +220,26 @@ class Expatriates extends React.Component {
     var postData = {
       ticketNumber: ticketNumberDatabase,
       description: {
+        name: global.currentUserName,
         date: today,
+        type: "expatriates",
+        status: "open",
+        assigned: "admin",
+
         job: this.state.selectJob,
         reason: this.state.selectReason,
         name: this.state.name,
-        addressPhone: this.state.addressPhone,
-        countryBirth: this.state.countryBirth,
-        countryResidence: this.state.countryResidence,
-        address: this.state.address,
-        imgPassport: passportImgURL,
-        imgVisa: visaImgURL,
-        imgAadhar: aadharImgURL,
+        addressAndPhone: this.state.addressPhone,
+        countryOfBirth: this.state.countryBirth,
+        countryOfResidence: this.state.countryResidence,
+        currentAddress: this.state.address,
+        passportProof: passportImgURL,
+        visaProof: visaImgURL,
+        aadharProof: aadharImgURL,
         email: this.state.email,
         phoneNumber: this.state.phoneNumber,
         employer: this.state.employer,
         notes: this.state.notes,
-        type: "expatriates",
-        status: "open",
-        assignedTo: "admin",
       },
     };
 

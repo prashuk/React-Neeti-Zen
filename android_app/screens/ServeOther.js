@@ -39,16 +39,18 @@ class ServeOther extends React.Component {
     var dd = String(today.getDate()).padStart(2, "0");
     var mm = String(today.getMonth() + 1).padStart(2, "0");
     var yyyy = today.getFullYear();
-    today = mm + "/" + dd + "/" + yyyy;
+    today = dd + "/" + mm + "/" + yyyy;
 
     var postData = {
       ticketNumber: ticketNumberDatabase,
       description: {
+        name: global.currentUserName,
         date: today,
-        complain: this.state.complain,
         type: "other",
         status: "open",
-        assignedTo: "admin",
+        assigned: "admin",
+
+        complain: this.state.complain,
       },
     };
 

@@ -43,7 +43,7 @@ class Suggest extends React.Component {
     var postData = {
       ticketNumber: ticketNumberDatabase,
       description: {
-        name: "",
+        name: global.currentUserName,
         date: today,
         type: "suggest",
         status: "open",

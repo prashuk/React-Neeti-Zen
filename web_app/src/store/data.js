@@ -63,7 +63,7 @@ export async function getUpdate() {
         data[childSnapshot.key] = childSnapshot.val();
       });
     });
-    console.log(data)
+  console.log(data);
   return data;
 }
 

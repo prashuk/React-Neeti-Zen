@@ -113,7 +113,7 @@ class Medical extends React.Component {
     var dd = String(today.getDate()).padStart(2, "0");
     var mm = String(today.getMonth() + 1).padStart(2, "0");
     var yyyy = today.getFullYear();
-    today = mm + "/" + dd + "/" + yyyy;
+    today = dd + "/" + mm + "/" + yyyy;
 
     const addProofImgURL = await this.uploadImage(
       this.state.imgAddProof,
@@ -148,26 +148,28 @@ class Medical extends React.Component {
     var postData = {
       ticketNumber: this.state.ticketNumberDatabase,
       description: {
+        name: global.currentUserName,
         date: today,
-        patientName: this.state.patientName,
-        age: this.state.age,
-        occupation: this.state.occupation,
-        fatherName: this.state.fatherName,
-        countFamily: this.state.countFamily,
-        address: this.state.address,
-        imgAddProof: addProofImgURL,
-        telephoneNumber: this.state.telephoneNumber,
-        aadharCard: this.state.aadharCard,
-        imgAadhar: aadharImgURL,
-        disease: this.state.disease,
-        financialAmt: this.state.financialAmt,
-        imgEstimate: estimateImgURL,
-        assistanceEarlier: this.state.assistanceEarlier,
-        otherSourceFund: this.state.otherSourceFund,
-        govEmployee: this.state.govEmployee,
         type: "medical",
         status: "open",
-        assignedTo: "admin",
+        assigned: "admin",
+
+        nameOfPatient: this.state.patientName,
+        ageAndSex: this.state.age,
+        occupationOfPatient: this.state.occupation,
+        fatherOrHusbandName: this.state.fatherName,
+        numberOfFamilyMember: this.state.countFamily,
+        residentialAddress: this.state.address,
+        addressProof: addProofImgURL,
+        telephoneNumber: this.state.telephoneNumber,
+        aadharCard: this.state.aadharCard,
+        aadharProof: aadharImgURL,
+        natureOfDisease: this.state.disease,
+        financialAssistantAmount: this.state.financialAmt,
+        estimateProof: estimateImgURL,
+        medicalAssistanceEarlier: this.state.assistanceEarlier,
+        otherSourceFunding: this.state.otherSourceFund,
+        patientGovernmentEmployee: this.state.govEmployee,
       },
     };
 

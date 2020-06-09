@@ -111,7 +111,6 @@ class Onboarding extends React.Component {
                 loginFlag: 0,
                 loginBtnText: "LOG IN",
                 signUpBtnText: "Sign Up",
-                spinner: false,
               });
             })
             .catch((error) => {

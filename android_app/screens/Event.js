@@ -119,7 +119,7 @@ class Event extends React.Component {
     var dd = String(today.getDate()).padStart(2, "0");
     var mm = String(today.getMonth() + 1).padStart(2, "0");
     var yyyy = today.getFullYear();
-    today = mm + "/" + dd + "/" + yyyy;
+    today = dd + "/" + mm + "/" + yyyy;
 
     const invitationImgURL = await this.uploadImage(
       this.state.imgInvitation,
@@ -134,18 +134,20 @@ class Event extends React.Component {
     var postData = {
       ticketNumber: ticketNumberDatabase,
       description: {
+        name: global.currentUserName,
         date: today,
-        patientName: this.state.patientName,
-        address: this.state.address,
-        phone: this.state.phone,
-        email: this.state.email,
-        occasion: this.state.occasion,
-        availability: this.state.availability,
-        imgInvitation: invitationImgURL,
-        notes: this.state.notes,
         type: "event",
         status: "open",
-        assignedTo: "admin",
+        assigned: "admin",
+
+        nameOfPatient: this.state.patientName,
+        address: this.state.address,
+        phoneNumber: this.state.phone,
+        email: this.state.email,
+        occasion: this.state.occasion,
+        dateOfAvailability: this.state.availability,
+        invitationCard: invitationImgURL,
+        notes: this.state.notes,
       },
     };
 
