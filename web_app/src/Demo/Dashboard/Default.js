@@ -13,7 +13,7 @@ import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Paper from "@material-ui/core/Paper";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import NVD3Chart from "react-nvd3";
 import { getData, getModerators } from "../../store/data";
 
@@ -127,6 +127,7 @@ class Dashboard extends React.Component {
     inviteTickets: 0,
     parliamentTickets: 0,
     datum: [],
+    allData: []
   };
 
   constructor(props) {
@@ -143,6 +144,7 @@ class Dashboard extends React.Component {
   showData = () => {
     var updateData = getData();
     updateData.then((result) => {
+      this.setState({allData: result})
       result.forEach((value, key, map) => {
         var type =
           value["type"].charAt(0).toUpperCase() + value["type"].slice(1);
@@ -243,7 +245,12 @@ class Dashboard extends React.Component {
   };
 
   handleClick = (event, ticket) => {
-    console.log(ticket);
+    this.state.allData.forEach((value, key, map) => {
+      if (key === ticket) {
+        global.ticketNumber = ticket;
+        global.ticketDetails = value;
+      }
+    })
   };
 
   handleChangePage = (event, newPage) => {
@@ -460,9 +467,6 @@ class Dashboard extends React.Component {
                               return (
                                 <TableRow
                                   hover
-                                  onClick={(event) =>
-                                    this.handleClick(event, row.ticket)
-                                  }
                                   role="checkbox"
                                   aria-checked={isItemSelected}
                                   tabIndex={-1}
@@ -477,9 +481,14 @@ class Dashboard extends React.Component {
                                     padding="none"
                                   >
                                     <p className="mb-0 text-muted">
-                                      <NavLink to="/ticket-info">
+                                      <Link
+                                        to="/ticket-info"
+                                        onClick={(event) =>
+                                          this.handleClick(event, row.ticket)
+                                        }
+                                      >
                                         {row.ticket}
-                                      </NavLink>
+                                      </Link>
                                     </p>
                                   </TableCell>
                                   <TableCell align="right">

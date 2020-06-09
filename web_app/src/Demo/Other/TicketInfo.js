@@ -1,24 +1,39 @@
 import React, { Component } from "react";
-import { Row, Col, Form, Button, Card, Table } from "react-bootstrap";
+import { Row, Col, Button, Card } from "react-bootstrap";
 import Aux from "../../hoc/_Aux";
 import MainCard from "../../App/components/MainCard";
 import * as firebase from "firebase";
 import ApiKeys from "../../store/ApiKeys";
 import { getModerators } from "../../store/data";
 import ReactToPrint from "react-to-print";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableRow from "@material-ui/core/TableRow";
+import Paper from "@material-ui/core/Paper";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import InputLabel from "@material-ui/core/InputLabel";
+import { Link } from "react-router-dom";
 
 class ComponentToPrint extends Component {
-  state = {
-    moderators: [],
-  };
-
   constructor(props) {
     super(props);
+
+    this.state = {
+      moderators: [],
+      ticket: "Ticket Number: " + global.ticketNumber,
+      moveStatus: "",
+    };
 
     if (!firebase.apps.length) {
       firebase.initializeApp(ApiKeys.FirebaseConfig);
     }
-    this.showModerator();
+
+    // this.showModerator();
+    this.showComplainData();
   }
 
   showModerator = () => {
@@ -28,72 +43,69 @@ class ComponentToPrint extends Component {
     });
   };
 
+  showComplainData = () => {
+    
+  }
+
+  handleMoveStatus = (event) => {
+    this.setState({ moveStatus: event.target.value });
+  };
+
+  handleSubmit = (event) => {
+  };
+
   render() {
     return (
       <Aux>
         <Row>
           <Col>
-            <MainCard title="Ticket Number: 101">
+            <MainCard title={this.state.ticket}>
               <Card.Body>
-                <Table responsive>
-                  <tbody>
-                    <tr>
-                      <th scope="row" width="180">
-                        Name of Person
-                      </th>
-                      <td>Test123</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Date Submitted</th>
-                      <td>Jan 01, 2020</td>
-                    </tr>
-                    {/* <tr>
-                      <th scope="row">Assigned To</th>
-                      <td>
-                        <Col md={3}>
-                          <Form.Control size="sm" as="select">
-                            {this.state.moderators.map((moderator) => (
-                              <option key={moderator} value={moderator}>
-                                {moderator}
-                              </option>
-                            ))}
-                          </Form.Control>
-                        </Col>
-                      </td>
-                    </tr> */}
-                    <tr>
-                      <th scope="row">Current Status</th>
-                      <td>
-                        <Col md={3}>
-                          <Form.Control size="sm" as="select">
-                            <option>Open</option>
-                            <option>In Progress</option>
-                            <option>Closed</option>
-                          </Form.Control>
-                        </Col>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Ticket Type</th>
-                      <td>Suggest</td>
-                    </tr>
-                  </tbody>
-                </Table>
-                <Button variant="primary">Submit</Button>
-              </Card.Body>
-            </MainCard>
-            <MainCard title="Ticket Details">
-              <Card.Body>
-                <Table responsive>
-                  <tbody>
-                    <tr>
-                      <th scope="row" width="180">
-                        Notes
-                      </th>
-                      <td>Testing 123</td>
-                    </tr>
-                  </tbody>
-                </Table>
+                <TableContainer component={Paper}>
+                  <Table aria-label="simple table">
+                    <TableBody>
+                      {Object.entries(global.ticketDetails).map(
+                        (val, index) => (
+                          <TableRow key={index}>
+                            <TableCell component="th" scope="row">
+                              {val[0]}
+                            </TableCell>
+                            <TableCell align="left">{val[1]}</TableCell>
+                          </TableRow>
+                        )
+                      )}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+                <br />
+                <Row>
+                  <FormControl style={{ width: 180 }}>
+                    <InputLabel
+                      shrink
+                      id="demo-simple-select-placeholder-label-label"
+                    >
+                      Move Status To
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-placeholder-label-label"
+                      id="demo-simple-select-placeholder-label"
+                      value={this.state.moveStatus}
+                      onChange={this.handleMoveStatus}
+                      displayEmpty
+                    >
+                      <MenuItem value="inProgress">In Progress</MenuItem>
+                      <MenuItem value="closed">Closed</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Row>
+                <br />
+                <Row>
+                  <Link to="/">
+                    <Button variant="primary" onClick={this.handleSubmit}>
+                      Submit
+                    </Button>
+                  </Link>
+                </Row>
               </Card.Body>
             </MainCard>
           </Col>

@@ -3,6 +3,7 @@ import * as firebase from "firebase";
 import ApiKeys from "../../store/ApiKeys";
 import "./../../assets/scss/style.scss";
 import Aux from "../../hoc/_Aux";
+import logo from "../../assets/images/icon.png";
 
 class Signin extends React.Component {
   state = {
@@ -36,7 +37,10 @@ class Signin extends React.Component {
   };
 
   doLogin = async () => {
-    if (this.state.user !== "neetizenhelp@gmail.com" || this.state.password !== "password") {
+    if (
+      this.state.user !== "neetizenhelp@gmail.com" ||
+      this.state.password !== "password"
+    ) {
       alert("Please enter correct email id/password!");
       return;
     }
@@ -80,7 +84,12 @@ class Signin extends React.Component {
               <div className="card">
                 <div className="card-body text-center">
                   <div className="mb-4">
-                    <i className="feather icon-unlock auth-icon" />
+                    <img
+                      className="rounded-circle"
+                      style={{ width: "70px" }}
+                      src={logo}
+                      alt="activity-user"
+                    />
                   </div>
                   <h3 className="mb-4">Login</h3>
                   <div className="input-group mb-3">
@@ -98,7 +107,7 @@ class Signin extends React.Component {
                       className="form-control"
                       placeholder="Password"
                       onChange={(text) => {
-                        this.setState({password: text.target.value})
+                        this.setState({ password: text.target.value });
                       }}
                     />
                   </div>

@@ -20,16 +20,6 @@ class Update extends Component {
       firebase.initializeApp(ApiKeys.FirebaseConfig);
     }
 
-    firebase
-      .auth()
-      .signInWithEmailAndPassword("prashuk.ajmera@yahoo.com", "Covid2020")
-      .then((user) => {
-        global.User = user;
-      })
-      .catch((error) => {
-        alert(error.message);
-      });
-
     this.showUpdate();
   }
 

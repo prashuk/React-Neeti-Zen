@@ -8,7 +8,7 @@ const { height, width } = Dimensions.get("screen");
 
 class Suggest extends React.Component {
   state = {
-    complain: "",
+    notes: "",
     ticketNumberDatabase: 0,
     spinner: false,
   };
@@ -26,7 +26,7 @@ class Suggest extends React.Component {
   }
 
   submitBtnPressed = () => {
-    if (this.state.complain === "") {
+    if (this.state.notes === "") {
       alert("Fill all fields");
       return;
     }
@@ -38,16 +38,18 @@ class Suggest extends React.Component {
     var dd = String(today.getDate()).padStart(2, "0");
     var mm = String(today.getMonth() + 1).padStart(2, "0");
     var yyyy = today.getFullYear();
-    today = mm + "/" + dd + "/" + yyyy;
+    today = dd + "/" + mm + "/" + yyyy;
 
     var postData = {
       ticketNumber: ticketNumberDatabase,
       description: {
+        name: "",
         date: today,
-        complain: this.state.complain,
         type: "suggest",
         status: "open",
-        assignedTo: "admin",
+        assigned: "admin",
+
+        notes: this.state.notes,
       },
     };
 
@@ -111,7 +113,7 @@ class Suggest extends React.Component {
                 style={{ height: 150 }}
                 placeholder="Word Limit: 100 Words"
                 onChangeText={(text) => {
-                  this.setState({ complain: text });
+                  this.setState({ notes: text });
                 }}
               ></Input>
             </Block>
