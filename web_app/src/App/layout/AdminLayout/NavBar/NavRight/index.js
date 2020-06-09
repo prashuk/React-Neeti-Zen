@@ -38,7 +38,7 @@ class NavRight extends Component {
               </Dropdown.Toggle>
               <Dropdown.Menu alignRight className="profile-notification">
                 <div className="pro-head">
-                  <span>Neeti Zen</span>
+                  <span>Sign Off</span>
                   <a
                     href="!#"
                     className="dud-logout"

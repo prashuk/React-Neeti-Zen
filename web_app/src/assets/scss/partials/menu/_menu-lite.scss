@@ -442,8 +442,9 @@
 
         .profile-notification {
             padding: 0;
-            line-height: 1.4;
+            line-height: 1;
             overflow: hidden;
+            width: 50px;
 
             .pro-head {
                 color: #fff;
@@ -451,6 +452,7 @@
                 padding: 15px;
                 position: relative;
                 background: $primary-color;
+                font-size: small;
 
                 img {
                     width: 40px;
