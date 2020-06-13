@@ -6,7 +6,8 @@ export async function getData() {
     .database()
     .ref("users/")
     .once("value")
-    .then(function (snapshot) {
+    .then((snapshot) => {
+      console.log(Object.keys(snapshot));
       snapshot.forEach((childSnapshot) => {
         childSnapshot.forEach((actualSnapshot) => {
           var userData = Object.values(actualSnapshot.val());

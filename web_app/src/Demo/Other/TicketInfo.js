@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { Row, Col, Button, Card } from "react-bootstrap";
 import Aux from "../../hoc/_Aux";
 import MainCard from "../../App/components/MainCard";
-import * as firebase from "firebase";
-import ApiKeys from "../../store/ApiKeys";
 import { getData, getModerators } from "../../store/data";
 import ReactToPrint from "react-to-print";
 import Table from "@material-ui/core/Table";
@@ -16,7 +14,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
-import { Link } from "react-router-dom";
+import * as firebase from "firebase";
 
 function setComplainData(key, value) {
   return { key, value };
@@ -84,8 +82,8 @@ class ComponentToPrint extends Component {
                 ],
               });
             } else {
-              var keyData = key.charAt(0).toUpperCase() + key.slice(1);
-              keyData = keyData.replace(/([A-Z])/g, " $1").trim();
+              var keyDataNew = key.charAt(0).toUpperCase() + key.slice(1);
+              keyDataNew = keyDataNew.replace(/([A-Z])/g, " $1").trim();
 
               var valueData =
                 value[key].charAt(0).toUpperCase() + value[key].slice(1);
@@ -93,7 +91,7 @@ class ComponentToPrint extends Component {
               this.setState({
                 newData: [
                   ...this.state.newData,
-                  setComplainData(keyData, valueData),
+                  setComplainData(keyDataNew, valueData),
                 ],
               });
             }
@@ -115,8 +113,7 @@ class ComponentToPrint extends Component {
   };
 
   handleSubmit = (event) => {
-    console.log(this.state.newData);
-    console.log(this.state.moderators);
+    console.log(firebase.database().ref().child("users/"));
   };
 
   render() {
@@ -250,11 +247,11 @@ class ComponentToPrint extends Component {
                 </Row>
                 <br />
                 <Row>
-                  <Link to="/">
-                    <Button variant="primary" onClick={this.handleSubmit}>
-                      Submit
-                    </Button>
-                  </Link>
+                  {/* <Link to="/"> */}
+                  <Button variant="primary" onClick={this.handleSubmit}>
+                    Submit
+                  </Button>
+                  {/* </Link> */}
                 </Row>
               </Card.Body>
             </MainCard>

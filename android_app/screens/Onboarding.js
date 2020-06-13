@@ -8,6 +8,7 @@ import {
   Alert,
   CheckBox,
   View,
+  KeyboardAvoidingView
 } from "react-native";
 import { Block, Button, Text, theme, Input, Icon } from "galio-framework";
 import ApiKeys from "../constants/ApiKeys";
@@ -407,53 +408,55 @@ class Onboarding extends React.Component {
 
   render() {
     return (
-      <Block flex style={styles.container}>
-        <StatusBar hidden />
-        <Spinner
-          visible={this.state.spinner}
-          textStyle={styles.spinnerTextStyle}
-        />
-        <Block flex></Block>
-        {this.selectForm()}
-        <Block flex style={styles.padded}>
-          <Block>
-            <Block center>
-              <Button
-                style={styles.button}
-                color="#4f3961"
-                onPress={this.loginBtnPressed}
-                textStyle={{ color: "white" }}
-              >
-                {this.state.loginBtnText}
-              </Button>
-              <TouchableOpacity onPress={() => this.signupBtnPressed()}>
-                <Text
-                  style={{
-                    height: 40,
-                    width: "100%",
-                    marginTop: 10,
-                    color: "#4f3961",
-                  }}
+      <KeyboardAvoidingView style={{flex:1}} behavior="padding" enabled>
+        <Block flex style={styles.container}>
+          <StatusBar hidden />
+          <Spinner
+            visible={this.state.spinner}
+            textStyle={styles.spinnerTextStyle}
+          />
+          <Block flex></Block>
+          {this.selectForm()}
+          <Block flex style={styles.padded}>
+            <Block>
+              <Block center>
+                <Button
+                  style={styles.button}
+                  color="#4f3961"
+                  onPress={this.loginBtnPressed}
+                  textStyle={{ color: "white" }}
                 >
-                  {this.state.signUpBtnText}
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.forgotBtnPressed()}>
-                <Text
-                  style={{
-                    height: 40,
-                    width: "100%",
-                    marginTop: 5,
-                    color: "#4f3961",
-                  }}
-                >
-                  Forgot Password?
-                </Text>
-              </TouchableOpacity>
+                  {this.state.loginBtnText}
+                </Button>
+                <TouchableOpacity onPress={() => this.signupBtnPressed()}>
+                  <Text
+                    style={{
+                      height: 40,
+                      width: "100%",
+                      marginTop: 10,
+                      color: "#4f3961",
+                    }}
+                  >
+                    {this.state.signUpBtnText}
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.forgotBtnPressed()}>
+                  <Text
+                    style={{
+                      height: 40,
+                      width: "100%",
+                      marginTop: 5,
+                      color: "#4f3961",
+                    }}
+                  >
+                    Forgot Password?
+                  </Text>
+                </TouchableOpacity>
+              </Block>
             </Block>
           </Block>
         </Block>
-      </Block>
+        </KeyboardAvoidingView>
     );
   }
 }

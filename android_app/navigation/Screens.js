@@ -3,34 +3,33 @@ import React from "react";
 import { Dimensions } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-
-import Onboarding from "../screens/Onboarding";
-
-import Home from "../screens/Home";
-import Suggest from "../screens/Suggest";
-import Expatriates from "../screens/Expatriates";
-import Medical from "../screens/Medical";
-import ServeOther from "../screens/ServeOther";
-import Event from "../screens/Event";
-import AvailableDates from "../screens/AvailableDates";
-import Parliament from "../screens/Parliament";
-import Mplad from "../screens/Mplad";
-import Jantv from "../screens/Jantv";
-import Loksabha from "../screens/Loksabha";
-import Public from "../screens/Public";
-import TicketDetails from "../screens/TicketDetails";
-
-import Aboutus from "../screens/Aboutus";
-import Profile from "../screens/Profile";
-import Terms from "../screens/Terms";
-import Help from "../screens/Help";
-import Privacy from "../screens/Privacy";
-
-import CustomDrawerContent from "./Menu";
 import { Header } from "../components";
 import { Camera } from "expo-camera";
 
+import CustomDrawerContent from "./Menu";
+
+import Onboarding from "../screens/Onboarding";
+
+import Home from "../screens/Dashboard/Home";
+import Suggest from "../screens/Category/Suggest";
+import Expatriates from "../screens/Category/Expatriates";
+import Medical from "../screens/Category/Medical";
+import ServeOther from "../screens/Category/ServeOther";
+import Event from "../screens/Category/Event";
+import Parliament from "../screens/Category/Parliament";
+import Mplad from "../screens/Category/Mplad";
+import Loksabha from "../screens/Category/Loksabha";
+import Public from "../screens/Category/Public";
+import TicketDetails from "../screens/Dashboard/TicketDetails";
+
+import Aboutus from "../screens/Sidemenu/Aboutus";
+import Profile from "../screens/Sidemenu/Profile";
+import Terms from "../screens/Sidemenu/Terms";
+import Help from "../screens/Sidemenu/Help";
+import Privacy from "../screens/Sidemenu/Privacy";
+
 const { width } = Dimensions.get("screen");
+
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -163,24 +162,6 @@ function HomeStack(props) {
         }}
       />
       <Stack.Screen
-        name="Available Dates"
-        component={AvailableDates}
-        options={{
-          header: ({ navigation, scene }) => (
-            <Header
-              title="Available Dates"
-              back
-              bgColor="#4f3961"
-              titleColor="white"
-              iconColor="white"
-              navigation={navigation}
-              scene={scene}
-            />
-          ),
-          headerTransparent: false,
-        }}
-      />
-      <Stack.Screen
         name="Parliament"
         component={Parliament}
         options={{
@@ -205,24 +186,6 @@ function HomeStack(props) {
           header: ({ navigation, scene }) => (
             <Header
               title="MPLAD"
-              back
-              bgColor="#4f3961"
-              titleColor="white"
-              iconColor="white"
-              navigation={navigation}
-              scene={scene}
-            />
-          ),
-          headerTransparent: false,
-        }}
-      />
-      <Stack.Screen
-        name="Jantv"
-        component={Jantv}
-        options={{
-          header: ({ navigation, scene }) => (
-            <Header
-              title="Jan TV"
               back
               bgColor="#4f3961"
               titleColor="white"

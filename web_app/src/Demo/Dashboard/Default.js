@@ -156,12 +156,12 @@ class Dashboard extends React.Component {
         if (status === "Open")
           this.setState({ openTickets: this.state.openTickets + 1 });
 
-        if (status === "InProgress")
+        if (status === "Inprogress")
           this.setState({
             inProgressTickets: this.state.inProgressTickets + 1,
           });
 
-        if (status === "Closed")
+        if (status === "Close")
           this.setState({ closedTickets: this.state.closedTickets + 1 });
 
         if (type === "Suggest")
