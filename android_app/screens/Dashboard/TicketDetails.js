@@ -1,13 +1,16 @@
 import React from "react";
-import { StyleSheet, StatusBar, ScrollView } from "react-native";
+
+import { StyleSheet, StatusBar, ScrollView, Dimensions } from "react-native";
 import { Block, Text, theme } from "galio-framework";
+
+const { height, width } = Dimensions.get("screen");
 
 class TicketDetails extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      data: "",
+      data: [],
     };
   }
 
@@ -20,7 +23,9 @@ class TicketDetails extends React.Component {
           global.dataForSuggest[i].ticketNumber ===
           parseInt(ticketNumber.trim())
         ) {
-          this.setState({ data: global.dataForSuggest[i] });
+          this.setState({
+            data: Object.entries(global.dataForSuggest[i].description),
+          });
         }
       }
     }
@@ -31,7 +36,10 @@ class TicketDetails extends React.Component {
           global.dataForMedical[i].ticketNumber ===
           parseInt(ticketNumber.trim())
         ) {
-          this.setState({ data: global.dataForMedical[i] });
+          console.log(global.dataForMedical[i].description);
+          this.setState({
+            data: Object.entries(global.dataForMedical[i].description),
+          });
         }
       }
     }
@@ -42,7 +50,9 @@ class TicketDetails extends React.Component {
           global.dataForExpatriates[i].ticketNumber ===
           parseInt(ticketNumber.trim())
         ) {
-          this.setState({ data: global.dataForExpatriates[i] });
+          this.setState({
+            data: Object.entries(global.dataForExpatriates[i].description),
+          });
         }
       }
     }
@@ -52,7 +62,9 @@ class TicketDetails extends React.Component {
         if (
           global.dataForOther[i].ticketNumber === parseInt(ticketNumber.trim())
         ) {
-          this.setState({ data: global.dataForOther[i] });
+          this.setState({
+            data: Object.entries(global.dataForOther[i].description),
+          });
         }
       }
     }
@@ -62,7 +74,9 @@ class TicketDetails extends React.Component {
         if (
           global.dataForEvent[i].ticketNumber === parseInt(ticketNumber.trim())
         ) {
-          this.setState({ data: global.dataForEvent[i] });
+          this.setState({
+            data: Object.entries(global.dataForEvent[i].description),
+          });
         }
       }
     }
@@ -73,7 +87,9 @@ class TicketDetails extends React.Component {
           global.dataForParliament[i].ticketNumber ===
           parseInt(ticketNumber.trim())
         ) {
-          this.setState({ data: global.dataForParliament[i] });
+          this.setState({
+            data: Object.entries(global.dataForParliament[i].description),
+          });
         }
       }
     }
@@ -81,19 +97,36 @@ class TicketDetails extends React.Component {
 
   render() {
     return (
-      <Block flex style={styles.container}>
-        <StatusBar barStyle="light-content" />
-        <Block flex>
-          <Block style={styles.padded}>
-            <Block>
-              <Text size={14} color="rgba(0,0,0,1)" style={{ marginTop: 10 }}>
-                {this.props.route.params.title + "\n\n"}
-                {JSON.stringify(this.state.data)}
-              </Text>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="always"
+        contentContainerStyle={{ paddingBottom: 0 }}
+      >
+        <Block flex style={styles.container}>
+          <StatusBar barStyle="light-content" />
+          <Block flex>
+            <Block style={styles.padded}>
+              <Block>
+                <Text style={styles.heading}>
+                  {this.props.route.params.title}
+                </Text>
+                {this.state.data.map(([key, value]) => (
+                  <Block style={styles.content}>
+                    <Text key={key} style={styles.textStyle1}>
+                      {(key.charAt(0).toUpperCase() + key.slice(1))
+                        .replace(/([A-Z])/g, " $1")
+                        .trim()}
+                    </Text>
+                    <Text key={key} style={styles.textStyle2}>
+                      {value.charAt(0).toUpperCase() + value.slice(1)}
+                    </Text>
+                  </Block>
+                ))}
+              </Block>
             </Block>
           </Block>
         </Block>
-      </Block>
+      </ScrollView>
     );
   }
 }
@@ -101,10 +134,32 @@ class TicketDetails extends React.Component {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#fff2ff",
+    width: width,
+    paddingBottom: height - width * 0.5,
   },
   padded: {
     paddingHorizontal: theme.SIZES.BASE,
-    paddingBottom: 20,
+  },
+  content: {
+    borderColor: "black",
+    borderWidth: 1,
+    padding: 3,
+    paddingVertical: 5,
+  },
+  heading: {
+    fontSize: 18,
+    marginTop: 20,
+    marginBottom: 20,
+    fontWeight: "bold",
+  },
+  textStyle1: {
+    fontSize: 15,
+    marginHorizontal: 3,
+    fontWeight: "bold",
+  },
+  textStyle2: {
+    fontSize: 15,
+    marginHorizontal: 3,
   },
 });
 

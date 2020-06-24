@@ -1,3 +1,0 @@
-sudo yarn install
-sudo expo start
-sudo expo build:android

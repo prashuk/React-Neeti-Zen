@@ -1,11 +1,6 @@
 import React from "react";
 
-import {
-  StyleSheet,
-  View,
-  SectionList,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, View, SectionList, TouchableOpacity } from "react-native";
 import { Text } from "galio-framework";
 
 class ActiveScreen extends React.Component {

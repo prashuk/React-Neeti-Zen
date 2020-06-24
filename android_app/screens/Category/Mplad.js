@@ -1,26 +1,58 @@
 import React from "react";
-import { StyleSheet, Dimensions, ScrollView, View, Text } from "react-native";
-import { Block } from "galio-framework";
+import { SafeAreaView, View, FlatList, StyleSheet, Text } from "react-native";
+import { getMplad } from "../../constants/Data";
+import Constants from "expo-constants";
 
-const { width } = Dimensions.get("screen");
+const DATA = [
+  {
+    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
+    title: "First Item",
+  }
+];
 
-class Mplad extends React.Component {
+function Item({ title }) {
+  return (
+    <View style={styles.item}>
+      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.subTitle}>{title}</Text>
+    </View>
+  );
+}
+
+export default class Mplad extends React.Component {
+  constructor(props) {
+    super(props);
+    getMplad();
+  }
+
   render() {
     return (
-      <Block flex center style={styles.home}>
-        <View>
-          <Text>MPLAD</Text>
-        </View>
-      </Block>
+      <SafeAreaView style={styles.container}>
+        <FlatList
+          data={DATA}
+          renderItem={({ item }) => <Item title={item.title} />}
+          keyExtractor={(item) => item.id}
+        />
+      </SafeAreaView>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  home: {
-    width: width,
-    backgroundColor: "#fff2ff",
+  container: {
+    flex: 1,
+    marginTop: 2,
+  },
+  item: {
+    backgroundColor: "#f9c2ff",
+    padding: 15,
+    marginVertical: 5,
+    marginHorizontal: 20,
+  },
+  title: {
+    fontSize: 14,
+  },
+  subTitle: {
+    fontSize: 11,
   },
 });
-
-export default Mplad;

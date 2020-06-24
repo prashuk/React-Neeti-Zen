@@ -1,12 +1,14 @@
 import React from "react";
+import RBSheet from "react-native-raw-bottom-sheet";
+import Sheet from "../../components/Sheet";
+import Spinner from "react-native-loading-spinner-overlay";
+
+import * as firebase from "firebase";
+import "firebase/storage";
+
 import { StyleSheet, Dimensions, ScrollView, Alert } from "react-native";
 import { Block, Button, Text, Input } from "galio-framework";
 import { Dropdown } from "react-native-material-dropdown";
-import RBSheet from "react-native-raw-bottom-sheet";
-import Sheet from "../../components/Sheet";
-import * as firebase from "firebase";
-import "firebase/storage";
-import Spinner from "react-native-loading-spinner-overlay";
 
 const { width } = Dimensions.get("screen");
 

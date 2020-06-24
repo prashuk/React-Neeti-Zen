@@ -1,8 +1,10 @@
 import React from "react";
+import Spinner from "react-native-loading-spinner-overlay";
+
 import { StyleSheet, Dimensions, ScrollView, Alert } from "react-native";
 import { Block, Button, Text, Input } from "galio-framework";
+
 import * as firebase from "firebase";
-import Spinner from "react-native-loading-spinner-overlay";
 
 const { height, width } = Dimensions.get("screen");
 

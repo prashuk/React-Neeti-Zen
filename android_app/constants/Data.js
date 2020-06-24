@@ -124,4 +124,19 @@ export function refresh() {
       data: arrParliamentData,
     },
   ];
-};
+}
+
+export async function getMplad() {
+  let data = {};
+  await firebase
+    .database()
+    .ref("mplad/")
+    .once("value")
+    .then(function (snapshot) {
+      snapshot.forEach((childSnapshot) => {
+        data[childSnapshot.key] = childSnapshot.val();
+      });
+    });
+  console.log(data);
+  return data;
+}

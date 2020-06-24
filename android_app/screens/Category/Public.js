@@ -1,48 +1,84 @@
 import React from "react";
-import { StyleSheet, Dimensions, ScrollView } from "react-native";
-import { Block, Button, Text, Input } from "galio-framework";
-import Spinner from "react-native-loading-spinner-overlay";
+import { SafeAreaView, View, FlatList, StyleSheet, Text } from "react-native";
+import Constants from "expo-constants";
 
-const { width } = Dimensions.get("screen");
+const DATA = [
+  {
+    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
+    title: "First Item",
+  },
+  {
+    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
+    title: "Second ItemSecond ItemSecond ItemSecond ItemSecond ItemSecond ItemSecond ItemSecond ItemSecond ItemSecond ItemSecond ItemSecond ItemSecond ItemSecond Item",
+  },
+  {
+    id: "58694a0f-3da1-471f-bd96-145571e29d72",
+    title: "Third Item",
+  },
+  {
+    id: "58694a0f-3da1-471f-bd96-145571e29d72",
+    title: "Third Item",
+  },
+  {
+    id: "58694a0f-3da1-471f-bd96-145571e29d72",
+    title: "Third Item",
+  },
+  {
+    id: "58694a0f-3da1-471f-bd96-145571e29d72",
+    title: "Third Item",
+  },
+  {
+    id: "58694a0f-3da1-471f-bd96-145571e29d72",
+    title: "Third Item",
+  },
+  {
+    id: "58694a0f-3da1-471f-bd96-145571e29d72",
+    title: "Third Item",
+  },
+  {
+    id: "58694a0f-3da1-471f-bd96-145571e29d72",
+    title: "Third Item",
+  },
+];
 
-class Public extends React.Component {
+function Item({ title }) {
+  return (
+    <View style={styles.item}>
+      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.subTitle}>{title}</Text>
+    </View>
+  );
+}
+
+export default class Public extends React.Component {
   render() {
     return (
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 0 }}
-        keyboardShouldPersistTaps="always"
-      >
-        <Spinner
-          visible={this.state.spinner}
-          textStyle={styles.spinnerTextStyle}
+      <SafeAreaView style={styles.container}>
+        <FlatList
+          data={DATA}
+          renderItem={({ item }) => <Item title={item.title} />}
+          keyExtractor={(item) => item.id}
         />
-        <Block flex style={styles.container}>
-          <Block style={styles.title}>
-            <Text>List</Text>
-          </Block>
-        </Block>
-      </ScrollView>
+      </SafeAreaView>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff2ff",
+    flex: 1,
+    marginTop: 2,
   },
-  button: {
-    width: width - 40,
-    height: 50,
-    shadowRadius: 10,
-    shadowOpacity: 0,
-    marginBottom: 10,
+  item: {
+    backgroundColor: "#f9c2ff",
+    padding: 15,
+    marginVertical: 5,
+    marginHorizontal: 20,
   },
   title: {
-    marginTop: 20,
-    marginRight: 30,
-    marginLeft: 30,
+    fontSize: 14,
+  },
+  subTitle: {
+    fontSize: 11,
   },
 });
-
-export default Public;
