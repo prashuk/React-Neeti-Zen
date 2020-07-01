@@ -5,7 +5,7 @@ import * as firebase from "firebase";
 import "firebase/storage";
 import Spinner from "react-native-loading-spinner-overlay";
 
-const { width } = Dimensions.get("screen");
+const { width, height } = Dimensions.get("screen");
 
 class Parliament extends React.Component {
   state = {
@@ -109,6 +109,9 @@ class Parliament extends React.Component {
               </Text>
             </Block>
             <Block>
+              <Text size={12}>All fields are required.</Text>
+            </Block>
+            <Block>
               <Input
                 multiline
                 style={{ height: 150 }}
@@ -138,6 +141,7 @@ class Parliament extends React.Component {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#fff2ff",
+    height: height,
   },
   button: {
     width: width - 40,

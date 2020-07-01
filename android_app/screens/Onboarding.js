@@ -8,14 +8,17 @@ import {
   Alert,
   CheckBox,
   View,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  BackHandler,
 } from "react-native";
 import { Block, Button, Text, theme, Input, Icon } from "galio-framework";
 import ApiKeys from "../constants/ApiKeys";
 import * as firebase from "firebase";
 import Spinner from "react-native-loading-spinner-overlay";
+import Modal, { ModalContent } from "react-native-modals";
+import Terms from "./Sidemenu/Terms";
 
-const { width } = Dimensions.get("screen");
+const { width, height } = Dimensions.get("screen");
 
 class Onboarding extends React.Component {
   constructor(props) {
@@ -26,6 +29,7 @@ class Onboarding extends React.Component {
       name: "",
       email: "",
       age: "",
+      sex: "",
       place: "",
       mobile: "",
       password: "",
@@ -37,11 +41,33 @@ class Onboarding extends React.Component {
       formForgotPwd: 0,
       loginFlag: 0,
       terms: false,
+      modalShow: false,
     };
 
     if (!firebase.apps.length) {
       firebase.initializeApp(ApiKeys.FirebaseConfig);
     }
+
+    this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
+  }
+
+  componentWillMount() {
+    BackHandler.addEventListener(
+      "hardwareBackPress",
+      this.handleBackButtonClick
+    );
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener(
+      "hardwareBackPress",
+      this.handleBackButtonClick
+    );
+  }
+
+  handleBackButtonClick() {
+    BackHandler.exitApp();
+    return true;
   }
 
   updateCheckedState = () => {
@@ -50,6 +76,37 @@ class Onboarding extends React.Component {
 
   updateState = async () => {
     this.setState({ spinner: true });
+  };
+
+  sendVerification = (user) => {
+    Alert.alert(
+      "Please verify your email",
+      "Login into your email account and click on the link which is sent by Neetizen",
+      [
+        {
+          text: "Resend Email",
+          onPress: () => {
+            var user = global.User.user;
+            user
+              .sendEmailVerification()
+              .then(() => {
+                this.setState({ spinner: false });
+                alert("Registration Complete!\nPlease verify your email.");
+              })
+              .catch((error) => {
+                console.log(error.message);
+              });
+          },
+        },
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        { text: "OK", onPress: () => console.log("OK Pressed") },
+      ],
+      { cancelable: false }
+    );
   };
 
   loginBtnPressed = () => {
@@ -67,8 +124,12 @@ class Onboarding extends React.Component {
         .signInWithEmailAndPassword(this.state.email, this.state.password)
         .then((user) => {
           global.User = user;
+          if (user.user.emailVerified) {
+            navigation.navigate("App");
+          } else {
+            this.sendVerification(user);
+          }
           this.setState({ spinner: false });
-          navigation.navigate("App");
         })
         .catch((error) => {
           this.setState({ spinner: false });
@@ -79,6 +140,7 @@ class Onboarding extends React.Component {
         this.state.name === "" ||
         this.state.email === "" ||
         this.state.age === "" ||
+        this.state.sex === "" ||
         this.state.place === "" ||
         this.state.mobile === "" ||
         this.state.password === "" ||
@@ -99,20 +161,31 @@ class Onboarding extends React.Component {
               name: this.state.name,
               email: this.state.email,
               age: this.state.age,
+              sex: this.state.sex,
               place: this.state.place,
               mobile: this.state.mobile,
+              emailVerify: false,
             })
             .then(() => {
-              alert("Registration Complete!\nPlease Login");
-              this.setState({
-                formLogin: 1,
-                formSignup: 0,
-                formEnterOTP: 0,
-                formForgotPwd: 0,
-                loginFlag: 0,
-                loginBtnText: "LOG IN",
-                signUpBtnText: "Sign Up",
-              });
+              var user = userCredentials.user;
+              user
+                .sendEmailVerification()
+                .then(() => {
+                  this.setState({ spinner: false });
+                  alert("Registration Complete!\nPlease verify your email.");
+                  this.setState({
+                    formLogin: 1,
+                    formSignup: 0,
+                    formEnterOTP: 0,
+                    formForgotPwd: 0,
+                    loginFlag: 0,
+                    loginBtnText: "LOG IN",
+                    signUpBtnText: "Sign Up",
+                  });
+                })
+                .catch((error) => {
+                  console.log(error.message);
+                });
             })
             .catch((error) => {
               this.setState({ spinner: false });
@@ -134,7 +207,7 @@ class Onboarding extends React.Component {
         .sendPasswordResetEmail(this.state.email)
         .then((user) => {
           this.setState({ spinner: false });
-          alert("Please check your email");
+          alert("Please check your email for reset password.");
         })
         .catch((error) => {
           this.setState({ spinner: false });
@@ -186,28 +259,20 @@ class Onboarding extends React.Component {
     });
   }
 
-  showAlert = () => {
-    Alert.alert(
-      "Email / Password Incorrect",
-      "Please enter correct Email ID / Password and then again try logging in OR reset it.",
-      [
-        {
-          text: "Reset Password",
-          onPress: () => console.log("Ask me later pressed"),
-        },
-        {
-          text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel",
-        },
-        { text: "OK", onPress: () => console.log("OK Pressed") },
-      ],
-      { cancelable: false }
-    );
-  };
-
   selectForm = () => {
     return this.renderForms();
+  };
+
+  onPressTerms = () => {
+    this.setState({ modalShow: true });
+  };
+
+  showRulesForPassword = () => {
+    Alert.alert(
+      "Your password should contain all these rules",
+      "One digit [0-9] \n One lowercase character [a-z] \n One uppercase character [A-Z] \n One special character \n 6 characters in length",
+      [{ text: "OK", onPress: () => console.log("OK Pressed") }]
+    );
   };
 
   renderForms = () => {
@@ -298,24 +363,43 @@ class Onboarding extends React.Component {
               }
             ></Input>
           </Block>
+          <View style={{ flexDirection: "row" }}>
+            <Block>
+              <Input
+                style={{ width: width / 2 - 30, marginRight: 10 }}
+                placeholder="Age"
+                onChangeText={(text) => this.setState({ age: text })}
+                iconContent={
+                  <Icon
+                    size={20}
+                    style={{ marginRight: 10 }}
+                    color="#4f3961"
+                    name="details"
+                    family="ArgonExtra"
+                  ></Icon>
+                }
+              ></Input>
+            </Block>
+            <Block>
+              <Input
+                style={{ width: width / 2 - 30, marginLeft: 10 }}
+                placeholder="Sex"
+                onChangeText={(text) => this.setState({ sex: text })}
+                iconContent={
+                  <Icon
+                    size={20}
+                    style={{ marginRight: 10 }}
+                    color="#4f3961"
+                    name="person"
+                    family="ArgonExtra"
+                  ></Icon>
+                }
+              ></Input>
+            </Block>
+          </View>
           <Block>
             <Input
-              placeholder="Age & Sex"
-              onChangeText={(text) => this.setState({ age: text })}
-              iconContent={
-                <Icon
-                  size={20}
-                  style={{ marginRight: 10 }}
-                  color="#4f3961"
-                  name="details"
-                  family="ArgonExtra"
-                ></Icon>
-              }
-            ></Input>
-          </Block>
-          <Block>
-            <Input
-              placeholder="Place & Pin Code"
+              placeholder="Address with Pin Code"
               onChangeText={(text) => this.setState({ place: text })}
               iconContent={
                 <Icon
@@ -344,23 +428,38 @@ class Onboarding extends React.Component {
               }
             ></Input>
           </Block>
-          <Block>
-            <Input
-              placeholder="Password"
-              secureTextEntry={true}
-              autoCapitalize="none"
-              onChangeText={(text) => this.setState({ password: text })}
-              iconContent={
-                <Icon
-                  size={20}
-                  style={{ marginRight: 10 }}
-                  color="#4f3961"
-                  name="security"
-                  family="ArgonExtra"
-                ></Icon>
-              }
-            ></Input>
-          </Block>
+          <View style={{ flexDirection: "row" }}>
+            <Block>
+              <Input
+                style={{ width: width - 60 }}
+                placeholder="Password"
+                secureTextEntry={true}
+                autoCapitalize="none"
+                onChangeText={(text) => this.setState({ password: text })}
+                iconContent={
+                  <Icon
+                    size={20}
+                    style={{ marginRight: 10 }}
+                    color="#4f3961"
+                    name="security"
+                    family="ArgonExtra"
+                  ></Icon>
+                }
+              ></Input>
+            </Block>
+            <Text
+              style={{
+                width: 30,
+                height: 30,
+                backgroundColor: "rgba(52, 52, 52, 0)",
+                fontSize: 20,
+              }}
+              onPress={this.showRulesForPassword}
+            >
+              &#9432;
+            </Text>
+          </View>
+
           <Block>
             <View style={styles.checkboxContainer}>
               <CheckBox
@@ -368,9 +467,43 @@ class Onboarding extends React.Component {
                 onValueChange={this.updateCheckedState}
                 style={styles.checkbox}
               />
-              <Text style={styles.label}>
+              <Text style={styles.label} onPress={() => this.onPressTerms()}>
                 I agree to Terms & Condition and Privacy Policy
               </Text>
+              <Modal
+                visible={this.state.modalShow}
+                onTouchOutside={() => {
+                  this.setState({
+                    modalShow: false,
+                  });
+                }}
+              >
+                <ModalContent
+                  style={{ width: width - 40, height: height - 200 }}
+                >
+                  <Terms />
+                  <Button
+                    color="#4f3961"
+                    style={styles.buttonPopup}
+                    onPress={() => {
+                      this.setState({
+                        modalShow: false,
+                      });
+                    }}
+                  >
+                    <Block row>
+                      <Icon
+                        name="ios-checkbox"
+                        family="Ionicon"
+                        size={30}
+                        color={"white"}
+                        style={{ marginRight: 5 }}
+                      />
+                      <Text style={styles.socialTextButtons}>Agree</Text>
+                    </Block>
+                  </Button>
+                </ModalContent>
+              </Modal>
             </View>
           </Block>
         </Block>
@@ -408,7 +541,7 @@ class Onboarding extends React.Component {
 
   render() {
     return (
-      <KeyboardAvoidingView style={{flex:1}} behavior="padding" enabled>
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
         <Block flex style={styles.container}>
           <StatusBar hidden />
           <Spinner
@@ -456,7 +589,7 @@ class Onboarding extends React.Component {
             </Block>
           </Block>
         </Block>
-        </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -468,6 +601,21 @@ const styles = StyleSheet.create({
   button: {
     width: width - theme.SIZES.BASE * 4,
     height: theme.SIZES.BASE * 3,
+  },
+  buttonPopup: {
+    height: 50,
+    width: "100%",
+    marginRight: 10,
+    marginLeft: 10,
+    marginTop: 10,
+    borderRadius: 10,
+    borderWidth: 1.5,
+    borderColor: "#fff",
+  },
+  socialTextButtons: {
+    fontSize: 16,
+    color: "white",
+    textAlignVertical: "center",
   },
   logo: {
     width: width - theme.SIZES.BASE * 4,
@@ -483,6 +631,8 @@ const styles = StyleSheet.create({
   },
   label: {
     margin: 8,
+    color: "blue",
+    textDecorationLine: "underline",
   },
 });
 

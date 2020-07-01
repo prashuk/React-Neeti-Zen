@@ -1,37 +1,55 @@
 import React from "react";
-import { SafeAreaView, View, FlatList, StyleSheet, Text } from "react-native";
+import {
+  SafeAreaView,
+  View,
+  FlatList,
+  StyleSheet,
+  Text,
+  Linking,
+} from "react-native";
 import { getMplad } from "../../constants/Data";
-import Constants from "expo-constants";
 
-const DATA = [
-  {
-    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-    title: "First Item",
-  }
-];
-
-function Item({ title }) {
+function Item({ item }) {
   return (
     <View style={styles.item}>
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.subTitle}>{title}</Text>
+      <Text
+        style={styles.title}
+        onPress={() => Linking.openURL(`${item.fileUrl}`)}
+      >
+        {item.fileName}
+      </Text>
+      <Text style={styles.subTitle}>Notes: {item.note}</Text>
     </View>
   );
 }
 
 export default class Mplad extends React.Component {
+  state = {
+    mpladData: [],
+  };
+
   constructor(props) {
     super(props);
-    getMplad();
+
+    this.showMplad();
   }
+
+  showMplad = () => {
+    var updatedData = getMplad();
+    updatedData.then((result) => {
+      this.setState({
+        mpladData: Object.values(result),
+      });
+    });
+  };
 
   render() {
     return (
       <SafeAreaView style={styles.container}>
         <FlatList
-          data={DATA}
-          renderItem={({ item }) => <Item title={item.title} />}
-          keyExtractor={(item) => item.id}
+          data={this.state.mpladData}
+          renderItem={({ item }) => <Item item={item} />}
+          keyExtractor={(item) => item.fileName}
         />
       </SafeAreaView>
     );
@@ -40,19 +58,21 @@ export default class Mplad extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: "#fff2ff",
     flex: 1,
-    marginTop: 2,
+    paddingTop: 20,
   },
   item: {
-    backgroundColor: "#f9c2ff",
+    borderColor: "black",
+    borderWidth: 1,
     padding: 15,
-    marginVertical: 5,
     marginHorizontal: 20,
   },
   title: {
-    fontSize: 14,
+    fontSize: 15,
+    fontWeight: "bold",
   },
   subTitle: {
-    fontSize: 11,
+    fontSize: 15,
   },
 });

@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Dimensions, ScrollView, Alert } from "react-native";
-import { Block, Button, Text, Input } from "galio-framework";
+import { Block, Button, Text, Input, Icon } from "galio-framework";
 import * as firebase from "firebase";
 import Spinner from "react-native-loading-spinner-overlay";
 
@@ -11,6 +11,7 @@ class Profile extends React.Component {
     name: "",
     email: "",
     age: "",
+    sex: "",
     place: "",
     mobile: "",
     spinner: false,
@@ -27,6 +28,7 @@ class Profile extends React.Component {
         var name = snapshot.val()["name"];
         var email = snapshot.val()["email"];
         var age = snapshot.val()["age"];
+        var sex = snapshot.val()["sex"];
         var place = snapshot.val()["place"];
         var mobile = snapshot.val()["mobile"];
 
@@ -34,6 +36,7 @@ class Profile extends React.Component {
           name: name,
           email: email,
           age: age,
+          sex: sex,
           place: place,
           mobile: mobile,
         });
@@ -46,6 +49,7 @@ class Profile extends React.Component {
     if (
       this.state.name === "" ||
       this.state.age === "" ||
+      this.state.sex === "" ||
       this.state.place === "" ||
       this.state.mobile === ""
     ) {
@@ -61,6 +65,7 @@ class Profile extends React.Component {
         name: this.state.name,
         email: this.state.email,
         age: this.state.age,
+        sex: this.state.sex,
         place: this.state.place,
         mobile: this.state.mobile,
       })
@@ -84,6 +89,20 @@ class Profile extends React.Component {
       });
   };
 
+  changePasswordBtnPressed = () => {
+    firebase
+      .auth()
+      .sendPasswordResetEmail(this.state.email)
+      .then((user) => {
+        this.setState({ spinner: false });
+        alert("Please check your email for password change.");
+      })
+      .catch((error) => {
+        this.setState({ spinner: false });
+        alert(error);
+      });
+  };
+
   render() {
     return (
       <ScrollView
@@ -103,21 +122,62 @@ class Profile extends React.Component {
               </Text>
             </Block>
             <Block>
+              <Text color="#000" size={20}>
+                {this.state.email}
+              </Text>
+            </Block>
+            <Block>
               <Input
                 placeholder="Name"
                 value={this.state.name}
                 onChangeText={(text) => {
                   this.setState({ name: text });
                 }}
+                iconContent={
+                  <Icon
+                    size={20}
+                    style={{ marginRight: 10 }}
+                    color="#4f3961"
+                    name="person"
+                    family="ArgonExtra"
+                  ></Icon>
+                }
               ></Input>
             </Block>
             <Block>
               <Input
-                placeholder="Age & Sex"
+                placeholder="Age"
                 value={this.state.age}
                 onChangeText={(text) => {
                   this.setState({ age: text });
                 }}
+                iconContent={
+                  <Icon
+                    size={20}
+                    style={{ marginRight: 10 }}
+                    color="#4f3961"
+                    name="details"
+                    family="ArgonExtra"
+                  ></Icon>
+                }
+              ></Input>
+            </Block>
+            <Block>
+              <Input
+                placeholder="Sex"
+                value={this.state.sex}
+                onChangeText={(text) => {
+                  this.setState({ sex: text });
+                }}
+                iconContent={
+                  <Icon
+                    size={20}
+                    style={{ marginRight: 10 }}
+                    color="#4f3961"
+                    name="person"
+                    family="ArgonExtra"
+                  ></Icon>
+                }
               ></Input>
             </Block>
             <Block>
@@ -127,6 +187,15 @@ class Profile extends React.Component {
                 onChangeText={(text) => {
                   this.setState({ place: text });
                 }}
+                iconContent={
+                  <Icon
+                    size={20}
+                    style={{ marginRight: 10 }}
+                    color="#4f3961"
+                    name="pin-drop"
+                    family="ArgonExtra"
+                  ></Icon>
+                }
               ></Input>
             </Block>
             <Block>
@@ -136,8 +205,27 @@ class Profile extends React.Component {
                 onChangeText={(text) => {
                   this.setState({ mobile: text });
                 }}
+                iconContent={
+                  <Icon
+                    size={20}
+                    style={{ marginRight: 10 }}
+                    color="#4f3961"
+                    name="call"
+                    family="ArgonExtra"
+                  ></Icon>
+                }
               ></Input>
             </Block>
+          </Block>
+          <Block center>
+            <Button
+              style={styles.changeButton}
+              color="#4f3961"
+              onPress={this.changePasswordBtnPressed}
+              textStyle={{ color: "white" }}
+            >
+              Change Password
+            </Button>
           </Block>
           <Block center>
             <Button
@@ -164,6 +252,11 @@ const styles = StyleSheet.create({
   button: {
     width: width - 40,
     height: 50,
+    marginTop: 10,
+  },
+  changeButton: {
+    width: width - 80,
+    height: 40,
     marginTop: 10,
   },
   title: {

@@ -1,10 +1,10 @@
 import React from "react";
 import {
   StyleSheet,
-  Dimensions,
   ScrollView,
   StatusBar,
   Platform,
+  Dimensions,
 } from "react-native";
 import { Block, Button, Text, Icon } from "galio-framework";
 import Modal, { ModalContent } from "react-native-modals";
@@ -13,6 +13,7 @@ import * as firebase from "firebase";
 import * as Permissions from "expo-permissions";
 import { Notifications } from "expo";
 import { refresh } from "../../constants/Data";
+const { width, height } = Dimensions.get("screen");
 import Constants from "expo-constants";
 
 class DashboardScreen extends React.Component {
@@ -84,7 +85,7 @@ class DashboardScreen extends React.Component {
         contentContainerStyle={{ paddingBottom: 0 }}
       >
         <StatusBar hidden={false}></StatusBar>
-        <Block>
+        <Block style={styles.container}>
           <Block flex>
             <Block>
               <Text
@@ -385,6 +386,9 @@ class DashboardScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    width: width,
+  },
   button: {
     height: 50,
     marginRight: 70,

@@ -6,6 +6,7 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import Sheet from "../../components/Sheet";
 import Spinner from "react-native-loading-spinner-overlay";
 import * as firebase from "firebase";
+import { getDates } from "../../constants/Data";
 
 const { width } = Dimensions.get("screen");
 
@@ -46,12 +47,13 @@ class Event extends React.Component {
     phone: "",
     email: "",
     occasion: "",
-    availability: "05/25/2020",
+    availability: "",
     imgInvitation: "",
     notes: "",
     btnId: "",
     ticketNumberDatabase: 0,
     spinner: false,
+    datesData: [],
   };
 
   constructor(props) {
@@ -64,7 +66,27 @@ class Event extends React.Component {
         let ticketNumberDatabase = parseInt(snapshot.val());
         this.state.ticketNumberDatabase = ticketNumberDatabase + 1;
       });
+
+    this.showDates();
   }
+
+  showDates = () => {
+    var updatedData = getDates();
+    updatedData.then((result) => {
+      var filtered = Object.values(result).filter(
+        (item) => item.status === "available"
+      );
+      var onlyDates = [];
+      filtered.forEach((date) => {
+        let d = {};
+        d["value"] = date.date;
+        onlyDates.push(d);
+      });
+      this.setState({
+        datesData: onlyDates,
+      });
+    });
+  };
 
   uploadBtnPressed(event, buttonId) {
     this.RBSheet.open();
@@ -205,6 +227,9 @@ class Event extends React.Component {
               </Text>
             </Block>
             <Block>
+              <Text size={12}>All fields are required.</Text>
+            </Block>
+            <Block>
               <Input
                 placeholder="Name of Patient"
                 onChangeText={(text) => {
@@ -253,14 +278,21 @@ class Event extends React.Component {
                 }}
               />
             </Block>
-            <Button
-              style={styles.sideButton}
-              color="#4f3961"
-              textStyle={{ color: "white" }}
-              onPress={() => console.log("Do something")}
+            <Block
+              style={{
+                backgroundColor: "white",
+                marginBottom: 10,
+                borderRadius: 10,
+              }}
             >
-              Check Availability & Invitation Request
-            </Button>
+              <Dropdown
+                label="Available Dates"
+                data={this.state.datesData}
+                onChangeText={(text) => {
+                  this.setState({ availability: text });
+                }}
+              />
+            </Block>
             <Button
               style={styles.sideButton}
               color="#4f3961"

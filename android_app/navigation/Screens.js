@@ -427,6 +427,7 @@ function AppStack(props) {
       <Drawer.Screen name="Terms & Conditions" component={TermsStack} />
       <Drawer.Screen name="Help & Support" component={HelpStack} />
       <Drawer.Screen name="Privacy Policy" component={PrivacyStack} />
+      <Drawer.Screen name="Sign Off" component={OnboardingStack} />
     </Drawer.Navigator>
   );
 }

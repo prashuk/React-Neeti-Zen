@@ -110,6 +110,9 @@ class Suggest extends React.Component {
               </Text>
             </Block>
             <Block>
+              <Text size={12}>All fields are required.</Text>
+            </Block>
+            <Block>
               <Input
                 multiline={true}
                 style={{ height: 150 }}

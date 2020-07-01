@@ -298,6 +298,9 @@ class Expatriates extends React.Component {
                 Fill Form
               </Text>
             </Block>
+            <Block>
+              <Text size={12}>All fields are required.</Text>
+            </Block>
             <Block
               style={{
                 backgroundColor: "white",

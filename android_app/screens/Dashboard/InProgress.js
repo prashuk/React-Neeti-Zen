@@ -1,10 +1,12 @@
 import React from "react";
 
-import { StyleSheet, View, SectionList } from "react-native";
+import { StyleSheet, View, SectionList, TouchableOpacity } from "react-native";
 import { Text } from "galio-framework";
 
 class InProgressScreen extends React.Component {
   render() {
+    const { navigation } = this.props;
+
     const arrSuggestData = [];
     if (typeof global.dataForSuggest !== "undefined") {
       var k = 0;
@@ -111,7 +113,15 @@ class InProgressScreen extends React.Component {
     function Item({ title }) {
       return (
         <View style={styles.item}>
-          <Text style={styles.title}>{title}</Text>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("TicketDetails", {
+                title: title,
+              })
+            }
+          >
+            <Text style={styles.title}>{title}</Text>
+          </TouchableOpacity>
         </View>
       );
     }

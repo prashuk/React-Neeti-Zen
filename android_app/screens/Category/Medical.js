@@ -228,6 +228,9 @@ class Medical extends React.Component {
               </Text>
             </Block>
             <Block>
+              <Text size={12}>All fields are required.</Text>
+            </Block>
+            <Block>
               <Input
                 placeholder="Name of Patient"
                 onChangeText={(text) => {
