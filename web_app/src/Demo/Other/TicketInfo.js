@@ -268,7 +268,7 @@ class TicketInfo extends React.Component {
       <div>
         <ReactToPrint
           content={() => this.componentRef}
-          trigger={() => <a href="#">Download</a>}
+          trigger={() => <a href="#!">Download</a>}
         />
         <ComponentToPrint ref={(el) => (this.componentRef = el)} />
       </div>

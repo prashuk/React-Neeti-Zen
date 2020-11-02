@@ -127,7 +127,7 @@ class Dashboard extends React.Component {
     inviteTickets: 0,
     parliamentTickets: 0,
     datum: [],
-    allData: []
+    allData: [],
   };
 
   constructor(props) {
@@ -144,7 +144,7 @@ class Dashboard extends React.Component {
   showData = () => {
     var updateData = getData();
     updateData.then((result) => {
-      this.setState({allData: result})
+      this.setState({ allData: result });
       result.forEach((value, key, map) => {
         var type =
           value["type"].charAt(0).toUpperCase() + value["type"].slice(1);
@@ -250,7 +250,7 @@ class Dashboard extends React.Component {
         global.ticketNumber = ticket;
         global.ticketDetails = value;
       }
-    })
+    });
   };
 
   handleChangePage = (event, newPage) => {
@@ -324,7 +324,8 @@ class Dashboard extends React.Component {
                   </div>
                   <div className="col-3 text-right">
                     <p className="m-b-0">
-                      {(this.state.rows.length * 100) / this.state.rows.length}%
+                      {(this.state.rows.length * 100) / this.state.rows.length}{" "}
+                      %
                     </p>
                   </div>
                 </div>
@@ -352,7 +353,12 @@ class Dashboard extends React.Component {
                   </div>
                   <div className="col-3 text-right">
                     <p className="m-b-0">
-                      {(this.state.openTickets * 100) / this.state.rows.length}%
+                      {Math.round(
+                        ((this.state.openTickets * 100) /
+                          this.state.rows.length) *
+                          10
+                      ) / 10}{" "}
+                      %
                     </p>
                   </div>
                 </div>
@@ -380,8 +386,11 @@ class Dashboard extends React.Component {
                   </div>
                   <div className="col-3 text-right">
                     <p className="m-b-0">
-                      {(this.state.inProgressTickets * 100) /
-                        this.state.rows.length}
+                      {Math.round(
+                        ((this.state.inProgressTickets * 100) /
+                          this.state.rows.length) *
+                          10
+                      ) / 10}{" "}
                       %
                     </p>
                   </div>
@@ -410,8 +419,11 @@ class Dashboard extends React.Component {
                   </div>
                   <div className="col-3 text-right">
                     <p className="m-b-0">
-                      {(this.state.closedTickets * 100) /
-                        this.state.rows.length}
+                      {Math.round(
+                        ((this.state.closedTickets * 100) /
+                          this.state.rows.length) *
+                          10
+                      ) / 10}{" "}
                       %
                     </p>
                   </div>

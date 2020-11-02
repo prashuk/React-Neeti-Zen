@@ -1,13 +1,12 @@
-### `yarn install`
+# Neeti-Zen
 
-### `yarn start` 
+A project build with React and ReactNative for pre-stage startup
 
-### `npm test`
+This projects includes
 
-### `npm run build`
+1. [Web App](https://github.com/prashuk/React-Neeti-Zen/tree/master/web_app) (React + Firebase)
+2. [Android App](https://github.com/prashuk/React-Neeti-Zen/tree/master/android_app) (ReactNative-Expo + Firebase)
 
-### `npm run eject`
+## ScreenShots
 
-### `npm run build` 
-
-
+...Coming Up

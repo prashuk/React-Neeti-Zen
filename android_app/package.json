@@ -1,7 +1,6 @@
 {
-  "name": "neeti-zen",
+  "name": "neetizen-android-app",
   "version": "1.0.0",
-  "description": "NeetiZen",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
@@ -47,7 +46,5 @@
   },
   "devDependencies": {
     "babel-preset-expo": "^7.0.0"
-  },
-  "author": "Prashuk Ajmera <prashuk.ajmera@gmail.com> (https://www.prashuk.co)",
-  "license": "UNLICENSED"
+  }
 }

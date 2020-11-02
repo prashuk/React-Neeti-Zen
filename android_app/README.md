@@ -1,8 +1,11 @@
+# NeetiZen Android App (ReactNative-Expo + Firebase)
+
 ## 🛠 Installation & Set Up
 
 1. Install dependencies
 
    ```sh
+   sudo yarn upgrade
    sudo yarn install
    ```
 
@@ -10,12 +13,6 @@
 
    ```sh
    sudo yarn start
-   ```
-
-   or
-
-   ```sh
-   sudo expo start
    ```
 
 3. Move to react-native-cli

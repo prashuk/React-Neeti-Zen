@@ -1,5 +1,0 @@
-yarn build
-yarn global add firebase-tools
-firebase init **
-firebase use --add **
-firebase deploy
